@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DatabaseLayer
 {
@@ -11,7 +12,7 @@ namespace DatabaseLayer
         /// <summary>
         /// Connection to the database
         /// </summary>
-        private static SqlConnection dbConnection;
+        private static Eecs393_project dbConnection;
 
         /// <summary>
         /// Connection string for connecting to the database
@@ -31,18 +32,21 @@ namespace DatabaseLayer
                 Properties.Settings.Default.database,
                 Properties.Settings.Default.timeout);
 
-            dbConnection = new SqlConnection(connString);
+            dbConnection = new Eecs393_project(connString);
+        }
 
-            try // Try to open the connection
+        public static IEnumerable<Project> GetAllProjects()
+        {
+            try
             {
-                dbConnection.Open();
+                IEnumerable<Project> projects = from p in dbConnection.Project
+                                                select p;
+                return projects;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Console.WriteLine(ex.Message);
-                Environment.Exit(1); // TODO fix this
+                return null; // TODO fix this
             }
-
         }
     }
 }

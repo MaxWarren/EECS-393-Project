@@ -13,7 +13,6 @@ namespace SCRUMProjectManagementSystem
         [STAThread]
         static void Main()
         {
-            DatabaseLayer.DatabaseLayer.tryOpen();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SPMS());

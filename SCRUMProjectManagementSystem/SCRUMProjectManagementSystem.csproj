@@ -81,10 +81,6 @@
       <Project>{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}</Project>
       <Name>DatabaseLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataTypes\DataTypes.csproj">
-      <Project>{D996015D-AA07-44E2-9610-CC6FB3C588FF}</Project>
-      <Name>DataTypes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
