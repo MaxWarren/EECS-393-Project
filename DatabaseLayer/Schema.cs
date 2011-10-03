@@ -166,7 +166,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="project_id", Storage="_Project_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int Project_id
+	public int ProjectID
 	{
 		get
 		{
@@ -179,14 +179,14 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 				this.OnProject_idChanging(value);
 				this.SendPropertyChanging();
 				this._Project_id = value;
-				this.SendPropertyChanged("Project_id");
+				this.SendPropertyChanged("ProjectID");
 				this.OnProject_idChanged();
 			}
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="project_name", Storage="_Project_name", DbType="NChar(50) NOT NULL", CanBeNull=false)]
-	public string Project_name
+	public string ProjectName
 	{
 		get
 		{
@@ -206,7 +206,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="start_date", Storage="_Start_date", DbType="Date NOT NULL")]
-	public System.DateTime Start_date
+	public System.DateTime StartDate
 	{
 		get
 		{
@@ -226,7 +226,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="end_date", Storage="_End_date", DbType="Date")]
-	public System.Nullable<System.DateTime> End_date
+	public System.Nullable<System.DateTime> EndDate
 	{
 		get
 		{
@@ -246,7 +246,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="owner", Storage="_Owner", DbType="Int NOT NULL")]
-	public int Owner
+	public int OwnerID
 	{
 		get
 		{
@@ -266,7 +266,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="team_id", Storage="_Team_id", DbType="Int NOT NULL")]
-	public int Team_id
+	public int TeamID
 	{
 		get
 		{
@@ -286,7 +286,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Project_Owner", Storage="_User", ThisKey="Owner", OtherKey="User_id", IsForeignKey=true)]
-	public User User
+	public User Owner
 	{
 		get
 		{
@@ -302,13 +302,13 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._User.Entity = null;
-					previousValue.Project.Remove(this);
+					previousValue.OwnedProjects.Remove(this);
 				}
 				this._User.Entity = value;
 				if ((value != null))
 				{
-					value.Project.Add(this);
-					this._Owner = value.User_id;
+					value.OwnedProjects.Add(this);
+					this._Owner = value.UserID;
 				}
 				else
 				{
@@ -336,13 +336,13 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._Team.Entity = null;
-					previousValue.Project.Remove(this);
+					previousValue.Projects.Remove(this);
 				}
 				this._Team.Entity = value;
 				if ((value != null))
 				{
-					value.Project.Add(this);
-					this._Team_id = value.Team_id;
+					value.Projects.Add(this);
+					this._Team_id = value.TeamID;
 				}
 				else
 				{
@@ -353,8 +353,8 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Sprint", ThisKey="Project_id", OtherKey="Project_id", DeleteRule="NO ACTION")]
-	public EntitySet<Sprint> Sprint
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Sprint", ThisKey="ProjectID", OtherKey="ProjectID", DeleteRule="NO ACTION")]
+	public EntitySet<Sprint> Sprints
 	{
 		get
 		{
@@ -443,7 +443,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="sprint_id", Storage="_Sprint_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int Sprint_id
+	public int SprintID
 	{
 		get
 		{
@@ -463,7 +463,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="sprint_name", Storage="_Sprint_name", DbType="NChar(50) NOT NULL", CanBeNull=false)]
-	public string Sprint_name
+	public string SprintName
 	{
 		get
 		{
@@ -483,7 +483,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="start_date", Storage="_Start_date", DbType="Date NOT NULL")]
-	public System.DateTime Start_date
+	public System.DateTime StartDate
 	{
 		get
 		{
@@ -503,7 +503,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="end_date", Storage="_End_date", DbType="Date")]
-	public System.Nullable<System.DateTime> End_date
+	public System.Nullable<System.DateTime> EndDate
 	{
 		get
 		{
@@ -523,7 +523,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="project_id", Storage="_Project_id", DbType="Int NOT NULL")]
-	public int Project_id
+	public int ProjectID
 	{
 		get
 		{
@@ -536,13 +536,13 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 				this.OnProject_idChanging(value);
 				this.SendPropertyChanging();
 				this._Project_id = value;
-				this.SendPropertyChanged("Project_id");
+				this.SendPropertyChanged("ProjectID");
 				this.OnProject_idChanged();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Project", ThisKey="Project_id", OtherKey="Project_id", IsForeignKey=true)]
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Project", ThisKey="ProjectID", OtherKey="ProjectID", IsForeignKey=true)]
 	public Project Project
 	{
 		get
@@ -559,13 +559,13 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._Project.Entity = null;
-					previousValue.Sprint.Remove(this);
+					previousValue.Sprints.Remove(this);
 				}
 				this._Project.Entity = value;
 				if ((value != null))
 				{
-					value.Sprint.Add(this);
-					this._Project_id = value.Project_id;
+					value.Sprints.Add(this);
+					this._Project_id = value.ProjectID;
 				}
 				else
 				{
@@ -577,7 +577,7 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Story_Sprint", Storage="_Story", ThisKey="Sprint_id", OtherKey="Sprint_id", DeleteRule="NO ACTION")]
-	public EntitySet<Story> Story
+	public EntitySet<Story> UserStories
 	{
 		get
 		{
@@ -662,7 +662,7 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="story_id", Storage="_Story_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int Story_id
+	public int StoryID
 	{
 		get
 		{
@@ -682,7 +682,7 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="priority_num", Storage="_Priority_num", DbType="Int NOT NULL")]
-	public int Priority_num
+	public int PriorityNum
 	{
 		get
 		{
@@ -702,7 +702,7 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="sprint_id", Storage="_Sprint_id", DbType="Int NOT NULL")]
-	public int Sprint_id
+	public int SprintID
 	{
 		get
 		{
@@ -758,13 +758,13 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._Sprint.Entity = null;
-					previousValue.Story.Remove(this);
+					previousValue.UserStories.Remove(this);
 				}
 				this._Sprint.Entity = value;
 				if ((value != null))
 				{
-					value.Story.Add(this);
-					this._Sprint_id = value.Sprint_id;
+					value.UserStories.Add(this);
+					this._Sprint_id = value.SprintID;
 				}
 				else
 				{
@@ -776,7 +776,7 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Task_Story", Storage="_Task", ThisKey="Story_id", OtherKey="Story_id", DeleteRule="NO ACTION")]
-	public EntitySet<Task> Task
+	public EntitySet<Task> Tasks
 	{
 		get
 		{
@@ -811,13 +811,13 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	private void attach_Task(Task entity)
 	{
 		this.SendPropertyChanging();
-		entity.Story = this;
+		entity.UserStory = this;
 	}
 	
 	private void detach_Task(Task entity)
 	{
 		this.SendPropertyChanging();
-		entity.Story = null;
+		entity.UserStory = null;
 	}
 }
 
@@ -870,7 +870,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="task_id", Storage="_Task_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int Task_id
+	public int TaskID
 	{
 		get
 		{
@@ -890,7 +890,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="story_id", Storage="_Story_id", DbType="Int NOT NULL")]
-	public int Story_id
+	public int StoryID
 	{
 		get
 		{
@@ -930,7 +930,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="owner", Storage="_Owner", DbType="Int")]
-	public System.Nullable<int> Owner
+	public System.Nullable<int> OwnerID
 	{
 		get
 		{
@@ -970,7 +970,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="completion_date", Storage="_Completion_date", DbType="Date")]
-	public System.Nullable<System.DateTime> Completion_date
+	public System.Nullable<System.DateTime> CompletionDate
 	{
 		get
 		{
@@ -1010,7 +1010,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Task_Story", Storage="_Story", ThisKey="Story_id", OtherKey="Story_id", IsForeignKey=true)]
-	public Story Story
+	public Story UserStory
 	{
 		get
 		{
@@ -1026,13 +1026,13 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._Story.Entity = null;
-					previousValue.Task.Remove(this);
+					previousValue.Tasks.Remove(this);
 				}
 				this._Story.Entity = value;
 				if ((value != null))
 				{
-					value.Task.Add(this);
-					this._Story_id = value.Story_id;
+					value.Tasks.Add(this);
+					this._Story_id = value.StoryID;
 				}
 				else
 				{
@@ -1110,7 +1110,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="team_id", Storage="_Team_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int Team_id
+	public int TeamID
 	{
 		get
 		{
@@ -1130,7 +1130,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="team_lead", Storage="_Team_lead", DbType="Int NOT NULL")]
-	public int Team_lead
+	public int TeamLeadID
 	{
 		get
 		{
@@ -1150,7 +1150,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="manager", Storage="_Manager", DbType="Int NOT NULL")]
-	public int Manager
+	public int ManagerID
 	{
 		get
 		{
@@ -1170,7 +1170,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="team_name", Storage="_Team_name", DbType="NChar(50) NOT NULL", CanBeNull=false)]
-	public string Team_name
+	public string TeamName
 	{
 		get
 		{
@@ -1190,7 +1190,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Project_Team", Storage="_Project", ThisKey="Team_id", OtherKey="Team_id", DeleteRule="NO ACTION")]
-	public EntitySet<Project> Project
+	public EntitySet<Project> Projects
 	{
 		get
 		{
@@ -1203,7 +1203,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Team_Lead", Storage="_User", ThisKey="Team_lead", OtherKey="User_id", IsForeignKey=true)]
-	public User User
+	public User TeamLead
 	{
 		get
 		{
@@ -1219,13 +1219,13 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._User.Entity = null;
-					previousValue.Team.Remove(this);
+					previousValue.TeamsLed.Remove(this);
 				}
 				this._User.Entity = value;
 				if ((value != null))
 				{
-					value.Team.Add(this);
-					this._Team_lead = value.User_id;
+					value.TeamsLed.Add(this);
+					this._Team_lead = value.UserID;
 				}
 				else
 				{
@@ -1237,7 +1237,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Team_Manager", Storage="_ManagerUser", ThisKey="Manager", OtherKey="User_id", IsForeignKey=true)]
-	public User ManagerUser
+	public User Manager
 	{
 		get
 		{
@@ -1253,13 +1253,13 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._ManagerUser.Entity = null;
-					previousValue.User_.Remove(this);
+					previousValue.TeamsManaged.Remove(this);
 				}
 				this._ManagerUser.Entity = value;
 				if ((value != null))
 				{
-					value.User_.Add(this);
-					this._Manager = value.User_id;
+					value.TeamsManaged.Add(this);
+					this._Manager = value.UserID;
 				}
 				else
 				{
@@ -1271,7 +1271,7 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_User_Team_ID", Storage="_Team_", ThisKey="Team_id", OtherKey="Team_id", DeleteRule="NO ACTION")]
-	public EntitySet<User> Team_
+	public EntitySet<User> Members
 	{
 		get
 		{
@@ -1318,13 +1318,13 @@ public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
 	private void attach_Team_(User entity)
 	{
 		this.SendPropertyChanging();
-		entity.Team_ = this;
+		entity.Team = this;
 	}
 	
 	private void detach_Team_(User entity)
 	{
 		this.SendPropertyChanging();
-		entity.Team_ = null;
+		entity.Team = null;
 	}
 }
 
@@ -1378,7 +1378,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="user_id", Storage="_User_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int User_id
+	public int UserID
 	{
 		get
 		{
@@ -1418,7 +1418,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="team_id", Storage="_Team_id", DbType="Int NOT NULL")]
-	public int Team_id
+	public int TeamID
 	{
 		get
 		{
@@ -1478,7 +1478,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Project_Owner", Storage="_Project", ThisKey="User_id", OtherKey="Owner", DeleteRule="NO ACTION")]
-	public EntitySet<Project> Project
+	public EntitySet<Project> OwnedProjects
 	{
 		get
 		{
@@ -1491,7 +1491,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Team_Lead", Storage="_Team", ThisKey="User_id", OtherKey="Team_lead", DeleteRule="NO ACTION")]
-	public EntitySet<Team> Team
+	public EntitySet<Team> TeamsLed
 	{
 		get
 		{
@@ -1504,7 +1504,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Team_Manager", Storage="_User_", ThisKey="User_id", OtherKey="Manager", DeleteRule="NO ACTION")]
-	public EntitySet<Team> User_
+	public EntitySet<Team> TeamsManaged
 	{
 		get
 		{
@@ -1517,7 +1517,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_User_Team_ID", Storage="_Team_", ThisKey="Team_id", OtherKey="Team_id", IsForeignKey=true)]
-	public Team Team_
+	public Team Team
 	{
 		get
 		{
@@ -1533,13 +1533,13 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 				if ((previousValue != null))
 				{
 					this._Team_.Entity = null;
-					previousValue.Team_.Remove(this);
+					previousValue.Members.Remove(this);
 				}
 				this._Team_.Entity = value;
 				if ((value != null))
 				{
-					value.Team_.Add(this);
-					this._Team_id = value.Team_id;
+					value.Members.Add(this);
+					this._Team_id = value.TeamID;
 				}
 				else
 				{
@@ -1573,37 +1573,37 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	private void attach_Project(Project entity)
 	{
 		this.SendPropertyChanging();
-		entity.User = this;
+		entity.Owner = this;
 	}
 	
 	private void detach_Project(Project entity)
 	{
 		this.SendPropertyChanging();
-		entity.User = null;
+		entity.Owner = null;
 	}
 	
 	private void attach_Team(Team entity)
 	{
 		this.SendPropertyChanging();
-		entity.User = this;
+		entity.TeamLead = this;
 	}
 	
 	private void detach_Team(Team entity)
 	{
 		this.SendPropertyChanging();
-		entity.User = null;
+		entity.TeamLead = null;
 	}
 	
 	private void attach_User_(Team entity)
 	{
 		this.SendPropertyChanging();
-		entity.ManagerUser = this;
+		entity.Manager = this;
 	}
 	
 	private void detach_User_(Team entity)
 	{
 		this.SendPropertyChanging();
-		entity.ManagerUser = null;
+		entity.Manager = null;
 	}
 }
 #pragma warning restore 1591
