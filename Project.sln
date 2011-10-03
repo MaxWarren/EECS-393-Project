@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer", "DatabaseLayer.csproj", "{BCA00818-A931-4510-A5FB-E59CA6E848E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer", "DatabaseLayer\DatabaseLayer.csproj", "{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BCA00818-A931-4510-A5FB-E59CA6E848E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCA00818-A931-4510-A5FB-E59CA6E848E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCA00818-A931-4510-A5FB-E59CA6E848E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCA00818-A931-4510-A5FB-E59CA6E848E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
