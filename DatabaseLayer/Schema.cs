@@ -10,9 +10,16 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+
+
 
 [global::System.Data.Linq.Mapping.DatabaseAttribute(Name="eecs393_project")]
 public partial class Eecs393_project : System.Data.Linq.DataContext
@@ -179,7 +186,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 				this.OnProject_idChanging(value);
 				this.SendPropertyChanging();
 				this._Project_id = value;
-				this.SendPropertyChanged("ProjectID");
+				this.SendPropertyChanged("Project_id");
 				this.OnProject_idChanged();
 			}
 		}
@@ -353,7 +360,7 @@ public partial class Project : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Sprint", ThisKey="ProjectID", OtherKey="ProjectID", DeleteRule="NO ACTION")]
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Sprint", ThisKey="Project_id", OtherKey="Project_id", DeleteRule="NO ACTION")]
 	public EntitySet<Sprint> Sprints
 	{
 		get
@@ -536,13 +543,13 @@ public partial class Sprint : INotifyPropertyChanging, INotifyPropertyChanged
 				this.OnProject_idChanging(value);
 				this.SendPropertyChanging();
 				this._Project_id = value;
-				this.SendPropertyChanged("ProjectID");
+				this.SendPropertyChanged("Project_id");
 				this.OnProject_idChanged();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Project", ThisKey="ProjectID", OtherKey="ProjectID", IsForeignKey=true)]
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Sprint_Project", Storage="_Project", ThisKey="Project_id", OtherKey="Project_id", IsForeignKey=true)]
 	public Project Project
 	{
 		get
@@ -682,7 +689,7 @@ public partial class Story : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="priority_num", Storage="_Priority_num", DbType="Int NOT NULL")]
-	public int PriorityNum
+	public int Priority
 	{
 		get
 		{
@@ -837,6 +844,10 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Data.Linq.Binary _Type;
 	
+	private int _Size_complexity;
+	
+	private int _Business_value;
+	
 	private System.Nullable<System.DateTime> _Completion_date;
 	
 	private System.Data.Linq.Binary _State;
@@ -857,6 +868,10 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	partial void OnOwnerChanged();
 	partial void OnTypeChanging(System.Data.Linq.Binary value);
 	partial void OnTypeChanged();
+	partial void OnSize_complexityChanging(int value);
+	partial void OnSize_complexityChanged();
+	partial void OnBusiness_valueChanging(int value);
+	partial void OnBusiness_valueChanged();
 	partial void OnCompletion_dateChanging(System.Nullable<System.DateTime> value);
 	partial void OnCompletion_dateChanged();
 	partial void OnStateChanging(System.Data.Linq.Binary value);
@@ -965,6 +980,46 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 				this._Type = value;
 				this.SendPropertyChanged("Type");
 				this.OnTypeChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="size_complexity", Storage="_Size_complexity", DbType="Int NOT NULL")]
+	public int SizeComplexity
+	{
+		get
+		{
+			return this._Size_complexity;
+		}
+		set
+		{
+			if ((this._Size_complexity != value))
+			{
+				this.OnSize_complexityChanging(value);
+				this.SendPropertyChanging();
+				this._Size_complexity = value;
+				this.SendPropertyChanged("Size_complexity");
+				this.OnSize_complexityChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="business_value", Storage="_Business_value", DbType="Int NOT NULL")]
+	public int BusinessValue
+	{
+		get
+		{
+			return this._Business_value;
+		}
+		set
+		{
+			if ((this._Business_value != value))
+			{
+				this.OnBusiness_valueChanging(value);
+				this.SendPropertyChanging();
+				this._Business_value = value;
+				this.SendPropertyChanged("Business_value");
+				this.OnBusiness_valueChanged();
 			}
 		}
 	}
