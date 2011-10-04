@@ -1,8 +1,15 @@
 ﻿<Window x:Class="SCRUMProjectManagementSystem.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="400" Loaded="Window_Loaded" Width="600" Name="mainWindow1">
+    <Grid Name="grid1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="projCol" />
+            <ColumnDefinition Name="taskCol" />
+            <ColumnDefinition Name="sprintCol" Width="0" />
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Name="projectList" VerticalAlignment="Stretch" SelectionChanged="ProjectList_SelectionChanged" />
+        <ListBox Grid.Column="1" HorizontalAlignment="Stretch" Name="taskList" VerticalAlignment="Stretch" />
+        <ListBox Grid.Column="2" HorizontalAlignment="Stretch" Name="sprintList" VerticalAlignment="Stretch" />
     </Grid>
 </Window>
