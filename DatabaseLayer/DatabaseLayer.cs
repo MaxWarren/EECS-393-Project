@@ -310,5 +310,70 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+
+        /// <summary>
+        /// Gets the team with the given ID
+        /// </summary>
+        /// <param name="teamID">The ID of the team for which to search</param>
+        /// <returns>The team with the given ID</returns>
+        public static Team GetTeamByID(int teamID)
+        {
+            try
+            {
+                IEnumerable<Team> teams = from t in dbConnection.Team
+                                          where t.TeamID == teamID
+                                          select t;
+
+                return teams.First(); // There can be only one
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
+        /// Gets all members of a team
+        /// </summary>
+        /// <param name="teamID">The ID of the team for which to search</param>
+        /// <returns>A list of all members of the given team</returns>
+        public static IEnumerable<User> GetTeamMembers(int teamID)
+        {
+            try
+            {
+                IEnumerable<User> users = from u in dbConnection.User
+                                          where u.TeamID == teamID
+                                          select u;
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
+        /// Authenticates a user
+        /// </summary>
+        /// <param name="userID">The ID of the user to authenticate</param>
+        /// <param name="password">The password provided by the user</param>
+        /// <returns>True if the user authenticated properly, false otherwise</returns>
+        public static bool AuthenticateUser(int userID, string password)
+        {
+            try
+            {
+                IEnumerable<User> users = from u in dbConnection.User
+                                          where u.UserID == userID
+                                          where u.Password == password
+                                          select u;
+
+                return (users.Count() > 0); // Are the any users with the given ID and password
+            }
+            catch (Exception)
+            {
+                return false; // TODO add error handling for db failure
+            }
+        }
     }
 }
