@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer", "DatabaseLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCRUMProjectManagementSystem", "SCRUMProjectManagementSystem\SCRUMProjectManagementSystem.csproj", "{D8EA4093-6C47-4EDD-8BCD-535C94DE5B89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{D8EA4093-6C47-4EDD-8BCD-535C94DE5B89}.Release|Mixed Platforms.Build.0 = Release|x86
 		{D8EA4093-6C47-4EDD-8BCD-535C94DE5B89}.Release|x86.ActiveCfg = Release|x86
 		{D8EA4093-6C47-4EDD-8BCD-535C94DE5B89}.Release|x86.Build.0 = Release|x86
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
