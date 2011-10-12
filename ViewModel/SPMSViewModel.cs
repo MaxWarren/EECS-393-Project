@@ -10,7 +10,7 @@ namespace ViewModel
     /// </summary>
     public class SPMSViewModel
     {
-        private int _currUser;
+        private User _currUser;
         private ObservableCollection<Project> _projectsForUser;
         private ObservableCollection<Task> _tasksForUser;
         private ObservableCollection<Sprint> _sprintsForProject;
@@ -34,7 +34,7 @@ namespace ViewModel
                 return false;
             }
 
-            _currUser = curr.UserID; // Store the user ID
+            _currUser = curr; // Store the user
             return true;
         }
 
