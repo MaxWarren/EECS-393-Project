@@ -19,9 +19,12 @@ namespace SCRUMProjectManagementSystem
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<String> projs;
-        private List<String> tasks;
-        private List<String> sprints;
+        private static List<string> projs = new string[] { "Proj1", "Proj2" }.ToList();
+        private List<string> sprints;
+        private List<string> stories;
+        private List<string> tasks;
+        private Dictionary<string, System.Collections.IEnumerable> crumbMemory = new Dictionary<string,System.Collections.IEnumerable>();
+        private Button currentCrumb = new Button();
 
         public MainWindow()
         {
@@ -30,23 +33,58 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            projs = new String[] { "Proj1", "Proj2" }.ToList();
-            tasks = new String[] { "Task1", "Task2" }.ToList();
-            sprints = new String[] { "Sprint1", "Sprint2" }.ToList();
+
+            projs = new string[] { "Proj1", "Proj2" }.ToList();
+            tasks = new string[] { "Task1", "Task2" }.ToList();
 
             projectList.ItemsSource = projs;
             taskList.ItemsSource = tasks;
-            sprintList.ItemsSource = sprints;
         }
 
         private void ProjectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (taskCol.ActualWidth > 0)
+            if (projectList.SelectedIndex >= 0)
             {
-                taskCol.Width = new GridLength(0);
-                projCol.Width = new GridLength(projCol.ActualWidth / 2);
-                sprintCol.Width = new GridLength(projCol.ActualWidth * 1.5);
+                currentCrumb.Background = new SolidColorBrush(Colors.Green);
+                Button crumb = new Button();
+                crumb.Background = new SolidColorBrush(Colors.Green);
+                crumb.Content = projectList.SelectedValue;
+                crumb.Click += new RoutedEventHandler(crumb_Click);
+                if (!crumbMemory.ContainsKey(crumb.Content.ToString()))
+                {
+                    if (crumbMemory.Count > 0)
+                    {
+                        stackPanel1.Children.RemoveRange(stackPanel1.Children.IndexOf(currentCrumb) + 1, stackPanel1.Children.Count - stackPanel1.Children.IndexOf(currentCrumb));
+                    }
+                    crumbMemory.Add(crumb.Content.ToString(), projectList.ItemsSource);
+                    stackPanel1.Children.Add(crumb);
+                    currentCrumb = crumb;
+                }
+                else
+                {
+                    foreach (Button b in stackPanel1.Children)
+                    {
+                        if (b.Content.Equals(crumb.Content))
+                        {
+                            currentCrumb = b;
+                        }
+                    }
+                }
+                currentCrumb.Background = new SolidColorBrush(Colors.Red);
+                projectList.SelectedIndex = -1;
             }
+        }
+        void crumb_Click(object sender, RoutedEventArgs e)
+        {
+            projectList.ItemsSource = crumbMemory[((Button)sender).Content.ToString()];
+            currentCrumb.Background = new SolidColorBrush(Colors.Green);
+            currentCrumb = (Button)sender;
+            currentCrumb.Background = new SolidColorBrush(Colors.Red);
+        }
+
+        private void taskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            projectList.ItemsSource = new string[] { "aaa", "bbb", "ccc" }.ToList();
         }
     }
 }

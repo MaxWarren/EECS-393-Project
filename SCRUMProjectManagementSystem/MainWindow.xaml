@@ -3,13 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="400" Loaded="Window_Loaded" Width="600" Name="mainWindow1">
     <Grid Name="grid1">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="projCol" />
-            <ColumnDefinition Name="taskCol" />
-            <ColumnDefinition Name="sprintCol" Width="0" />
-        </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Name="projectList" VerticalAlignment="Stretch" SelectionChanged="ProjectList_SelectionChanged" />
-        <ListBox Grid.Column="1" HorizontalAlignment="Stretch" Name="taskList" VerticalAlignment="Stretch" />
-        <ListBox Grid.Column="2" HorizontalAlignment="Stretch" Name="sprintList" VerticalAlignment="Stretch" />
+        <Grid Name="grid2" VerticalAlignment="Stretch" Margin="0,30,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="projCol" />
+                <ColumnDefinition Name="taskCol" />
+                <ColumnDefinition Name="sprintCol" Width="0" />
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Name="projectList" VerticalAlignment="Stretch" SelectionChanged="ProjectList_SelectionChanged" ItemsSource="{Binding}">
+                <ListBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="LightBlue" Offset="0" />
+                        <GradientStop Color="DarkBlue" Offset="1" />
+                    </LinearGradientBrush>
+                </ListBox.Background>
+            </ListBox>
+            <ListBox Grid.Column="1" HorizontalAlignment="Stretch" Name="taskList" VerticalAlignment="Stretch" SelectionChanged="taskList_SelectionChanged">
+                <ListBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="LightSalmon" Offset="0" />
+                        <GradientStop Color="DarkRed" Offset="1" />
+                    </LinearGradientBrush>
+                </ListBox.Background>
+            </ListBox>
+            <ListBox Grid.Column="2" HorizontalAlignment="Stretch" Name="sprintList" VerticalAlignment="Stretch" />
+        </Grid>
+        <StackPanel Height="30" HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Top" Background="LightGreen" Orientation="Horizontal" />
     </Grid>
 </Window>
