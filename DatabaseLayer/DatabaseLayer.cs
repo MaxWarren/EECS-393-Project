@@ -7,7 +7,7 @@ namespace DatabaseLayer
     /// <summary>
     /// Static class that interfaces with the database
     /// </summary>
-    public static class DatabaseLayer
+    public static class DataModel
     {
         /// <summary>
         /// Connection to the database
@@ -22,7 +22,7 @@ namespace DatabaseLayer
         /// <summary>
         /// Initialize the database connection
         /// </summary>
-        static DatabaseLayer()
+        static DataModel()
         {
             // Set connection string
             connString = string.Format("user id={0};password={1};server={2};Trusted_Connection=yes;database={3};connection timeout={4}",

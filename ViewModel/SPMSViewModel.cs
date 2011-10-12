@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using System.Text;
+using DatabaseLayer;
 
 namespace ViewModel
 {
@@ -10,6 +12,11 @@ namespace ViewModel
     /// </summary>
     public class SPMSViewModel
     {
+        /// <summary>
+        /// Indicates whether or not a user is logged in
+        /// </summary>
+        private bool _isLoggedIn;
+
         private ObservableCollection<Project> _projectsForUser;
         private ObservableCollection<Task> _tasksForUser;
         private ObservableCollection<Sprint> _sprintsForProject;
@@ -19,32 +26,32 @@ namespace ViewModel
         /// <summary>
         /// The currently logged in user
         /// </summary>
-        public User CurrUser { get; set; }
+        public User CurrUser { get; private set; }
 
         /// <summary>
         /// The team to which the current user belongs
         /// </summary>
-        public Team CurrTeam { get; set; }
+        public Team CurrTeam { get; private set; }
 
         /// <summary>
         /// The project most recently selected by the user
         /// </summary>
-        public Project CurrProject { get; set; }
+        public Project CurrProject { get; private set; }
 
         /// <summary>
         /// The sprint most recently selected by the user
         /// </summary>
-        public Sprint CurrSprint { get; set; }
+        public Sprint CurrSprint { get; private set; }
 
         /// <summary>
         /// The user story most recently selected by the user
         /// </summary>
-        public Sprint CurrStory { get; set; }
+        public Story CurrStory { get; private set; }
 
         /// <summary>
         /// The task most recently selected by the user
         /// </summary>
-        public Sprint CurrTask { get; set; }
+        public Task CurrTask { get; private set; }
 
         /// <summary>
         /// A list of all projects that belong to the team to which the current user belongs
@@ -52,7 +59,7 @@ namespace ViewModel
         public ObservableCollection<Project> ProjectsForUser
         {
             get { return _projectsForUser; }
-            set { _projectsForUser = value; }
+            private set { _projectsForUser = value; }
         }
 
         /// <summary>
@@ -61,7 +68,7 @@ namespace ViewModel
         public ObservableCollection<Task> TasksForUser
         {
             get { return _tasksForUser; }
-            set { _tasksForUser = value; }
+            private set { _tasksForUser = value; }
         }
 
         /// <summary>
@@ -70,7 +77,7 @@ namespace ViewModel
         public ObservableCollection<Sprint> SprintsForProject
         {
             get { return _sprintsForProject; }
-            set { _sprintsForProject = value; }
+            private set { _sprintsForProject = value; }
         }
 
         /// <summary>
@@ -79,7 +86,7 @@ namespace ViewModel
         public ObservableCollection<Story> StoriesForSprint
         {
             get { return _storiesForSprint; }
-            set { _storiesForSprint = value; }
+            private set { _storiesForSprint = value; }
         }
 
         /// <summary>
@@ -88,7 +95,7 @@ namespace ViewModel
         public ObservableCollection<Task> TasksForStory
         {
             get { return _tasksForStory; }
-            set { _tasksForStory = value; }
+            private set { _tasksForStory = value; }
         }
 
         /// <summary>
@@ -96,6 +103,8 @@ namespace ViewModel
         /// </summary>
         public SPMSViewModel()
         {
+            _isLoggedIn = false;
+
             // Set all the observable collections to empty lists
             _projectsForUser = new ObservableCollection<Project>();
             _sprintsForProject = new ObservableCollection<Sprint>();
@@ -114,7 +123,7 @@ namespace ViewModel
         {
             string passHash = hashPassword(password);
             Console.WriteLine(passHash);
-            User curr = DatabaseLayer.DatabaseLayer.AuthenticateUser(userId, passHash);
+            User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
             {
@@ -123,6 +132,143 @@ namespace ViewModel
 
             CurrUser = curr; // Store the user
             CurrTeam = curr.Team;
+            _isLoggedIn = true;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the ProjectsForUser collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateProjectsForUser()
+        {
+            _projectsForUser.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn) // No one is logged in
+            {
+                return false;
+            }
+
+            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            if (projects == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Project p in projects)
+            {
+                _projectsForUser.Add(p);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the SprintsForProject collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateSprintsForProject()
+        {
+            _sprintsForProject.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn || CurrProject == null) // No one is logged in or a project has not been selected
+            {
+                return false;
+            }
+
+            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.ProjectID);
+            if (sprints == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Sprint s in sprints)
+            {
+                _sprintsForProject.Add(s);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the StoriesForSprint collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateStoriesForSprint()
+        {
+            _storiesForSprint.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn || CurrSprint == null) // No one is logged in or a sprint has not been selected
+            {
+                return false;
+            }
+
+            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.SprintID);
+            if (stories == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Story s in stories)
+            {
+                _storiesForSprint.Add(s);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the TasksForStory collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateTasksForStory()
+        {
+            _tasksForStory.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn || CurrStory == null) // No one is logged in or a user story has not been selected
+            {
+                return false;
+            }
+
+            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.StoryID);
+            if (tasks == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Task t in tasks)
+            {
+                _tasksForStory.Add(t);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the TasksForUser collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateTasksForUser()
+        {
+            _tasksForUser.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn) // No one is logged in
+            {
+                return false;
+            }
+
+            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.UserID);
+            if (tasks == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Task t in tasks)
+            {
+                _tasksForUser.Add(t);
+            }
+
             return true;
         }
 
