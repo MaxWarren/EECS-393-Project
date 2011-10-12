@@ -358,8 +358,8 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="userID">The ID of the user to authenticate</param>
         /// <param name="password">The password provided by the user</param>
-        /// <returns>True if the user authenticated properly, false otherwise</returns>
-        public static bool AuthenticateUser(int userID, string password)
+        /// <returns>The User if authentication succeeded, false otherwise</returns>
+        public static User AuthenticateUser(int userID, string password)
         {
             try
             {
@@ -368,11 +368,11 @@ namespace DatabaseLayer
                                           where u.Password == password
                                           select u;
 
-                return (users.Count() > 0); // Are the any users with the given ID and password
+                return users.First(); // Are the any users with the given ID and password
             }
             catch (Exception)
             {
-                return false; // TODO add error handling for db failure
+                return null; // TODO add error handling for db failure
             }
         }
     }
