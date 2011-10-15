@@ -19,74 +19,111 @@ namespace SCRUMProjectManagementSystem
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static List<string> projs = new string[] { "Proj1", "Proj2" }.ToList();
-        private List<string> sprints;
-        private List<string> stories;
-        private List<string> tasks;
-        private Dictionary<string, System.Collections.IEnumerable> crumbMemory = new Dictionary<string,System.Collections.IEnumerable>();
-        private Button currentCrumb = new Button();
+        private selection currentSelection;
+
+        private enum selection
+        {
+            Home,
+            Project,
+            Sprint,
+            Story,
+            Task
+        };
 
         public MainWindow()
         {
-            this.Visibility = Visibility.Visible;
             InitializeComponent();
-            new Login(this);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            projs = new string[] { "Proj1", "Proj2" }.ToList();
-            tasks = new string[] { "Task1", "Task2" }.ToList();
-
-            projectList.ItemsSource = projs;
-            taskList.ItemsSource = tasks;
+            currentSelection = selection.Home;
+            leftList.ItemsSource = new string[] { "project1", "project2", "project3" };
+            rightList.ItemsSource = new string[] { "task1", "task2", "task3" };
         }
 
-        private void ProjectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (projectList.SelectedIndex >= 0)
-            {
-                currentCrumb.Background = new SolidColorBrush(Colors.Green);
-                Button crumb = new Button();
-                crumb.Background = new SolidColorBrush(Colors.Green);
-                crumb.Content = projectList.SelectedValue;
-                crumb.Click += new RoutedEventHandler(crumb_Click);
-                if (!crumbMemory.ContainsKey(crumb.Content.ToString()))
-                {
-                    if (crumbMemory.Count > 0)
-                    {
-                        stackPanel1.Children.RemoveRange(stackPanel1.Children.IndexOf(currentCrumb) + 1, stackPanel1.Children.Count - stackPanel1.Children.IndexOf(currentCrumb));
-                    }
-                    crumbMemory.Add(crumb.Content.ToString(), projectList.ItemsSource);
-                    stackPanel1.Children.Add(crumb);
-                    currentCrumb = crumb;
-                }
-                else
-                {
-                    foreach (Button b in stackPanel1.Children)
-                    {
-                        if (b.Content.Equals(crumb.Content))
-                        {
-                            currentCrumb = b;
-                        }
-                    }
-                }
-                currentCrumb.Background = new SolidColorBrush(Colors.Red);
-                projectList.SelectedIndex = -1;
-            }
-        }
         void crumb_Click(object sender, RoutedEventArgs e)
         {
-            projectList.ItemsSource = crumbMemory[((Button)sender).Content.ToString()];
-            currentCrumb.Background = new SolidColorBrush(Colors.Green);
-            currentCrumb = (Button)sender;
-            currentCrumb.Background = new SolidColorBrush(Colors.Red);
+
         }
 
-        private void taskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void leftList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            projectList.ItemsSource = new string[] { "aaa", "bbb", "ccc" }.ToList();
+            if (leftList.SelectedIndex >= 0)
+            {
+                button_project.Visibility = Visibility.Hidden;
+                button_sprint.Visibility = Visibility.Hidden;
+                button_story.Visibility = Visibility.Hidden;
+                button_task.Visibility = Visibility.Hidden;
+                switch (currentSelection)
+                {
+                    case selection.Home:
+                        currentSelection++;
+                        button_project.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = new string[] { "spint1", "spint2", "spint3" };
+                        break;
+                    case selection.Project:
+                        currentSelection++;
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = new string[] { "story1", "story2", "story3" };
+                        break;
+                    case selection.Sprint:
+                        currentSelection++;
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        button_story.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = new string[] { "task1", "task2", "task3" };
+                        break;
+                    case selection.Story:
+                        currentSelection++;
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        button_story.Visibility = Visibility.Visible;
+                        button_task.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = new string[] {};
+                        break;
+                    case selection.Task:
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        button_story.Visibility = Visibility.Visible;
+                        button_task.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = new string[] {};
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void button_home_Click(object sender, RoutedEventArgs e)
+        {
+            currentSelection = selection.Home;
+            leftList.ItemsSource = new string[] { "project1", "project2", "project3" };
+        }
+
+        private void button_project_Click(object sender, RoutedEventArgs e)
+        {
+            currentSelection = selection.Project;
+            leftList.ItemsSource = new string[] { "spint1", "spint2", "spint3" };
+        }
+
+        private void button_sprint_Click(object sender, RoutedEventArgs e)
+        {
+            currentSelection = selection.Sprint;
+            leftList.ItemsSource = new string[] { "story1", "story2", "story3" };
+        }
+
+        private void button_story_Click(object sender, RoutedEventArgs e)
+        {
+            currentSelection = selection.Story;
+            leftList.ItemsSource = new string[] { "task1", "task2", "task3" };
+        }
+
+        private void button_task_Click(object sender, RoutedEventArgs e)
+        {
+            currentSelection = selection.Task;
+            leftList.ItemsSource = new string[] { };
         }
     }
 }

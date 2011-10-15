@@ -18,19 +18,29 @@ namespace SCRUMProjectManagementSystem
     /// </summary>
     public partial class Login : Window
     {
-        private MainWindow parent;
-
-        public Login(MainWindow newParent)
+        public Login()
         {
             InitializeComponent();
-            parent = newParent;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            login();
+        }
+
+        private void login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter))
+            {
+                login();
+            }
+        }
+
+        private void login()
+        {
             if (passwordBox1.Password.Equals("password"))
             {
-                parent.Visibility = Visibility.Visible;
+                new MainWindow().Visibility = Visibility.Visible;
                 this.Close();
             }
         }
