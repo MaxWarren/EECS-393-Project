@@ -28,7 +28,9 @@ namespace SCRUMProjectManagementSystem
 
         public MainWindow()
         {
+            this.Visibility = Visibility.Visible;
             InitializeComponent();
+            new Login(this);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SCRUMProjectManagementSystem.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="400" Loaded="Window_Loaded" Width="600" Name="mainWindow1">
+        Title="SCRUM Project Management System" Height="400" Loaded="Window_Loaded" Width="600" Name="mainWindow">
     <Grid Name="grid1">
         <Grid Name="grid2" VerticalAlignment="Stretch" Margin="0,30,0,0">
             <Grid.ColumnDefinitions>
