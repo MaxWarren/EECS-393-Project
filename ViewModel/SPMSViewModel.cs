@@ -134,6 +134,9 @@ namespace ViewModel
             CurrTeam = curr.Team_;
             _isLoggedIn = true;
 
+            UpdateProjectsForUser();
+            UpdateTasksForUser();
+
             return true;
         }
 

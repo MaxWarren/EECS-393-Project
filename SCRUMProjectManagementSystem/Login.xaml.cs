@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using ViewModel;
+using System.Text.RegularExpressions;
+using Utilities;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -38,11 +31,31 @@ namespace SCRUMProjectManagementSystem
 
         private void login()
         {
-            if (passwordBox1.Password.Equals("password"))
+            SPMSViewModel viewModel = new SPMSViewModel();
+
+            // Attempt to extract the user id
+            int userId;
+            if (!int.TryParse(textBox1.Text, out userId))
             {
-                new MainWindow().Visibility = Visibility.Visible;
+                userId = 0; // Not a number
+            }
+            string password = passwordBox1.Password;
+
+            if (viewModel.AuthenticateUser(userId, password))
+            {
+                new MainWindow(viewModel).Visibility = Visibility.Visible;
                 this.Close();
             }
+        }
+
+        /// <summary>
+        /// Disallow non-numeric input to the user id field
+        /// </summary>
+        /// <param name="sender">Object sending the event</param>
+        /// <param name="e">Other event arguments</param>
+        private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = Utility.IsTextNumeric(e.Text);
         }
     }
 }
