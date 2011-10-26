@@ -122,7 +122,7 @@ namespace ViewModel
         public bool AuthenticateUser(int userId, string password)
         {
             string passHash = hashPassword(password);
-            Console.WriteLine(passHash);
+            
             User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
