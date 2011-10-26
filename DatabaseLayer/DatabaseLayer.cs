@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 
 namespace DatabaseLayer
@@ -373,6 +374,21 @@ namespace DatabaseLayer
             catch (Exception)
             {
                 return null; // TODO add error handling for db failure
+            }
+        }
+
+        public static bool CommitChanges()
+        {
+            dbConnection.SubmitChanges(ConflictMode.ContinueOnConflict);
+
+            if (dbConnection.ChangeConflicts.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                // TODO add error handling
+                return false;
             }
         }
     }
