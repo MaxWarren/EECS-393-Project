@@ -83,22 +83,6 @@ namespace SCRUMProjectManagementSystem
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            if (_type == MainWindow.selection.Project)
-            {
-                _viewModel.ProjectsForUser.Add(new Project());
-            }
-            if (_type == MainWindow.selection.Sprint)
-            {
-                _viewModel.SprintsForProject.Add(new Sprint());
-            }
-            if (_type == MainWindow.selection.Story)
-            {
-                _viewModel.StoriesForSprint.Add(new Story());
-            }
-            if (_type == MainWindow.selection.Task)
-            {
-                _viewModel.TasksForStory.Add(new Task());
-            }
             this.Close();
         }
     }

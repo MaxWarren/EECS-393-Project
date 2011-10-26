@@ -17,46 +17,46 @@ namespace ViewModel
         /// </summary>
         private bool _isLoggedIn;
 
-        private ObservableCollection<Project> _projectsForUser;
-        private ObservableCollection<Task> _tasksForUser;
-        private ObservableCollection<Sprint> _sprintsForProject;
-        private ObservableCollection<Story> _storiesForSprint;
-        private ObservableCollection<Task> _tasksForStory;
+        private ObservableCollection<ProjectView> _projectsForUser;
+        private ObservableCollection<TaskView> _tasksForUser;
+        private ObservableCollection<SprintView> _sprintsForProject;
+        private ObservableCollection<StoryView> _storiesForSprint;
+        private ObservableCollection<TaskView> _tasksForStory;
 
         /// <summary>
         /// The currently logged in user
         /// </summary>
-        public User CurrUser { get; private set; }
+        public UserView CurrUser { get; private set; }
 
         /// <summary>
         /// The team to which the current user belongs
         /// </summary>
-        public Team CurrTeam { get; private set; }
+        public TeamView CurrTeam { get; private set; }
 
         /// <summary>
         /// The project most recently selected by the user
         /// </summary>
-        public Project CurrProject { get; private set; }
+        public ProjectView CurrProject { get; private set; }
 
         /// <summary>
         /// The sprint most recently selected by the user
         /// </summary>
-        public Sprint CurrSprint { get; private set; }
+        public SprintView CurrSprint { get; private set; }
 
         /// <summary>
         /// The user story most recently selected by the user
         /// </summary>
-        public Story CurrStory { get; private set; }
+        public StoryView CurrStory { get; private set; }
 
         /// <summary>
         /// The task most recently selected by the user
         /// </summary>
-        public Task CurrTask { get; private set; }
+        public TaskView CurrTask { get; private set; }
 
         /// <summary>
         /// A list of all projects that belong to the team to which the current user belongs
         /// </summary>
-        public ObservableCollection<Project> ProjectsForUser
+        public ObservableCollection<ProjectView> ProjectsForUser
         {
             get { return _projectsForUser; }
             private set { _projectsForUser = value; }
@@ -65,7 +65,7 @@ namespace ViewModel
         /// <summary>
         /// A list of all tasks assigned to the current user
         /// </summary>
-        public ObservableCollection<Task> TasksForUser
+        public ObservableCollection<TaskView> TasksForUser
         {
             get { return _tasksForUser; }
             private set { _tasksForUser = value; }
@@ -74,7 +74,7 @@ namespace ViewModel
         /// <summary>
         /// A list of all sprints that make up the current project
         /// </summary>
-        public ObservableCollection<Sprint> SprintsForProject
+        public ObservableCollection<SprintView> SprintsForProject
         {
             get { return _sprintsForProject; }
             private set { _sprintsForProject = value; }
@@ -83,7 +83,7 @@ namespace ViewModel
         /// <summary>
         /// A list of all user stories belonging to the current sprint
         /// </summary>
-        public ObservableCollection<Story> StoriesForSprint
+        public ObservableCollection<StoryView> StoriesForSprint
         {
             get { return _storiesForSprint; }
             private set { _storiesForSprint = value; }
@@ -92,7 +92,7 @@ namespace ViewModel
         /// <summary>
         /// A list of all tasks belonging to the current user story
         /// </summary>
-        public ObservableCollection<Task> TasksForStory
+        public ObservableCollection<TaskView> TasksForStory
         {
             get { return _tasksForStory; }
             private set { _tasksForStory = value; }
@@ -106,11 +106,11 @@ namespace ViewModel
             _isLoggedIn = false;
 
             // Set all the observable collections to empty lists
-            _projectsForUser = new ObservableCollection<Project>();
-            _sprintsForProject = new ObservableCollection<Sprint>();
-            _storiesForSprint = new ObservableCollection<Story>();
-            _tasksForStory = new ObservableCollection<Task>();
-            _tasksForUser = new ObservableCollection<Task>();
+            _projectsForUser = new ObservableCollection<ProjectView>();
+            _sprintsForProject = new ObservableCollection<SprintView>();
+            _storiesForSprint = new ObservableCollection<StoryView>();
+            _tasksForStory = new ObservableCollection<TaskView>();
+            _tasksForUser = new ObservableCollection<TaskView>();
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace ViewModel
                 return false;
             }
 
-            CurrUser = curr; // Store the user
-            CurrTeam = curr.Team_;
+            CurrUser = new UserView(curr); // Store the user
+            CurrTeam = new TeamView(curr.Team_);
             _isLoggedIn = true;
 
             UpdateProjectsForUser();
@@ -153,7 +153,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.Team_id);
+            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.TeamID);
             if (projects == null) // An error occured
             {
                 return false;
@@ -161,7 +161,7 @@ namespace ViewModel
 
             foreach (Project p in projects)
             {
-                _projectsForUser.Add(p);
+                _projectsForUser.Add(new ProjectView(p));
             }
 
             return true;
@@ -180,7 +180,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.Project_id);
+            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.ProjectID);
             if (sprints == null) // An error occured
             {
                 return false;
@@ -188,7 +188,7 @@ namespace ViewModel
 
             foreach (Sprint s in sprints)
             {
-                _sprintsForProject.Add(s);
+                _sprintsForProject.Add(new SprintView(s));
             }
 
             return true;
@@ -207,7 +207,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.Sprint_id);
+            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.SprintID);
             if (stories == null) // An error occured
             {
                 return false;
@@ -215,7 +215,7 @@ namespace ViewModel
 
             foreach (Story s in stories)
             {
-                _storiesForSprint.Add(s);
+                _storiesForSprint.Add(new StoryView(s));
             }
 
             return true;
@@ -234,7 +234,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.Story_id);
+            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.StoryID);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -242,7 +242,7 @@ namespace ViewModel
 
             foreach (Task t in tasks)
             {
-                _tasksForStory.Add(t);
+                _tasksForStory.Add(new TaskView(t));
             }
 
             return true;
@@ -261,7 +261,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.User_id);
+            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.UserId);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -269,7 +269,7 @@ namespace ViewModel
 
             foreach (Task t in tasks)
             {
-                _tasksForUser.Add(t);
+                _tasksForUser.Add(new TaskView(t));
             }
 
             return true;
