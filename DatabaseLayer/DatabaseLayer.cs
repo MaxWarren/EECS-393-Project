@@ -44,7 +44,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Project> projects = from p in dbConnection.Project
-                                                orderby p.ProjectName ascending
+                                                orderby p.Project_name ascending
                                                 select p;
                 return projects;
             }
@@ -64,8 +64,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Project> projects = from p in dbConnection.Project
-                                                where p.TeamID == teamId
-                                                orderby p.ProjectName ascending
+                                                where p.Team_id == teamId
+                                                orderby p.Project_name ascending
                                                 select p;
                 return projects;
             }
@@ -85,8 +85,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Project> projects = from p in dbConnection.Project
-                                                where p.OwnerID == ownerID
-                                                orderby p.ProjectName ascending
+                                                where p.Owner == ownerID
+                                                orderby p.Project_name ascending
                                                 select p;
                 return projects;
             }
@@ -106,7 +106,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Project> projects = from p in dbConnection.Project
-                                                where p.ProjectID == projectID
+                                                where p.Project_id == projectID
                                                 select p;
 
                 return projects.First(); // There can be only one
@@ -127,9 +127,9 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Sprint> sprints = from s in dbConnection.Sprint
-                                              where s.ProjectID == projectID
-                                              where !s.SprintName.Equals("Backlog") // Do not include the backlog
-                                              orderby s.StartDate descending
+                                              where s.Project_id == projectID
+                                              where !s.Sprint_name.Equals("Backlog") // Do not include the backlog
+                                              orderby s.Start_date descending
                                               select s;
 
                 return sprints;
@@ -150,8 +150,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Sprint> sprints = from s in dbConnection.Sprint
-                                              where s.ProjectID == projectID
-                                              where s.SprintName.Equals("Backlog")
+                                              where s.Project_id == projectID
+                                              where s.Sprint_name.Equals("Backlog")
                                               select s;
 
                 return sprints.First(); // There can be only one
@@ -172,7 +172,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Sprint> sprints = from s in dbConnection.Sprint
-                                              where s.SprintID == sprintID
+                                              where s.Sprint_id == sprintID
                                               select s;
 
                 return sprints.First(); // There can be only one
@@ -193,8 +193,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Story> stories = from s in dbConnection.Story
-                                             where s.SprintID == sprintID
-                                             orderby s.Priority ascending
+                                             where s.Sprint_id == sprintID
+                                             orderby s.Priority_num ascending
                                              select s;
 
                 return stories;
@@ -215,7 +215,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Story> stories = from s in dbConnection.Story
-                                             where s.StoryID == storyID
+                                             where s.Story_id == storyID
                                              select s;
 
                 return stories.First(); // There can be only one
@@ -236,8 +236,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Task> tasks = from t in dbConnection.Task
-                                          where t.StoryID == storyID
-                                          orderby t.BusinessValue descending
+                                          where t.Story_id == storyID
+                                          orderby t.Business_value descending
                                           select t;
 
                 return tasks;
@@ -258,8 +258,8 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Task> tasks = from t in dbConnection.Task
-                                          where t.OwnerID == userID
-                                          orderby t.BusinessValue descending
+                                          where t.Owner == userID
+                                          orderby t.Business_value descending
                                           select t;
 
                 return tasks;
@@ -280,7 +280,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Task> tasks = from t in dbConnection.Task
-                                          where t.TaskID == taskID
+                                          where t.Task_id == taskID
                                           select t;
 
                 return tasks.First(); // There can be only one
@@ -300,7 +300,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Team> teams = from t in dbConnection.Team
-                                          orderby t.TeamName ascending
+                                          orderby t.Team_name ascending
                                           select t;
 
                 return teams;
@@ -321,7 +321,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<Team> teams = from t in dbConnection.Team
-                                          where t.TeamID == teamID
+                                          where t.Team_id == teamID
                                           select t;
 
                 return teams.First(); // There can be only one
@@ -342,7 +342,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<User> users = from u in dbConnection.User
-                                          where u.TeamID == teamID
+                                          where u.Team_id == teamID
                                           select u;
 
                 return users;
@@ -364,7 +364,7 @@ namespace DatabaseLayer
             try
             {
                 IEnumerable<User> users = from u in dbConnection.User
-                                          where u.UserID == userID
+                                          where u.User_id == userID
                                           where u.Password == password
                                           select u;
 

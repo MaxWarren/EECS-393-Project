@@ -38,6 +38,8 @@ namespace SCRUMProjectManagementSystem
 
         private void login()
         {
+            ViewModel.SPMSViewModel test = new ViewModel.SPMSViewModel();
+            test.AuthenticateUser(1, "bagel");
             if (passwordBox1.Password.Equals("password"))
             {
                 new MainWindow().Visibility = Visibility.Visible;

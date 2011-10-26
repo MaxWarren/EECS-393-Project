@@ -936,7 +936,9 @@
     <Alias n="175" Id="(@1 @128 @144 Member=GetAllTeams)" />
   </IdentifierAliases>
   <Paths>
+    <Path Id="c4bc6a7b-1ccf-4c12-993a-45d8e482300b.OutputPath" Value="C:\Users\ajsquared\Dropbox\EECS393\Project\bin\Debug\DatabaseLayer.dll" />
     <Path Id="c4bc6a7b-1ccf-4c12-993a-45d8e482300b.OutputPathUri" Value="file:///C:/Users/ajsquared/Dropbox/EECS393/Project/bin/Debug/DatabaseLayer.dll" />
+    <Path Id="FxReferenceAssemblies" Value="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework" />
     <Path Id="FxReferenceAssembliesUri" Value="file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework" />
   </Paths>
 </DirectedGraph>

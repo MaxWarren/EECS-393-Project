@@ -131,7 +131,7 @@ namespace ViewModel
             }
 
             CurrUser = curr; // Store the user
-            CurrTeam = curr.Team;
+            CurrTeam = curr.Team_;
             _isLoggedIn = true;
 
             return true;
@@ -150,7 +150,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.Team_id);
             if (projects == null) // An error occured
             {
                 return false;
@@ -177,7 +177,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.ProjectID);
+            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.Project_id);
             if (sprints == null) // An error occured
             {
                 return false;
@@ -204,7 +204,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.SprintID);
+            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.Sprint_id);
             if (stories == null) // An error occured
             {
                 return false;
@@ -231,7 +231,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.StoryID);
+            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.Story_id);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -258,7 +258,7 @@ namespace ViewModel
                 return false;
             }
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.UserID);
+            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.User_id);
             if (tasks == null) // An error occured
             {
                 return false;

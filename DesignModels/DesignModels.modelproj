@@ -17,6 +17,13 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" />
   <ItemGroup>
+    <Content Include="vm_error.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="vm_error.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>vm_error.sequencediagram</DependentUpon>
+    </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="authenticate.sequencediagram">
       <SubType>Content</SubType>
@@ -24,6 +31,9 @@
     <Content Include="authenticate.sequencediagram.layout">
       <SubType>Content</SubType>
       <DependentUpon>authenticate.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="ClassDependencies1.dgml">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="ModelDefinition\DesignModels.uml">
       <SubType>Content</SubType>
