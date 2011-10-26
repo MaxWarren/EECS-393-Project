@@ -83,9 +83,19 @@ namespace ViewModel
         /// </summary>
         /// <param name="bin">The Binary to convert</param>
         /// <returns>The TaskState matching the given binary</returns>
-        public static TaskState ConvertBinaryToRole(Binary bin)
+        public static TaskState ConvertBinaryToState(Binary bin)
         {
             return (TaskState)BitConverter.ToInt32(bin.ToArray(), 0);
+        }
+
+        /// <summary>
+        /// Converts a Binary to a string
+        /// </summary>
+        /// <param name="bin">The Binary to convert</param>
+        /// <returns>A string matching the given binary</returns>
+        public static String ConvertBinaryToString(Binary bin)
+        {
+            return ConvertToString(ConvertBinaryToState(bin));
         }
     }
 
@@ -129,9 +139,19 @@ namespace ViewModel
         /// </summary>
         /// <param name="bin">The Binary to convert</param>
         /// <returns>The TaskType matching the given binary</returns>
-        public static TaskType ConvertBinaryToRole(Binary bin)
+        public static TaskType ConvertBinaryToType(Binary bin)
         {
             return (TaskType)BitConverter.ToInt32(bin.ToArray(), 0);
+        }
+
+        /// <summary>
+        /// Converts a Binary to a string
+        /// </summary>
+        /// <param name="bin">The Binary to convert</param>
+        /// <returns>A string matching the given binary</returns>
+        public static String ConvertBinaryToString(Binary bin)
+        {
+            return ConvertToString(ConvertBinaryToType(bin));
         }
     }
 
@@ -180,6 +200,16 @@ namespace ViewModel
         public static UserRole ConvertBinaryToRole(Binary bin)
         {
             return (UserRole)BitConverter.ToInt32(bin.ToArray(), 0);
+        }
+
+        /// <summary>
+        /// Converts a Binary to a string
+        /// </summary>
+        /// <param name="bin">The Binary to convert</param>
+        /// <returns>A string matching the given binary</returns>
+        public static String ConvertBinaryToString(Binary bin)
+        {
+            return ConvertToString(ConvertBinaryToRole(bin));
         }
     }
 }
