@@ -199,7 +199,6 @@ namespace ViewModel
         /// <returns>The UserRole matching the given binary</returns>
         public static UserRole ConvertBinaryToRole(Binary bin)
         {
-            Console.WriteLine(bin.ToArray());
             return (UserRole)BitConverter.ToInt16(bin.ToArray(), 1);
         }
 
