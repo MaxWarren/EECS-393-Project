@@ -20,8 +20,9 @@ namespace SCRUMProjectManagementSystem
     public partial class MainWindow : Window
     {
         private selection currentSelection;
+        private ViewModel.SPMSViewModel viewModel;
 
-        private enum selection
+        public enum selection
         {
             Home,
             Project,
@@ -37,6 +38,7 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            viewModel = new ViewModel.SPMSViewModel();
             currentSelection = selection.Home;
             update();
         }
@@ -95,18 +97,18 @@ namespace SCRUMProjectManagementSystem
                     column1.Width = new GridLength(2, GridUnitType.Star);
                     column2.Width = new GridLength(0, GridUnitType.Star);
                     //left panel
-                    leftList.ItemsSource = new string[] { "project1", "project2", "project3" };
+                    leftList.ItemsSource = viewModel.ProjectsForUser;
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
                     ListBox lb = new ListBox();
-                    lb.ItemsSource = new string[] { "task1", "task2", "task3" };
+                    lb.ItemsSource = viewModel.TasksForUser;
                     stackPanel1.Children.Add(lb);
                     break;
                 case selection.Project:
                     //left panel
                     button_project.Visibility = Visibility.Visible;
-                    leftList.ItemsSource = new string[] { "spint1", "spint2", "spint3" };
+                    leftList.ItemsSource = viewModel.SprintsForProject;
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
@@ -151,7 +153,7 @@ namespace SCRUMProjectManagementSystem
                     //left panel
                     button_project.Visibility = Visibility.Visible;
                     button_sprint.Visibility = Visibility.Visible;
-                    leftList.ItemsSource = new string[] { "story1", "story2", "story3" };
+                    leftList.ItemsSource = viewModel.StoriesForSprint;
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
@@ -189,7 +191,7 @@ namespace SCRUMProjectManagementSystem
                     button_project.Visibility = Visibility.Visible;
                     button_sprint.Visibility = Visibility.Visible;
                     button_story.Visibility = Visibility.Visible;
-                    leftList.ItemsSource = new string[] { "task1", "task2", "task3" };
+                    leftList.ItemsSource = viewModel.TasksForStory;
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
@@ -298,6 +300,12 @@ namespace SCRUMProjectManagementSystem
                 default:
                     break;
             }
+        }
+
+        private void button_New_Click(object sender, RoutedEventArgs e)
+        {
+            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel);
+            niw.Visibility = Visibility.Visible;
         }
     }
 }

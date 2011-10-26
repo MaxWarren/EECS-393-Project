@@ -28,5 +28,6 @@
             <StackPanel Grid.Column="1" Name="stackPanel1" Background="White"></StackPanel>
             <StackPanel Grid.Column="2" Name="stackPanel2" Background="White" />
         </Grid>
+        <Button Content="{Binding ElementName=leftList, Path=Items.Count}" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />
     </Grid>
 </Window>
