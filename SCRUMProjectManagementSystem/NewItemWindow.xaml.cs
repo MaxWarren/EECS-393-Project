@@ -33,6 +33,58 @@ namespace SCRUMProjectManagementSystem
         {
             if (_type == MainWindow.selection.Project)
             {
+                label1.Content = "Project Name";
+                label2.Content = "Start Date";
+                label3.Content = "Owner";
+                label4.Content = "Team";
+                textBox5.Visibility = Visibility.Hidden;
+                textBox6.Visibility = Visibility.Hidden;
+                textBox7.Visibility = Visibility.Hidden;
+                textBox8.Visibility = Visibility.Hidden;
+                textBox9.Visibility = Visibility.Hidden;
+            }
+            if (_type == MainWindow.selection.Sprint)
+            {
+                label1.Content = "Sprint Name";
+                label2.Content = "Start Date";
+                label3.Content = "End Date";
+                textBox4.Visibility = Visibility.Hidden;
+                textBox5.Visibility = Visibility.Hidden;
+                textBox6.Visibility = Visibility.Hidden;
+                textBox7.Visibility = Visibility.Hidden;
+                textBox8.Visibility = Visibility.Hidden;
+                textBox9.Visibility = Visibility.Hidden;
+            }
+            if (_type == MainWindow.selection.Story)
+            {
+                label1.Content = "Priority Number";
+                label2.Content = "Text";
+                textBox3.Visibility = Visibility.Hidden;
+                textBox4.Visibility = Visibility.Hidden;
+                textBox5.Visibility = Visibility.Hidden;
+                textBox6.Visibility = Visibility.Hidden;
+                textBox7.Visibility = Visibility.Hidden;
+                textBox8.Visibility = Visibility.Hidden;
+                textBox9.Visibility = Visibility.Hidden;
+            }
+            if (_type == MainWindow.selection.Task)
+            {
+                label1.Content = "Text";
+                label2.Content = "Size Complexity";
+                label3.Content = "Business Value";
+                textBox4.Visibility = Visibility.Hidden;
+                textBox5.Visibility = Visibility.Hidden;
+                textBox6.Visibility = Visibility.Hidden;
+                textBox7.Visibility = Visibility.Hidden;
+                textBox8.Visibility = Visibility.Hidden;
+                textBox9.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            if (_type == MainWindow.selection.Project)
+            {
                 _viewModel.ProjectsForUser.Add(new Project());
             }
             if (_type == MainWindow.selection.Sprint)
@@ -47,6 +99,7 @@ namespace SCRUMProjectManagementSystem
             {
                 _viewModel.TasksForStory.Add(new Task());
             }
+            this.Close();
         }
     }
 }

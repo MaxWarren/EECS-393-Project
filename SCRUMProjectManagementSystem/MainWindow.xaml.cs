@@ -98,6 +98,8 @@ namespace SCRUMProjectManagementSystem
                     column2.Width = new GridLength(0, GridUnitType.Star);
                     //left panel
                     leftList.ItemsSource = viewModel.ProjectsForUser;
+                    //Binding binding = new Binding();
+                    //binding.Path = new PropertyPath("
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);

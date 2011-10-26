@@ -3,6 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Window1" Height="300" Width="300" Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Name="stackPanel1">
+            <Label Height="23" Name="label1" />
+            <Label Height="23" Name="label2" />
+            <Label Height="23" Name="label3" />
+            <Label Height="23" Name="label4" />
+            <Label Height="23" Name="label5" />
+            <Label Height="23" Name="label6" />
+            <Label Height="23" Name="label7" />
+            <Label Height="23" Name="label8" />
+            <Label Height="23" Name="label9" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Name="stackPanel2" Margin="0,0,0,29">
+            <TextBox Height="23" Name="textBox1" Width="120" />
+            <TextBox Height="23" Name="textBox2" Width="120" />
+            <TextBox Height="23" Name="textBox3" Width="120" />
+            <TextBox Height="23" Name="textBox4" Width="120" />
+            <TextBox Height="23" Name="textBox5" Width="120" />
+            <TextBox Height="23" Name="textBox6" Width="120" />
+            <TextBox Height="23" Name="textBox7" Width="120" />
+            <TextBox Height="23" Name="textBox8" Width="120" />
+            <TextBox Height="23" Name="textBox9" Width="120" />
+        </StackPanel>
+        <Button Content="Add" Grid.Column="1" Name="button1" Height="23" VerticalAlignment="Bottom" Margin="0,0,1,0" Click="button1_Click" />
     </Grid>
 </Window>
