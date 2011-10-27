@@ -26,7 +26,7 @@ namespace DatabaseLayer
         static DataModel()
         {
             // Set connection string
-            connString = string.Format("user id={0};password={1};server={2};Trusted_Connection=yes;database={3};connection timeout={4}",
+            connString = string.Format("user id={0};password={1};server={2};Trusted_Connection=no;database={3};connection timeout={4}",
                 Properties.Settings.Default.user_id,
                 Properties.Settings.Default.password,
                 Properties.Settings.Default.server,
