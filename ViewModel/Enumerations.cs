@@ -85,7 +85,7 @@ namespace ViewModel
         /// <returns>The TaskState matching the given binary</returns>
         public static TaskState ConvertBinaryToState(Binary bin)
         {
-            return (TaskState)BitConverter.ToInt16(bin.ToArray(), 1);
+            return (TaskState)bin.ToArray()[2];
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace ViewModel
         /// <returns>The TaskType matching the given binary</returns>
         public static TaskType ConvertBinaryToType(Binary bin)
         {
-            return (TaskType)BitConverter.ToInt16(bin.ToArray(), 1);
+            return (TaskType)bin.ToArray()[2];
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace ViewModel
         /// <returns>The UserRole matching the given binary</returns>
         public static UserRole ConvertBinaryToRole(Binary bin)
         {
-            return (UserRole)BitConverter.ToInt16(bin.ToArray(), 1);
+            return (UserRole)bin.ToArray()[2];
         }
 
         /// <summary>
