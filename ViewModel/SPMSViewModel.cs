@@ -405,6 +405,22 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// Sets the current project, sprint, and story from a selected task
+        /// </summary>
+        /// <param name="task">The selected task</param>
+        public void JumpToTask(TaskView task)
+        {
+            if (task == null) // Bad input value
+            {
+                return;
+            }
+
+            CurrStory = new StoryView(DataModel.GetStoryByID(task.StoryID));
+            CurrSprint = new SprintView(DataModel.GetSprintByID(CurrStory.SprintID));
+            CurrProject = new ProjectView(DataModel.GetProjectByID(CurrSprint.ProjectID));
+        }
+
+        /// <summary>
         /// Hashes a user's password using SHA1
         /// </summary>
         /// <param name="password">The user's password</param>

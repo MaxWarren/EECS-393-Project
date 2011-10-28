@@ -167,7 +167,9 @@ namespace ViewModel
         /// <returns>A Binary matching the given UserRole</returns>
         public static Binary ConvertToBinary(UserRole role)
         {
-            return new Binary(BitConverter.GetBytes((int)role));
+            byte[] res = new byte[3];
+            res[2] = (byte)role;
+            return new Binary(res);
         }
 
         /// <summary>
