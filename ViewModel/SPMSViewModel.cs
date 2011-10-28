@@ -22,6 +22,7 @@ namespace ViewModel
         private ObservableCollection<SprintView> _sprintsForProject;
         private ObservableCollection<StoryView> _storiesForSprint;
         private ObservableCollection<TaskView> _tasksForStory;
+        private ObservableCollection<TeamView> _allTeams;
 
         /// <summary>
         /// The currently logged in user
@@ -98,6 +99,12 @@ namespace ViewModel
             private set { _tasksForStory = value; }
         }
 
+        public ObservableCollection<TeamView> AllTeams
+        {
+            get { return _allTeams; }
+            private set { _allTeams = value; }
+        }
+
         /// <summary>
         /// Initializes the view model
         /// </summary>
@@ -111,6 +118,7 @@ namespace ViewModel
             _storiesForSprint = new ObservableCollection<StoryView>();
             _tasksForStory = new ObservableCollection<TaskView>();
             _tasksForUser = new ObservableCollection<TaskView>();
+            _allTeams = new ObservableCollection<TeamView>();
         }
 
         /// <summary>
@@ -122,7 +130,7 @@ namespace ViewModel
         public bool AuthenticateUser(int userId, string password)
         {
             string passHash = hashPassword(password);
-            
+
             User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
@@ -132,12 +140,51 @@ namespace ViewModel
 
             CurrUser = new UserView(curr); // Store the user
             CurrTeam = new TeamView(curr.Team_);
+            
             _isLoggedIn = true;
 
             UpdateProjectsForUser();
             UpdateTasksForUser();
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets a list of users in a team and a list of users not in a team
+        /// </summary>
+        /// <param name="team">The team for which to search</param>
+        /// <returns>A tuple, the first element of which is the list of team members and the second is the list of Users not in the team</returns>
+        public Tuple<ObservableCollection<UserView>,ObservableCollection<UserView>> GetTeamMembers(TeamView team)
+        {
+            var result = new Tuple<ObservableCollection<UserView>,ObservableCollection<UserView>>(
+                new ObservableCollection<UserView>(),
+                new ObservableCollection<UserView>());
+
+            if (team == null) // Bad value
+            {
+                return result;
+            }
+
+            IEnumerable<User> members = DataModel.GetTeamMembers(team.TeamID);
+            IEnumerable<User> nonMembers = DataModel.GetUsersNotInTeam(team.TeamID);
+
+            if (members != null) // An error occurred
+            {
+                foreach (User u in members)
+                {
+                    result.Item1.Add(new UserView(u));
+                }
+            }
+
+            if (nonMembers != null) // An error occurred
+            {
+                foreach (User u in nonMembers)
+                {
+                    result.Item2.Add(new UserView(u));
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -243,6 +290,33 @@ namespace ViewModel
             foreach (Task t in tasks)
             {
                 _tasksForStory.Add(new TaskView(t));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the AllTeams collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateAllTeams()
+        {
+            _allTeams.Clear(); // Clear the existing entries
+
+            if (!_isLoggedIn) // No one is logged in
+            {
+                return false;
+            }
+
+            IEnumerable<Team> teams = DataModel.GetAllTeams();
+            if (teams == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Team t in teams)
+            {
+                _allTeams.Add(new TeamView(t));
             }
 
             return true;

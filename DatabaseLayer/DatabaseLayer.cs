@@ -355,6 +355,27 @@ namespace DatabaseLayer
         }
 
         /// <summary>
+        /// Gets all Users not in a team
+        /// </summary>
+        /// <param name="teamID">The ID of the team for which to search</param>
+        /// <returns>A list of all Users not in the given team</returns>
+        public static IEnumerable<User> GetUsersNotInTeam(int teamID)
+        {
+            try
+            {
+                IEnumerable<User> users = from u in dbConnection.User
+                                          where u.Team_id != teamID
+                                          select u;
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
         /// Authenticates a user
         /// </summary>
         /// <param name="userID">The ID of the user to authenticate</param>
