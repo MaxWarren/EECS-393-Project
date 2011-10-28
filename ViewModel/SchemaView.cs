@@ -27,10 +27,7 @@ namespace ViewModel
         }
     }
 
-    /// <summary>
-    /// Represents a Team
-    /// </summary>
-    public class TeamView
+     public class TeamView
     {
         public int TeamID { get; set; }
         public int TeamLeadID { get; set; }

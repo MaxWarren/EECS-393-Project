@@ -31,53 +31,45 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
             if (_type == MainWindow.selection.Project)
             {
                 label1.Content = "Project Name";
                 label2.Content = "Start Date";
-                label3.Content = "Owner";
-                label4.Content = "Team";
-                textBox5.Visibility = Visibility.Hidden;
-                textBox6.Visibility = Visibility.Hidden;
-                textBox7.Visibility = Visibility.Hidden;
-                textBox8.Visibility = Visibility.Hidden;
-                textBox9.Visibility = Visibility.Hidden;
+                label3.Content = "End Date";
+                label4.Content = "Owner";
+                label5.Content = "Team";
+                stackPanel_project.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Sprint)
             {
                 label1.Content = "Sprint Name";
                 label2.Content = "Start Date";
                 label3.Content = "End Date";
-                textBox4.Visibility = Visibility.Hidden;
-                textBox5.Visibility = Visibility.Hidden;
-                textBox6.Visibility = Visibility.Hidden;
-                textBox7.Visibility = Visibility.Hidden;
-                textBox8.Visibility = Visibility.Hidden;
-                textBox9.Visibility = Visibility.Hidden;
+                stackPanel_sprint.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Story)
             {
                 label1.Content = "Priority Number";
                 label2.Content = "Text";
-                textBox3.Visibility = Visibility.Hidden;
-                textBox4.Visibility = Visibility.Hidden;
-                textBox5.Visibility = Visibility.Hidden;
-                textBox6.Visibility = Visibility.Hidden;
-                textBox7.Visibility = Visibility.Hidden;
-                textBox8.Visibility = Visibility.Hidden;
-                textBox9.Visibility = Visibility.Hidden;
+                stackPanel_story.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Task)
             {
                 label1.Content = "Text";
                 label2.Content = "Size Complexity";
                 label3.Content = "Business Value";
-                textBox4.Visibility = Visibility.Hidden;
-                textBox5.Visibility = Visibility.Hidden;
-                textBox6.Visibility = Visibility.Hidden;
-                textBox7.Visibility = Visibility.Hidden;
-                textBox8.Visibility = Visibility.Hidden;
-                textBox9.Visibility = Visibility.Hidden;
+                label4.Content = "Owner";
+                label5.Content = "Type";
+                label6.Content = "State";
+                stackPanel_task.Visibility = Visibility.Visible;
+            }
+            if (_type == MainWindow.selection.Team)
+            {
+                label1.Content = "Team Name";
+                label2.Content = "Manager";
+                label3.Content = "Team Lead";
+                stackPanel_team.Visibility = Visibility.Visible;
             }
         }
 
