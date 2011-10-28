@@ -188,6 +188,28 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// Changes a user's team
+        /// </summary>
+        /// <param name="user">The user to change</param>
+        /// <param name="team">The team to which to move the user</param>
+        /// <returns>True if the move succeeds, false otherwise</returns>
+        public bool ChangeTeam(UserView user, TeamView team)
+        {
+            if (user == null || team == null)
+            {
+                return false;
+            }
+
+            User u = DataModel.GetUserByID(user.UserId);
+            Team t = DataModel.GetTeamByID(team.TeamID);
+
+            u.Team_ = t;
+            u.Team_id = t.Team_id;
+
+            return DataModel.CommitChanges();
+        }
+
+        /// <summary>
         /// Updates the ProjectsForUser collection
         /// </summary>
         /// <returns>True if the update succeeds, false otherwise</returns>

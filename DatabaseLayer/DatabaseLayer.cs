@@ -334,6 +334,27 @@ namespace DatabaseLayer
         }
 
         /// <summary>
+        /// Gets the user with the given ID
+        /// </summary>
+        /// <param name="userID">The ID of the user for which to search</param>
+        /// <returns>The user with the given ID</returns>
+        public static User GetUserByID(int userID)
+        {
+            try
+            {
+                IEnumerable<User> users = from u in dbConnection.User
+                                          where u.User_id == userID
+                                          select u;
+
+                return users.First(); // There can be only one
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
         /// Gets all members of a team
         /// </summary>
         /// <param name="teamID">The ID of the team for which to search</param>
