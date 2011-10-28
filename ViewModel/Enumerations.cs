@@ -4,6 +4,45 @@ using System.Data.Linq;
 
 namespace ViewModel
 {
+    public static class ComplexityValues
+    {
+        public static IEnumerable<double> businessValue;
+        public static IEnumerable<double> sizeComplexity;
+
+        static ComplexityValues()
+        {
+            businessValue = new List<double>
+            {
+                0,
+                0.5,
+                1,
+                2,
+                3,
+                5,
+                8,
+                13,
+                20,
+                40,
+                100
+            };
+
+            sizeComplexity = new List<double>
+            {
+                0,
+                0.5,
+                1,
+                2,
+                3,
+                5,
+                8,
+                13,
+                20,
+                40,
+                100
+            };
+        }
+    }
+
     /// <summary>
     /// Represents user roles as an enum
     /// </summary>
