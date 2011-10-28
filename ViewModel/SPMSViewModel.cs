@@ -26,32 +26,32 @@ namespace ViewModel
         /// <summary>
         /// The currently logged in user
         /// </summary>
-        public UserView CurrUser { get; private set; }
+        public UserView CurrUser { get; set; }
 
         /// <summary>
         /// The team to which the current user belongs
         /// </summary>
-        public TeamView CurrTeam { get; private set; }
+        public TeamView CurrTeam { get; set; }
 
         /// <summary>
         /// The project most recently selected by the user
         /// </summary>
-        public ProjectView CurrProject { get; private set; }
+        public ProjectView CurrProject { get; set; }
 
         /// <summary>
         /// The sprint most recently selected by the user
         /// </summary>
-        public SprintView CurrSprint { get; private set; }
+        public SprintView CurrSprint { get; set; }
 
         /// <summary>
         /// The user story most recently selected by the user
         /// </summary>
-        public StoryView CurrStory { get; private set; }
+        public StoryView CurrStory { get; set; }
 
         /// <summary>
         /// The task most recently selected by the user
         /// </summary>
-        public TaskView CurrTask { get; private set; }
+        public TaskView CurrTask { get; set; }
 
         /// <summary>
         /// A list of all projects that belong to the team to which the current user belongs
