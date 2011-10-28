@@ -355,6 +355,26 @@ namespace DatabaseLayer
         }
 
         /// <summary>
+        /// Gets all users in the database
+        /// </summary>
+        /// <returns>A list of all users in the database</returns>
+        public static IEnumerable<User> GetAllUsers()
+        {
+            try
+            {
+                IEnumerable<User> users = from u in dbConnection.User
+                                          orderby u.User_id ascending
+                                          select u;
+
+                return users;
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
         /// Gets all members of a team
         /// </summary>
         /// <param name="teamID">The ID of the team for which to search</param>

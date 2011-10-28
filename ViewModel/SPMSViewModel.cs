@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using DatabaseLayer;
@@ -23,6 +24,11 @@ namespace ViewModel
         private ObservableCollection<StoryView> _storiesForSprint;
         private ObservableCollection<TaskView> _tasksForStory;
         private ObservableCollection<TeamView> _allTeams;
+
+        /// <summary>
+        /// Indicates if the current user is a manager
+        /// </summary>
+        public bool IsManager { get; set; }
 
         /// <summary>
         /// The currently logged in user
@@ -139,9 +145,10 @@ namespace ViewModel
             }
 
             CurrUser = new UserView(curr); // Store the user
-            CurrTeam = new TeamView(curr.Team_);
+            CurrTeam = new TeamView(curr.Team_); // Store the team
             
             _isLoggedIn = true;
+            IsManager = !(CurrUser.Role == UserRole.Manager);
 
             UpdateProjectsForUser();
             UpdateTasksForUser();
@@ -369,6 +376,32 @@ namespace ViewModel
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Get all managers in the database
+        /// </summary>
+        /// <returns>A list of all managers in the database</returns>
+        public ObservableCollection<UserView> GetManagers()
+        {
+            IEnumerable<User> users = DataModel.GetAllUsers();
+            ObservableCollection<UserView> result = new ObservableCollection<UserView>();
+
+            if (users == null)
+            {
+                return result;
+            }
+
+            IEnumerable<User> managers = from manager in users
+                                         where UserRoleConverter.ConvertBinaryToRole(manager.Role) == UserRole.Manager
+                                         select manager;
+                        
+            foreach (User manager in managers)
+            {
+                result.Add(new UserView(manager));
+            }
+
+            return result;
         }
 
         /// <summary>
