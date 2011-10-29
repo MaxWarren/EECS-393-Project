@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Utilities;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -76,6 +77,11 @@ namespace SCRUMProjectManagementSystem
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox_story1_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = Utility.IsTextNumeric(e.Text);
         }
     }
 }

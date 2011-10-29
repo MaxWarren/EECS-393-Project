@@ -20,32 +20,32 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_project" Margin="0,0,0,29" Visibility="Hidden">
             <TextBox Height="23" Name="textBox1" Width="120" />
-            <DatePicker Height="25" Name="datePicker1" Width="115" />
-            <DatePicker Height="25" Name="datePicker2" Width="115" />
-            <ComboBox Height="23" Name="comboBox1" Width="120" />
-            <ComboBox Height="23" Name="comboBox2" Width="120" />
+            <DatePicker Height="25" Name="datePicker_project1" Width="115" />
+            <DatePicker Height="25" Name="datePicker_project2" Width="115" />
+            <ComboBox Height="23" Name="comboBox1_project1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_project2" Width="120" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_sprint" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox2" Width="120" />
-            <DatePicker Height="25" Name="datePicker3" Width="115" />
-            <DatePicker Height="25" Name="datePicker4" Width="115" />
+            <TextBox Height="23" Name="textBox_sprint1" Width="120" />
+            <DatePicker Height="25" Name="datePicker_sprint1" Width="115" />
+            <DatePicker Height="25" Name="datePicker_sprint2" Width="115" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_story" Margin="0,0,0,29" Visibility="Hidden">
-            <ComboBox Height="23" Name="comboBox3" Width="120" />
-            <TextBox Height="23" Name="textBox3" Width="120" />
+            <TextBox Height="23" Name="textBox_story1" Width="120" PreviewTextInput="textBox_story1_PreviewTextInput" />
+            <TextBox Height="23" Name="textBox_story2" Width="120" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_task" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox4" Width="120" />
-            <ComboBox Height="23" Name="comboBox4" Width="120" />
-            <ComboBox Height="23" Name="comboBox5" Width="120" />
-            <ComboBox Height="23" Name="comboBox6" Width="120" />
-            <ComboBox Height="23" Name="comboBox7" Width="120" />
-            <ComboBox Height="23" Name="comboBox8" Width="120" />
+            <TextBox Height="23" Name="textBox_task1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_task1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_task2" Width="120" />
+            <ComboBox Height="23" Name="comboBox_task3" Width="120" />
+            <ComboBox Height="23" Name="comboBox_task4" Width="120" />
+            <ComboBox Height="23" Name="comboBox_task5" Width="120" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_team" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox5" Width="120" />
-            <ComboBox Height="23" Name="comboBox9" Width="120" />
-            <ComboBox Height="23" Name="comboBox10" Width="120" />
+            <TextBox Height="23" Name="textBox_team1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_team1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_team2" Width="120" />
         </StackPanel>
         <Button Content="Add" Grid.Column="1" Name="button1" Height="23" VerticalAlignment="Bottom" Margin="0,0,1,0" Click="button1_Click" />
     </Grid>
