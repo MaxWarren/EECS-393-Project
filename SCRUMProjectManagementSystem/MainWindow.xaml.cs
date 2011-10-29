@@ -31,6 +31,7 @@ namespace SCRUMProjectManagementSystem
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             currentSelection = selection.Home;
+            viewModel.UpdateAllTeams();
             update();
         }
 
@@ -111,13 +112,12 @@ namespace SCRUMProjectManagementSystem
                     viewModel.UpdateProjectsForUser();
                     leftList.ItemsSource = viewModel.ProjectsForUser;
 
-                    //Binding binding = new Binding();
-                    //binding.Path = new PropertyPath("
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
                     ListBox lb = new ListBox();
                     lb.ItemsSource = viewModel.TasksForUser;
+                    lb.SelectionChanged += new SelectionChangedEventHandler(lb_SelectionChanged);
                     stackPanel1.Children.Add(lb);
                     break;
                 case selection.Project:
@@ -132,35 +132,35 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Project Name:";
                     TextBox tb = new TextBox();
                     tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "project1";
+                    tb.Text = viewModel.CurrProject.Name;
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(tb);
                     label = new Label();
                     label.Content = "Team:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "HON TEAM!!!!";
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    label = new Label();
+                    label.Content = viewModel.CurrTeam.Name;
+                    stackPanel2.Children.Add(label);
                     label = new Label();
                     label.Content = "Start Date:";
                     stackPanel1.Children.Add(label);
-                    label = new Label();
-                    label.Content = "10/13/1989";
-                    stackPanel2.Children.Add(label);
+                    DatePicker dp = new DatePicker();
+                    dp.SelectedDate = viewModel.CurrProject.StartDate;
+                    stackPanel2.Children.Add(dp);
                     label = new Label();
                     label.Content = "End Date:";
                     stackPanel1.Children.Add(label);
-                    label = new Label();
-                    label.Content = "12/12/2012";
-                    stackPanel2.Children.Add(label);
+                    dp = new DatePicker();
+                    dp.SelectedDate = viewModel.CurrProject.EndDate;
+                    stackPanel2.Children.Add(dp);
                     label = new Label();
                     label.Content = "Owner:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "Andy";
+                    ComboBox cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    stackPanel2.Children.Add(cb);
                     Button save = new Button();
                     save.Content = "Save";
                     stackPanel2.Children.Add(save);
@@ -178,27 +178,27 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Project Name:";
                     stackPanel1.Children.Add(label);
                     label = new Label();
-                    label.Content = "project1";
+                    label.Content = viewModel.CurrProject.Name;
                     stackPanel2.Children.Add(label);
                     label = new Label();
                     label.Content = "Sprint Name:";
                     tb = new TextBox();
                     tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "sprint1";
+                    tb.Text = viewModel.CurrSprint.Name;
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(tb);
                     label = new Label();
                     label.Content = "Start Date:";
                     stackPanel1.Children.Add(label);
-                    label = new Label();
-                    label.Content = "10/13/1989";
-                    stackPanel2.Children.Add(label);
+                    dp = new DatePicker();
+                    dp.SelectedDate = viewModel.CurrSprint.StartDate;
+                    stackPanel2.Children.Add(dp);
                     label = new Label();
                     label.Content = "End Date:";
                     stackPanel1.Children.Add(label);
-                    label = new Label();
-                    label.Content = "12/12/2012";
-                    stackPanel2.Children.Add(label);
+                    dp = new DatePicker();
+                    dp.SelectedDate = viewModel.CurrSprint.EndDate;
+                    stackPanel2.Children.Add(dp);
                     save = new Button();
                     save.Content = "Save";
                     stackPanel2.Children.Add(save);
@@ -217,27 +217,22 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Project Name:";
                     stackPanel1.Children.Add(label);
                     label = new Label();
-                    label.Content = "project1";
+                    label.Content = viewModel.CurrProject.Name;
                     stackPanel2.Children.Add(label);
-                    label = new Label();
-                    label.Content = "Story Name:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "story1";
-                    stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
                     label = new Label();
                     label.Content = "Priority:";
                     stackPanel1.Children.Add(label);
-                    label = new Label();
-                    label.Content = "4";
-                    stackPanel2.Children.Add(label);
+                    cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
+                    stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Text:";
                     tb = new TextBox();
                     tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.TextWrapping = TextWrapping.Wrap;                    
-                    tb.Text = "So I called up all the head Rabbis in Jerusalem and was like \"yo, I got this pizza\" and they were all like \"yea\"";
+                    tb.TextWrapping = TextWrapping.Wrap;
+                    tb.Text = viewModel.CurrStory.Text;
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(tb);
                     save = new Button();
@@ -259,57 +254,53 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Project Name:";
                     stackPanel1.Children.Add(label);
                     label = new Label();
-                    label.Content = "project1";
+                    label.Content = viewModel.CurrProject.Name;
                     stackPanel2.Children.Add(label);
                     label = new Label();
-                    label.Content = "Task Name:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "task1";
-                    stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
-                    label = new Label();
                     label.Content = "Owner:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "Andy";
+                    cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Complexity:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "4";
+                    cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Business Value:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "$4.00";
+                    cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "State:";
-                    ComboBox cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "Not started", "In Development", "Almost ready, I swear", "Complete" };
+                    cb = new ComboBox();
+                    cb.ItemsSource = new string[] { "doesn't work" };
+                    cb.SelectedIndex = 0;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     cb.SelectedIndex = 2;
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Completion Date:";
-                    tb = new TextBox();
-                    tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = "10/16/2011";
+                    dp = new DatePicker();
+                    dp.SelectedDate = viewModel.CurrTask.CompletionDate;
                     stackPanel1.Children.Add(label);
-                    stackPanel2.Children.Add(tb);
+                    stackPanel2.Children.Add(dp);
                     label = new Label();
                     label.Content = "Text:";
                     tb = new TextBox();
                     tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.TextWrapping = TextWrapping.Wrap;                    
-                    tb.Text = "Call up all the head Rabbis in Jerusalem and be like \"yo, I got this pizza\" and they'll all be like \"yea\"";
+                    tb.TextWrapping = TextWrapping.Wrap;
+                    tb.Text = viewModel.CurrTask.Text;
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(tb);
                     save = new Button();
@@ -319,6 +310,18 @@ namespace SCRUMProjectManagementSystem
                 default:
                     break;
             }
+        }
+
+        void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {/*
+            ListBox lb = (ListBox)sender;
+            if (lb.SelectedIndex >= 0)
+            {
+                viewModel.CurrTask = viewModel.TasksForUser[lb.SelectedIndex];
+                currentSelection = selection.Task;
+                update();
+            }
+          */
         }
 
         private void button_New_Click(object sender, RoutedEventArgs e)
