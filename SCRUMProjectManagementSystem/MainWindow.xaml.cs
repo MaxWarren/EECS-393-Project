@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using ViewModel;
+using Utilities;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -30,6 +32,7 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.DataContext = viewModel;
             currentSelection = selection.Home;
             viewModel.UpdateAllTeams();
             update();
@@ -111,11 +114,11 @@ namespace SCRUMProjectManagementSystem
                     //left panel
                     viewModel.UpdateProjectsForUser();
                     leftList.ItemsSource = viewModel.ProjectsForUser;
-
                     //right panel
                     stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
                     stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
                     ListBox lb = new ListBox();
+                    lb.AlternationCount = 2;
                     lb.ItemsSource = viewModel.TasksForUser;
                     lb.SelectionChanged += new SelectionChangedEventHandler(lb_SelectionChanged);
                     stackPanel1.Children.Add(lb);
@@ -222,11 +225,11 @@ namespace SCRUMProjectManagementSystem
                     label = new Label();
                     label.Content = "Priority:";
                     stackPanel1.Children.Add(label);
-                    cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
-                    cb.Margin = new Thickness(0, 0, 0, 4);
-                    stackPanel2.Children.Add(cb);
+                    tb = new TextBox();
+                    tb.Margin = new Thickness(0, 0, 0, 4);
+                    tb.Text = viewModel.CurrProject.Name;
+                    tb.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(tb_PreviewTextInput);
+                    stackPanel2.Children.Add(tb);
                     label = new Label();
                     label.Content = "Text:";
                     tb = new TextBox();
@@ -312,16 +315,22 @@ namespace SCRUMProjectManagementSystem
             }
         }
 
+        void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = Utility.IsTextNumeric(e.Text);
+        }
+
         void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {/*
+        {
             ListBox lb = (ListBox)sender;
             if (lb.SelectedIndex >= 0)
             {
                 viewModel.CurrTask = viewModel.TasksForUser[lb.SelectedIndex];
+                viewModel.JumpToTask(viewModel.CurrTask);
                 currentSelection = selection.Task;
                 update();
             }
-          */
+          
         }
 
         private void button_New_Click(object sender, RoutedEventArgs e)
