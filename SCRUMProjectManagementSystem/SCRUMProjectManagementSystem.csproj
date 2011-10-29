@@ -119,10 +119,6 @@
     <Resource Include="Images\Untitled.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{765EDF23-AE13-4CF9-BAA9-3B7DB58E2E14}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
       <Project>{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}</Project>
       <Name>ViewModel</Name>

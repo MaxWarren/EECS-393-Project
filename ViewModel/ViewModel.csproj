@@ -42,15 +42,12 @@
     <Compile Include="SchemaView.cs" />
     <Compile Include="SPMSViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseLayer\DatabaseLayer.csproj">
       <Project>{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}</Project>
       <Name>DatabaseLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{765EDF23-AE13-4CF9-BAA9-3B7DB58E2E14}</Project>
-      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
