@@ -129,7 +129,6 @@ namespace DatabaseLayer
             {
                 IEnumerable<Sprint> sprints = from s in dbConnection.Sprint
                                               where s.Project_id == projectID
-                                              where !s.Sprint_name.Equals("Backlog") // Do not include the backlog
                                               orderby s.Start_date descending
                                               select s;
 

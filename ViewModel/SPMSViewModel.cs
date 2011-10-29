@@ -429,6 +429,11 @@ namespace ViewModel
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddTeam(string name, UserView manager, UserView lead)
         {
+            if (!_isLoggedIn || manager == null || lead == null || name == null) // Invalid argument
+            {
+                return false;
+            }
+
             User managerUser = DataModel.GetUserByID(manager.UserId);
             User leadUser = DataModel.GetUserByID(lead.UserId);
 
@@ -455,8 +460,13 @@ namespace ViewModel
         /// <param name="owner">The User who owns the new project</param>
         /// <param name="team">The team responsible for the new project</param>
         /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddProject(String name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        public bool AddProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
+            if (!_isLoggedIn || name == null || startDate == null || owner == null || team == null)
+            {
+                return false;
+            }
+
             User ownerUser = DataModel.GetUserByID(owner.UserId);
             Team projectTeam = DataModel.GetTeamByID(team.TeamID);
 
@@ -486,6 +496,62 @@ namespace ViewModel
             };
 
             return result && DataModel.CommitChanges();
+        }
+
+        /// <summary>
+        /// Creates a new sprint
+        /// </summary>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool AddSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
+        {
+            if (!_isLoggedIn || startDate == null || name == null)
+            {
+                return false;
+            }
+
+            Project curr = DataModel.GetProjectByID(CurrProject.ProjectID);
+
+            Sprint newSprint = new Sprint()
+            {
+                Sprint_name = name,
+                Start_date = startDate,
+                End_date = endDate,
+                Project_id = curr.Project_id,
+                Project = curr,
+                Story = new System.Data.Linq.EntitySet<Story>()
+            };
+
+            return DataModel.CommitChanges();
+        }
+
+        /// <summary>
+        /// Creates a new user story
+        /// </summary>
+        /// <param name="priority">The priority number for this story</param>
+        /// <param name="text">The text of this story</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool AddStory(int priority, string text)
+        {
+            if (!_isLoggedIn || text == null)
+            {
+                return false;
+            }
+
+            Sprint curr = DataModel.GetSprintByID(CurrSprint.SprintID);
+
+            Story newStory = new Story()
+            {
+                Priority_num = priority,
+                Sprint_id = curr.Sprint_id,
+                Sprint = curr,
+                Text = text,
+                Task = new System.Data.Linq.EntitySet<Task>()
+            };
+
+            return DataModel.CommitChanges();
         }
 
         /// <summary>
