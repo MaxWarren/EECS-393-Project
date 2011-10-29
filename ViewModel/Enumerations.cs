@@ -6,15 +6,14 @@ namespace ViewModel
 {
     public static class ComplexityValues
     {
-        public static IEnumerable<double> businessValue;
-        public static IEnumerable<double> sizeComplexity;
+        public static IEnumerable<int> businessValue;
+        public static IEnumerable<int> sizeComplexity;
 
         static ComplexityValues()
         {
-            businessValue = new List<double>
+            businessValue = new List<int>
             {
                 0,
-                0.5,
                 1,
                 2,
                 3,
@@ -26,10 +25,9 @@ namespace ViewModel
                 100
             };
 
-            sizeComplexity = new List<double>
+            sizeComplexity = new List<int>
             {
                 0,
-                0.5,
                 1,
                 2,
                 3,

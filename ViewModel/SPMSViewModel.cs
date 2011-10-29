@@ -105,6 +105,9 @@ namespace ViewModel
             private set { _tasksForStory = value; }
         }
 
+        /// <summary>
+        /// A list of all teams in the database
+        /// </summary>
         public ObservableCollection<TeamView> AllTeams
         {
             get { return _allTeams; }
@@ -163,14 +166,14 @@ namespace ViewModel
         /// <returns>A tuple, the first element of which is the list of team members and the second is the list of Users not in the team</returns>
         public Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>> GetTeamMembers(TeamView team)
         {
+            if (team == null) // Bad value
+            {
+                throw new ArgumentNullException("Arguments to GetTeamMembers must not be null");
+            }
+
             var result = new Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>>(
                 new ObservableCollection<UserView>(),
                 new ObservableCollection<UserView>());
-
-            if (team == null) // Bad value
-            {
-                return result;
-            }
 
             IEnumerable<User> members = DataModel.GetTeamMembers(team.TeamID);
             IEnumerable<User> nonMembers = DataModel.GetUsersNotInTeam(team.TeamID);
@@ -204,7 +207,7 @@ namespace ViewModel
         {
             if (user == null || team == null)
             {
-                return false;
+                throw new ArgumentNullException("Arguments to ChangeTeam must not be null");
             }
 
             User u = DataModel.GetUserByID(user.UserId);
@@ -222,12 +225,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateProjectsForUser()
         {
-            _projectsForUser.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn) // No one is logged in
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
             }
+
+            _projectsForUser.Clear(); // Clear the existing entries
 
             IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.TeamID);
             if (projects == null) // An error occured
@@ -249,12 +252,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateSprintsForProject()
         {
-            _sprintsForProject.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn || CurrProject == null) // No one is logged in or a project has not been selected
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in and CurrProject must be set");
             }
+
+            _sprintsForProject.Clear(); // Clear the existing entries
 
             IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.ProjectID);
             if (sprints == null) // An error occured
@@ -276,12 +279,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateStoriesForSprint()
         {
-            _storiesForSprint.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn || CurrSprint == null) // No one is logged in or a sprint has not been selected
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in and CurrSprint must be set");
             }
+
+            _storiesForSprint.Clear(); // Clear the existing entries
 
             IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.SprintID);
             if (stories == null) // An error occured
@@ -303,12 +306,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateTasksForStory()
         {
-            _tasksForStory.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn || CurrStory == null) // No one is logged in or a user story has not been selected
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in and CurrStory must be set");
             }
+
+            _tasksForStory.Clear(); // Clear the existing entries
 
             IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.StoryID);
             if (tasks == null) // An error occured
@@ -330,12 +333,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateAllTeams()
         {
-            _allTeams.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn) // No one is logged in
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
             }
+
+            _allTeams.Clear(); // Clear the existing entries
 
             IEnumerable<Team> teams = DataModel.GetAllTeams();
             if (teams == null) // An error occured
@@ -357,12 +360,12 @@ namespace ViewModel
         /// <returns>True if the update succeeds, false otherwise</returns>
         public bool UpdateTasksForUser()
         {
-            _tasksForUser.Clear(); // Clear the existing entries
-
             if (!_isLoggedIn) // No one is logged in
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
             }
+
+            _tasksForUser.Clear(); // Clear the existing entries
 
             IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.UserId);
             if (tasks == null) // An error occured
@@ -412,12 +415,13 @@ namespace ViewModel
         {
             if (task == null) // Bad input value
             {
-                return;
+                throw new ArgumentNullException("Arguments to JumpToTask must not be null");
             }
 
             CurrStory = new StoryView(DataModel.GetStoryByID(task.StoryID));
             CurrSprint = new SprintView(DataModel.GetSprintByID(CurrStory.SprintID));
             CurrProject = new ProjectView(DataModel.GetProjectByID(CurrSprint.ProjectID));
+            CurrTask = task;
         }
 
         /// <summary>
@@ -429,9 +433,13 @@ namespace ViewModel
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddTeam(string name, UserView manager, UserView lead)
         {
-            if (!_isLoggedIn || manager == null || lead == null || name == null) // Invalid argument
+            if (!_isLoggedIn)
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (manager == null || lead == null || name == null)
+            {
+                throw new ArgumentNullException("Arguments to AddTeam must not be null");
             }
 
             User managerUser = DataModel.GetUserByID(manager.UserId);
@@ -462,9 +470,13 @@ namespace ViewModel
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
-            if (!_isLoggedIn || name == null || startDate == null || owner == null || team == null)
+            if (!_isLoggedIn)
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (name == null || startDate == null || owner == null || team == null)
+            {
+                throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
             User ownerUser = DataModel.GetUserByID(owner.UserId);
@@ -511,9 +523,13 @@ namespace ViewModel
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
         {
-            if (!_isLoggedIn || startDate == null || name == null)
+            if (!_isLoggedIn)
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (startDate == null || name == null)
+            {
+                throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
             Project curr = DataModel.GetProjectByID(CurrProject.ProjectID);
@@ -539,9 +555,17 @@ namespace ViewModel
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddStory(int priority, string text)
         {
-            if (!_isLoggedIn || text == null)
+            if (!_isLoggedIn)
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (priority < 0)
+            {
+                throw new ArgumentOutOfRangeException("Story priority must be nonnegative");
+            }
+            else if (text == null)
+            {
+                throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
 
             Sprint curr = DataModel.GetSprintByID(CurrSprint.SprintID);
@@ -558,11 +582,29 @@ namespace ViewModel
             return DataModel.CommitChanges();
         }
 
+        /// <summary>
+        /// Creates a new task
+        /// </summary>
+        /// <param name="text">The text of this task</param>
+        /// <param name="size">The size complexity of this task</param>
+        /// <param name="value">The business value of this task</param>
+        /// <param name="owner"></param>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         public bool AddTask(String text, int size, int value, UserView owner, TaskType type, TaskState state)
         {
-            if (!_isLoggedIn || text == null)
+            if (!_isLoggedIn)
             {
-                return false;
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
+            {
+                throw new ArgumentOutOfRangeException("Invalid complexity value");
+            }
+            else if (text == null)
+            {
+                throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
             Story curr = DataModel.GetStoryByID(CurrStory.StoryID);
