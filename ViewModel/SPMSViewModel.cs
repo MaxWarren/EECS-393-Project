@@ -546,8 +546,10 @@ namespace ViewModel
                 Story = new System.Data.Linq.EntitySet<Story>()
             };
 
+            bool result = DataModel.CommitChanges();
             UpdateSprintsForProject();
-            return DataModel.CommitChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -582,8 +584,10 @@ namespace ViewModel
                 Task = new System.Data.Linq.EntitySet<Task>()
             };
 
+            bool result = DataModel.CommitChanges();
             UpdateStoriesForSprint();
-            return DataModel.CommitChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -635,8 +639,10 @@ namespace ViewModel
                 User = ownerUser
             };
 
+            bool result = DataModel.CommitChanges();
             UpdateTasksForStory();
-            return DataModel.CommitChanges();
+
+            return result; 
         }
 
         /// <summary>
