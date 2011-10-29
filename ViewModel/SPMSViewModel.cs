@@ -421,6 +421,32 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// Creates a new team
+        /// </summary>
+        /// <param name="name">The name of the new team</param>
+        /// <param name="manager">The manager of the new team</param>
+        /// <param name="lead">The team lead for the new team</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool AddTeam(string name, UserView manager, UserView lead)
+        {
+            User managerUser = DataModel.GetUserByID(manager.UserId);
+            User leadUser = DataModel.GetUserByID(lead.UserId);
+
+            Team newTeam = new Team()
+            {
+                Manager = manager.UserId,
+                ManagerUser = managerUser,
+                Project = new System.Data.Linq.EntitySet<Project>(),
+                Team_ = new System.Data.Linq.EntitySet<User>() {leadUser},
+                Team_lead = lead.UserId,
+                Team_name = name,
+                User = leadUser
+            };
+
+            return DataModel.CommitChanges();
+        }
+
+        /// <summary>
         /// Hashes a user's password using SHA1
         /// </summary>
         /// <param name="password">The user's password</param>
