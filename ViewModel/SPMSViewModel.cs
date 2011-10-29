@@ -146,7 +146,7 @@ namespace ViewModel
 
             CurrUser = new UserView(curr); // Store the user
             CurrTeam = new TeamView(curr.Team_); // Store the team
-            
+
             _isLoggedIn = true;
             IsManager = !(CurrUser.Role == UserRole.Manager);
 
@@ -161,9 +161,9 @@ namespace ViewModel
         /// </summary>
         /// <param name="team">The team for which to search</param>
         /// <returns>A tuple, the first element of which is the list of team members and the second is the list of Users not in the team</returns>
-        public Tuple<ObservableCollection<UserView>,ObservableCollection<UserView>> GetTeamMembers(TeamView team)
+        public Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>> GetTeamMembers(TeamView team)
         {
-            var result = new Tuple<ObservableCollection<UserView>,ObservableCollection<UserView>>(
+            var result = new Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>>(
                 new ObservableCollection<UserView>(),
                 new ObservableCollection<UserView>());
 
@@ -395,7 +395,7 @@ namespace ViewModel
             IEnumerable<User> managers = from manager in users
                                          where UserRoleConverter.ConvertBinaryToRole(manager.Role) == UserRole.Manager
                                          select manager;
-                        
+
             foreach (User manager in managers)
             {
                 result.Add(new UserView(manager));
@@ -442,7 +442,7 @@ namespace ViewModel
                 Manager = manager.UserId,
                 ManagerUser = managerUser,
                 Project = new System.Data.Linq.EntitySet<Project>(),
-                Team_ = new System.Data.Linq.EntitySet<User>() {leadUser},
+                Team_ = new System.Data.Linq.EntitySet<User>() { leadUser },
                 Team_lead = lead.UserId,
                 Team_name = name,
                 User = leadUser
@@ -484,18 +484,22 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
 
-            // Add the backlog to the project
-            Sprint backog = new Sprint()
+            if (result)
             {
-                Start_date = startDate,
-                End_date = endDate,
-                Project = newProject,
-                Project_id = newProject.Project_id,
-                Sprint_name = "Backlog",
-                Story = new System.Data.Linq.EntitySet<Story>()
-            };
+                // Add the backlog to the project
+                Sprint backog = new Sprint()
+                {
+                    Start_date = startDate,
+                    End_date = endDate,
+                    Project = newProject,
+                    Project_id = newProject.Project_id,
+                    Sprint_name = "Backlog",
+                    Story = new System.Data.Linq.EntitySet<Story>()
+                };
+                result &= DataModel.CommitChanges();
+            }
 
-            return result && DataModel.CommitChanges();
+            return result;
         }
 
         /// <summary>
@@ -549,6 +553,40 @@ namespace ViewModel
                 Sprint = curr,
                 Text = text,
                 Task = new System.Data.Linq.EntitySet<Task>()
+            };
+
+            return DataModel.CommitChanges();
+        }
+
+        public bool AddTask(String text, int size, int value, UserView owner, TaskType type, TaskState state)
+        {
+            if (!_isLoggedIn || text == null)
+            {
+                return false;
+            }
+
+            Story curr = DataModel.GetStoryByID(CurrStory.StoryID);
+            User ownerUser = null;
+            int? ownerId = null;
+
+            if (owner != null)
+            {
+                ownerUser = DataModel.GetUserByID(owner.UserId);
+                ownerId = owner.UserId;
+            }
+
+            Task newTask = new Task()
+            {
+                Text = text,
+                Business_value = value,
+                Size_complexity = size,
+                Completion_date = null,
+                Owner = ownerId,
+                State = TaskStateConverter.ConvertToBinary(state),
+                Type = TaskTypeConverter.ConvertToBinary(type),
+                Story = curr,
+                Story_id = curr.Story_id,
+                User = ownerUser
             };
 
             return DataModel.CommitChanges();

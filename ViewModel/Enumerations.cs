@@ -92,7 +92,9 @@ namespace ViewModel
         /// <returns>A Binary matching the given TaskState</returns>
         public static Binary ConvertToBinary(TaskState state)
         {
-            return new Binary(BitConverter.GetBytes((int)state));
+            byte[] res = new byte[3];
+            res[2] = (byte)state;
+            return new Binary(res);
         }
 
         /// <summary>
@@ -150,7 +152,9 @@ namespace ViewModel
         /// <returns>A Binary matching the given TaskType</returns>
         public static Binary ConvertToBinary(TaskType type)
         {
-            return new Binary(BitConverter.GetBytes((int)type));
+            byte[] res = new byte[3];
+            res[2] = (byte)type;
+            return new Binary(res);
         }
 
         /// <summary>

@@ -854,6 +854,8 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private EntityRef<Story> _Story;
 	
+	private EntityRef<User> _User;
+	
 	#region Extensibility Method Definitions
 	partial void OnLoaded();
 	partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -881,6 +883,7 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 	public Task()
 	{
 		this._Story = default(EntityRef<Story>);
+		this._User = default(EntityRef<User>);
 		OnCreated();
 	}
 	
@@ -1094,6 +1097,40 @@ public partial class Task : INotifyPropertyChanging, INotifyPropertyChanged
 					this._Story_id = default(int);
 				}
 				this.SendPropertyChanged("Story");
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Task_User", Storage="_User", ThisKey="Owner", OtherKey="User_id", IsForeignKey=true)]
+	public User User
+	{
+		get
+		{
+			return this._User.Entity;
+		}
+		set
+		{
+			User previousValue = this._User.Entity;
+			if (((previousValue != value) 
+						|| (this._User.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._User.Entity = null;
+					previousValue.Task.Remove(this);
+				}
+				this._User.Entity = value;
+				if ((value != null))
+				{
+					value.Task.Add(this);
+					this._Owner = value.User_id;
+				}
+				else
+				{
+					this._Owner = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("User");
 			}
 		}
 	}
@@ -1401,6 +1438,8 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private EntitySet<Project> _Project;
 	
+	private EntitySet<Task> _Task;
+	
 	private EntitySet<Team> _Team;
 	
 	private EntitySet<Team> _User_;
@@ -1426,6 +1465,7 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	public User()
 	{
 		this._Project = new EntitySet<Project>(new Action<Project>(this.attach_Project), new Action<Project>(this.detach_Project));
+		this._Task = new EntitySet<Task>(new Action<Task>(this.attach_Task), new Action<Task>(this.detach_Task));
 		this._Team = new EntitySet<Team>(new Action<Team>(this.attach_Team), new Action<Team>(this.detach_Team));
 		this._User_ = new EntitySet<Team>(new Action<Team>(this.attach_User_), new Action<Team>(this.detach_User_));
 		this._Team_ = default(EntityRef<Team>);
@@ -1545,6 +1585,19 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Task_User", Storage="_Task", ThisKey="User_id", OtherKey="Owner", DeleteRule="NO ACTION")]
+	public EntitySet<Task> Task
+	{
+		get
+		{
+			return this._Task;
+		}
+		set
+		{
+			this._Task.Assign(value);
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Team_Lead", Storage="_Team", ThisKey="User_id", OtherKey="Team_lead", DeleteRule="NO ACTION")]
 	public EntitySet<Team> Team
 	{
@@ -1632,6 +1685,18 @@ public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	}
 	
 	private void detach_Project(Project entity)
+	{
+		this.SendPropertyChanging();
+		entity.User = null;
+	}
+	
+	private void attach_Task(Task entity)
+	{
+		this.SendPropertyChanging();
+		entity.User = this;
+	}
+	
+	private void detach_Task(Task entity)
 	{
 		this.SendPropertyChanging();
 		entity.User = null;
