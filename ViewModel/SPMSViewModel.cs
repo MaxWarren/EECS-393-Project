@@ -447,6 +447,48 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// Creates a new project
+        /// </summary>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project</param>
+        /// <param name="owner">The User who owns the new project</param>
+        /// <param name="team">The team responsible for the new project</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool AddProject(String name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        {
+            User ownerUser = DataModel.GetUserByID(owner.UserId);
+            Team projectTeam = DataModel.GetTeamByID(team.TeamID);
+
+            Project newProject = new Project()
+            {
+                Project_name = name,
+                Start_date = startDate,
+                End_date = endDate,
+                Owner = owner.UserId,
+                User = ownerUser,
+                Team_id = team.TeamID,
+                Team = projectTeam,
+                Sprint = new System.Data.Linq.EntitySet<Sprint>()
+            };
+
+            bool result = DataModel.CommitChanges();
+
+            // Add the backlog to the project
+            Sprint backog = new Sprint()
+            {
+                Start_date = startDate,
+                End_date = endDate,
+                Project = newProject,
+                Project_id = newProject.Project_id,
+                Sprint_name = "Backlog",
+                Story = new System.Data.Linq.EntitySet<Story>()
+            };
+
+            return result && DataModel.CommitChanges();
+        }
+
+        /// <summary>
         /// Hashes a user's password using SHA1
         /// </summary>
         /// <param name="password">The user's password</param>
