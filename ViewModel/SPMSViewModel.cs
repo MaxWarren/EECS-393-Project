@@ -456,6 +456,7 @@ namespace ViewModel
                 User = leadUser
             };
 
+            UpdateAllTeams();
             return DataModel.CommitChanges();
         }
 
@@ -511,6 +512,7 @@ namespace ViewModel
                 result &= DataModel.CommitChanges();
             }
 
+            UpdateProjectsForUser();
             return result;
         }
 
@@ -544,6 +546,7 @@ namespace ViewModel
                 Story = new System.Data.Linq.EntitySet<Story>()
             };
 
+            UpdateSprintsForProject();
             return DataModel.CommitChanges();
         }
 
@@ -579,6 +582,7 @@ namespace ViewModel
                 Task = new System.Data.Linq.EntitySet<Task>()
             };
 
+            UpdateStoriesForSprint();
             return DataModel.CommitChanges();
         }
 
@@ -631,6 +635,7 @@ namespace ViewModel
                 User = ownerUser
             };
 
+            UpdateTasksForStory();
             return DataModel.CommitChanges();
         }
 
