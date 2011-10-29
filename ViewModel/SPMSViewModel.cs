@@ -596,10 +596,10 @@ namespace ViewModel
         /// <param name="text">The text of this task</param>
         /// <param name="size">The size complexity of this task</param>
         /// <param name="value">The business value of this task</param>
-        /// <param name="owner"></param>
-        /// <param name="type"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
+        /// <param name="owner">The user who owns this task</param>
+        /// <param name="type">The type of this task</param>
+        /// <param name="state">The state of this task</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
         public bool AddTask(String text, int size, int value, UserView owner, TaskType type, TaskState state)
         {
             if (!_isLoggedIn)
@@ -642,7 +642,156 @@ namespace ViewModel
             bool result = DataModel.CommitChanges();
             UpdateTasksForStory();
 
-            return result; 
+            return result;
+        }
+
+        /// <summary>
+        /// Updates the current project
+        /// </summary>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project</param>
+        /// <param name="owner">The User who owns the new project</param>
+        /// <param name="team">The team responsible for the new project</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool UpdateCurrProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        {
+            if (!_isLoggedIn || CurrProject == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (name == null || startDate == null || owner == null || team == null)
+            {
+                throw new ArgumentNullException("Arguments to AddProject must not be null");
+            }
+
+            User ownerUser = DataModel.GetUserByID(owner.UserId);
+            Team projectTeam = DataModel.GetTeamByID(team.TeamID);
+            Project project = DataModel.GetProjectByID(CurrProject.ProjectID);
+
+            project.Project_name = name;
+            project.Start_date = startDate;
+            project.End_date = endDate;
+            project.Owner = owner.UserId;
+            project.User = ownerUser;
+            project.Team_id = team.TeamID;
+            project.Team = projectTeam;
+
+            bool result = DataModel.CommitChanges();
+            UpdateProjectsForUser();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates the current sprint
+        /// </summary>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool UpdateCurrSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
+        {
+            if (!_isLoggedIn || CurrSprint == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (startDate == null || name == null)
+            {
+                throw new ArgumentNullException("Arguments to AddSprint must not be null");
+            }
+
+            Sprint sprint = DataModel.GetSprintByID(CurrSprint.SprintID);
+            sprint.Sprint_name = name;
+            sprint.Start_date = startDate;
+            sprint.End_date = endDate;
+
+            bool result = DataModel.CommitChanges();
+            UpdateSprintsForProject();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates the current user story
+        /// </summary>
+        /// <param name="priority">The priority number for this story</param>
+        /// <param name="text">The text of this story</param>
+        /// <returns>True if the add succeeds, false otherwise</returns>
+        public bool UpdateCurrStory(int priority, string text)
+        {
+            if (!_isLoggedIn || CurrStory == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (priority < 0)
+            {
+                throw new ArgumentOutOfRangeException("Story priority must be nonnegative");
+            }
+            else if (text == null)
+            {
+                throw new ArgumentNullException("Arguments to AddStory must not be null");
+            }
+
+            Story story = DataModel.GetStoryByID(CurrStory.StoryID);
+            story.Priority_num = priority;
+            story.Text = text;
+
+            bool result = DataModel.CommitChanges();
+            UpdateStoriesForSprint();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates the current task
+        /// </summary>
+        /// <param name="text">The text of this task</param>
+        /// <param name="size">The size complexity of this task</param>
+        /// <param name="value">The business value of this task</param>
+        /// <param name="owner">The user who owns this task</param>
+        /// <param name="type">The type of this task</param>
+        /// <param name="state">The state of this task</param>
+        /// <param name="completion">The date this task was completed</param>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        public bool UpdateCurrTask(String text, int size, int value, UserView owner, TaskType type, TaskState state, Nullable<DateTime> completion)
+        {
+            if (!_isLoggedIn || CurrTask == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
+            {
+                throw new ArgumentOutOfRangeException("Invalid complexity value");
+            }
+            else if (text == null)
+            {
+                throw new ArgumentNullException("Arguments to AddTask must not be null");
+            }
+
+            Task task = DataModel.GetTaskByID(CurrTask.TaskID);
+            User ownerUser = null;
+            int? ownerId = null;
+
+            if (owner != null)
+            {
+                ownerUser = DataModel.GetUserByID(owner.UserId);
+                ownerId = owner.UserId;
+            }
+
+            task.Text = text;
+            task.Business_value = value;
+            task.Size_complexity = size;
+            task.Owner = ownerId;
+            task.State = TaskStateConverter.ConvertToBinary(state);
+            task.Type = TaskTypeConverter.ConvertToBinary(type);
+            task.User = ownerUser;
+            task.Completion_date = completion;
+
+            bool result = DataModel.CommitChanges();
+            UpdateTasksForStory();
+
+            return result;
         }
 
         /// <summary>
