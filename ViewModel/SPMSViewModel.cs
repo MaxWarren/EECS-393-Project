@@ -737,7 +737,7 @@ namespace ViewModel
         /// <param name="priority">The priority number for this story</param>
         /// <param name="text">The text of this story</param>
         /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool UpdateCurrStory(int priority, string text)
+        public bool UpdateCurrStory(int priority, string text, SprintView sprint)
         {
             if (!_isLoggedIn || CurrStory == null)
             {
@@ -753,6 +753,18 @@ namespace ViewModel
             }
 
             Story story = DataModel.GetStoryByID(CurrStory.StoryID);
+
+            if (sprint != null) // Move the story to a new sprint
+            {
+                Sprint oldSprint = DataModel.GetSprintByID(story.Sprint_id);
+                Sprint newSprint = DataModel.GetSprintByID(sprint.SprintID);
+
+                story.Sprint_id = sprint.SprintID;
+                story.Sprint = newSprint;
+                newSprint.Story.Add(story);
+                oldSprint.Story.Remove(story);
+            }
+
             story.Priority_num = priority;
             story.Text = text;
 
