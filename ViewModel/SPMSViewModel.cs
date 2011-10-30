@@ -752,6 +752,7 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
             UpdateTasksForStory();
+            UpdateTasksForUser();
 
             return result;
         }

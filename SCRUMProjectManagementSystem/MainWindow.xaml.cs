@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using ViewModel;
 using Utilities;
+
 
 
 namespace SCRUMProjectManagementSystem
@@ -161,8 +163,10 @@ namespace SCRUMProjectManagementSystem
                     label = new Label();
                     label.Content = "Owner:";
                     ComboBox cb = new ComboBox();
-                    cb.ItemsSource = viewModel.GetManagers();
-                    //cb.SelectedIndex
+                    UserView[] managerList = viewModel.GetManagers().ToArray();
+                    cb.ItemsSource = managerList;
+                    UserView tempOwner = (from user in managerList where user.UserId == viewModel.CurrProject.OwnerID select user).Single();
+                    cb.SelectedItem = tempOwner;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
@@ -230,8 +234,10 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Sprint:";
                     stackPanel1.Children.Add(label);
                     cb = new ComboBox();
-                    cb.ItemsSource = viewModel.SprintsForProject;
-                    cb.SelectedValue = viewModel.CurrSprint;
+                    SprintView[] sv = viewModel.SprintsForProject.ToArray();
+                    cb.ItemsSource = sv;
+                    SprintView tempSprint = (from sprint in sv where sprint.SprintID == viewModel.CurrSprint.SprintID select sprint).Single();
+                    cb.SelectedValue = tempSprint;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
@@ -275,8 +281,10 @@ namespace SCRUMProjectManagementSystem
                     label = new Label();
                     label.Content = "Owner:";
                     cb = new ComboBox();
-                    cb.ItemsSource = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1;
-                    cb.SelectedValue = viewModel.CurrTask.OwnerID;
+                    UserView[] userList = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1.ToArray();
+                    cb.ItemsSource = userList;
+                    UserView tempUser = (from user in userList where user.UserId == viewModel.CurrTask.OwnerID select user).Single();
+                    cb.SelectedItem = tempUser;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
