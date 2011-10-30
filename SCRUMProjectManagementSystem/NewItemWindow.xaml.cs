@@ -86,34 +86,66 @@ namespace SCRUMProjectManagementSystem
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            switch (_type)
+            try
             {
-                case MainWindow.selection.Project:
-                    DateTime startDate = datePicker_project1.SelectedDate.Value;
-                    _viewModel.AddProject(textBox_project1.Text, startDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
-                    break;
-                case MainWindow.selection.Sprint:
-                    startDate = datePicker_sprint1.SelectedDate.Value;
-                    _viewModel.AddSprint(textBox_sprint1.Text, startDate, datePicker_sprint2.SelectedDate);
-                    break;
-                case MainWindow.selection.Story:
-                    _viewModel.AddStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
-                    break;
-                case MainWindow.selection.Task:
-                    _viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
-                    break;
-                case MainWindow.selection.Team:
-                    _viewModel.AddTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
-                    break;
-                default:
-                    break;
-            };
-            this.Close();
+                switch (_type)
+                {
+                    case MainWindow.selection.Project:
+                        DateTime startDate = datePicker_project1.SelectedDate.Value;
+                        _viewModel.AddProject(textBox_project1.Text, startDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
+                        break;
+                    case MainWindow.selection.Sprint:
+                        startDate = datePicker_sprint1.SelectedDate.Value;
+                        _viewModel.AddSprint(textBox_sprint1.Text, startDate, datePicker_sprint2.SelectedDate);
+                        break;
+                    case MainWindow.selection.Story:
+                        _viewModel.AddStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
+                        break;
+                    case MainWindow.selection.Task:
+                        _viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
+                        break;
+                    case MainWindow.selection.Team:
+                        _viewModel.AddTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
+                        break;
+                    default:
+                        break;
+                };
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void textBox_story1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = Utility.IsTextNumeric(e.Text);
+        }
+
+        private void projectChanged(object sender, EventArgs e)
+        {
+            button1.IsEnabled = textBox_project1.Text.Length > 0 && datePicker_project1.SelectedDate.HasValue && comboBox_project1.SelectedIndex > -1 && comboBox_project2.SelectedIndex > -1;
+        }
+
+        private void sprintChanged(object sender, EventArgs e)
+        {
+            button1.IsEnabled = textBox_sprint1.Text.Length > 0 && datePicker_sprint1.SelectedDate.HasValue;
+        }
+
+        private void storyChanged(object sender, EventArgs e)
+        {
+            button1.IsEnabled = textBox_story1.Text.Length > 0 && textBox_story2.Text.Length > 0;
+        }
+
+        private void taskChanged(object sender, EventArgs e)
+        {
+            button1.IsEnabled = textBox_task1.Text.Length > 0 && comboBox_task1.SelectedIndex > -1 && comboBox_task2.SelectedIndex > -1 && comboBox_task4.SelectedIndex > -1 && comboBox_task5.SelectedIndex > -1;
+        }
+
+        private void teamChanged(object sender, EventArgs e)
+        {
+            button1.IsEnabled = textBox_team1.Text.Length > 0 && comboBox_team1.SelectedIndex > -1 && comboBox_team2.SelectedIndex > -1;
         }
     }
 }
