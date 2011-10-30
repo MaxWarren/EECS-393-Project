@@ -4,6 +4,7 @@ using System.Windows.Data;
 using ViewModel;
 using Utilities;
 
+
 namespace SCRUMProjectManagementSystem
 {
     /// <summary>
@@ -159,13 +160,14 @@ namespace SCRUMProjectManagementSystem
                     label = new Label();
                     label.Content = "Owner:";
                     ComboBox cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
+                    cb.ItemsSource = viewModel.GetManagers();
+                    cb.SelectedValue = viewModel.CurrProject.OwnerID;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     Button save = new Button();
                     save.Content = "Save";
+                    save.Click += new RoutedEventHandler(save_project_Click);
                     stackPanel2.Children.Add(save);
                     break;
                 case selection.Sprint:
@@ -204,6 +206,7 @@ namespace SCRUMProjectManagementSystem
                     stackPanel2.Children.Add(dp);
                     save = new Button();
                     save.Content = "Save";
+                    save.Click += new RoutedEventHandler(save_sprint_Click);
                     stackPanel2.Children.Add(save);
                     break;
                 case selection.Story:
@@ -227,7 +230,7 @@ namespace SCRUMProjectManagementSystem
                     stackPanel1.Children.Add(label);
                     tb = new TextBox();
                     tb.Margin = new Thickness(0, 0, 0, 4);
-                    tb.Text = viewModel.CurrProject.Name;
+                    tb.Text = viewModel.CurrStory.Priority.ToString();
                     tb.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(tb_PreviewTextInput);
                     stackPanel2.Children.Add(tb);
                     label = new Label();
@@ -240,6 +243,7 @@ namespace SCRUMProjectManagementSystem
                     stackPanel2.Children.Add(tb);
                     save = new Button();
                     save.Content = "Save";
+                    save.Click += new RoutedEventHandler(save_story_Click);
                     stackPanel2.Children.Add(save);
                     break;
                 case selection.Task:
@@ -262,32 +266,32 @@ namespace SCRUMProjectManagementSystem
                     label = new Label();
                     label.Content = "Owner:";
                     cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
+                    cb.ItemsSource = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1;
+                    cb.SelectedValue = viewModel.CurrTask.OwnerID;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Complexity:";
                     cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
+                    cb.ItemsSource = ComplexityValues.sizeComplexity;
+                    cb.SelectedItem = viewModel.CurrTask.SizeComplexity;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "Business Value:";
                     cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
+                    cb.ItemsSource = ComplexityValues.businessValue;
+                    cb.SelectedItem = viewModel.CurrTask.BusinessValue;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
                     label.Content = "State:";
                     cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "doesn't work" };
-                    cb.SelectedIndex = 0;
+                    cb.ItemsSource = new string[] { "Unassigned", "In Progress", "Completed", "Blocked" };
+                    cb.SelectedValue = TaskStateConverter.ConvertToString(viewModel.CurrTask.State);
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     cb.SelectedIndex = 2;
                     stackPanel1.Children.Add(label);
@@ -308,11 +312,31 @@ namespace SCRUMProjectManagementSystem
                     stackPanel2.Children.Add(tb);
                     save = new Button();
                     save.Content = "Save";
+                    save.Click += new RoutedEventHandler(save_task_Click);
                     stackPanel2.Children.Add(save);
                     break;
                 default:
                     break;
             }
+        }
+
+        void save_project_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        void save_sprint_Click(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void save_story_Click(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void save_task_Click(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)

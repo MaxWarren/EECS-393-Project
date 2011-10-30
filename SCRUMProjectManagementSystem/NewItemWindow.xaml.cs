@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Utilities;
+using ViewModel;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -23,11 +24,11 @@ namespace SCRUMProjectManagementSystem
         private ViewModel.SPMSViewModel _viewModel;
 
 
-        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel viewModel)
+        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm)
         {
             InitializeComponent();
             _type = type;
-            _viewModel = viewModel;
+            _viewModel = vm;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -40,6 +41,8 @@ namespace SCRUMProjectManagementSystem
                 label3.Content = "End Date";
                 label4.Content = "Owner";
                 label5.Content = "Team";
+                comboBox_project1.ItemsSource = _viewModel.GetManagers();
+                comboBox_project2.ItemsSource = _viewModel.AllTeams;
                 stackPanel_project.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Sprint)
@@ -63,6 +66,11 @@ namespace SCRUMProjectManagementSystem
                 label4.Content = "Owner";
                 label5.Content = "Type";
                 label6.Content = "State";
+                comboBox_task1.ItemsSource = ComplexityValues.sizeComplexity;
+                comboBox_task2.ItemsSource = ComplexityValues.businessValue;
+                comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
+                comboBox_task4.ItemsSource = new string[] { "Development", "Testing", "Documentation"};
+                comboBox_task5.ItemsSource = new string[] { "Unassigned", "In Progress", "Completed", "Blocked" };
                 stackPanel_task.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Team)
@@ -70,12 +78,36 @@ namespace SCRUMProjectManagementSystem
                 label1.Content = "Team Name";
                 label2.Content = "Manager";
                 label3.Content = "Team Lead";
+                comboBox_team1.ItemsSource = _viewModel.GetManagers();
+                comboBox_team2.ItemsSource = _viewModel.GetManagers();
                 stackPanel_team.Visibility = Visibility.Visible;
             }
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            switch (_type)
+            {
+                case MainWindow.selection.Project:
+                    DateTime startDate = datePicker_project1.SelectedDate.Value;
+                    _viewModel.AddProject(textBox_project1.Text, startDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
+                    break;
+                case MainWindow.selection.Sprint:
+                    startDate = datePicker_project1.SelectedDate.Value;
+                    _viewModel.AddSprint(textBox_sprint1.Text, startDate, datePicker_sprint2.SelectedDate);
+                    break;
+                case MainWindow.selection.Story:
+                    _viewModel.AddStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
+                    break;
+                case MainWindow.selection.Task:
+                    //_viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetManagers()[comboBox_task3.SelectedIndex], new TaskType(), new TaskState());
+                    break;
+                case MainWindow.selection.Team:
+                    _viewModel.AddTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
+                    break;
+                default:
+                    break;
+            };
             this.Close();
         }
 
