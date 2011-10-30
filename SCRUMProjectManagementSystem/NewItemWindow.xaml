@@ -1,7 +1,20 @@
 ﻿<Window x:Class="SCRUMProjectManagementSystem.NewItemWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         Title="Window1" Height="300" Width="300" Loaded="Window_Loaded">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:UserView}">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TeamView}">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -19,10 +32,10 @@
             <Label Height="23" Name="label9" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_project" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox1" Width="120" />
+            <TextBox Height="23" Name="textBox_project1" Width="120" />
             <DatePicker Height="25" Name="datePicker_project1" Width="115" />
             <DatePicker Height="25" Name="datePicker_project2" Width="115" />
-            <ComboBox Height="23" Name="comboBox1_project1" Width="120" />
+            <ComboBox Height="23" Name="comboBox_project1" Width="120" ItemsSource="{Binding Path=Name}" />
             <ComboBox Height="23" Name="comboBox_project2" Width="120" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_sprint" Margin="0,0,0,29" Visibility="Hidden">
