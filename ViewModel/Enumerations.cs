@@ -83,6 +83,19 @@ namespace ViewModel
     /// </summary>
     public static class TaskStateConverter
     {
+        public static Dictionary<string, TaskState> nameMap;
+
+        static TaskStateConverter()
+        {
+            nameMap = new Dictionary<string, TaskState>()
+            {
+                {"Unassigned", TaskState.Unassigned},
+                {"In Progress", TaskState.In_Progress},
+                {"Completed", TaskState.Completed},
+                {"Blocked", TaskState.Blocked}
+            };
+        }
+
         /// <summary>
         /// Return the Binary object for a given TaskState
         /// </summary>
@@ -96,28 +109,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Converts a TaskState to a string
-        /// </summary>
-        /// <param name="role">The TaskState to convert</param>
-        /// <returns>A string matching the given TaskState</returns>
-        public static string ConvertToString(TaskState state)
-        {
-            switch (state)
-            {
-                case TaskState.Unassigned:
-                    return "Unassigned";
-                case TaskState.In_Progress:
-                    return "In Progress";
-                case TaskState.Completed:
-                    return "Completed";
-                case TaskState.Blocked:
-                    return "Blocked";
-                default:
-                    return "Invalid State";
-            }
-        }
-
-        /// <summary>
         /// Converts a Binary to a TaskState
         /// </summary>
         /// <param name="bin">The Binary to convert</param>
@@ -126,16 +117,6 @@ namespace ViewModel
         {
             return (TaskState)bin.ToArray()[2];
         }
-
-        /// <summary>
-        /// Converts a Binary to a string
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>A string matching the given binary</returns>
-        public static String ConvertBinaryToString(Binary bin)
-        {
-            return ConvertToString(ConvertBinaryToState(bin));
-        }
     }
 
     /// <summary>
@@ -143,6 +124,18 @@ namespace ViewModel
     /// </summary>
     public static class TaskTypeConverter
     {
+        public static Dictionary<string, TaskType> nameMap;
+
+        static TaskTypeConverter()
+        {
+            nameMap = new Dictionary<string, TaskType>()
+            {
+                {"Development", TaskType.Development},
+                {"Testing", TaskType.QA},
+                {"Documentation", TaskType.Documentation}
+            };
+        }
+
         /// <summary>
         /// Return the Binary object for a given TaskType
         /// </summary>
@@ -156,26 +149,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Converts a TaskType to a string
-        /// </summary>
-        /// <param name="role">The TaskType to convert</param>
-        /// <returns>A string matching the given TaskType</returns>
-        public static string ConvertToString(TaskType type)
-        {
-            switch (type)
-            {
-                case TaskType.Development:
-                    return "Development";
-                case TaskType.QA:
-                    return "Testing";
-                case TaskType.Documentation:
-                    return "Documentation";
-                default:
-                    return "Invalid Type";
-            }
-        }
-
-        /// <summary>
         /// Converts a Binary to a TaskType
         /// </summary>
         /// <param name="bin">The Binary to convert</param>
@@ -184,16 +157,6 @@ namespace ViewModel
         {
             return (TaskType)bin.ToArray()[2];
         }
-
-        /// <summary>
-        /// Converts a Binary to a string
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>A string matching the given binary</returns>
-        public static String ConvertBinaryToString(Binary bin)
-        {
-            return ConvertToString(ConvertBinaryToType(bin));
-        }
     }
 
     /// <summary>
@@ -201,6 +164,19 @@ namespace ViewModel
     /// </summary>
     public static class UserRoleConverter
     {
+        public static Dictionary<string, UserRole> nameMap;
+
+        static UserRoleConverter()
+        {
+            nameMap = new Dictionary<string, UserRole>()
+            {
+                {"Developer", UserRole.Developer},
+                {"Quality Assurance", UserRole.QA},
+                {"Manager", UserRole.Manager},
+                {"Documentation", UserRole.Documentation}
+            };
+        }
+
         /// <summary>
         /// Return the Binary object for a given UserRole
         /// </summary>
@@ -214,28 +190,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Converts a UserRole to a string
-        /// </summary>
-        /// <param name="role">The UserRole to convert</param>
-        /// <returns>A string matching the given UserRole</returns>
-        public static string ConvertToString(UserRole role)
-        {
-            switch (role)
-            {
-                case UserRole.Developer:
-                    return "Developer";
-                case UserRole.QA:
-                    return "Quality Assurance";
-                case UserRole.Manager:
-                    return "Manager";
-                case UserRole.Documentation:
-                    return "Documentation";
-                default:
-                    return "Invalid Role";
-            }
-        }
-
-        /// <summary>
         /// Converts a Binary to a UserRole
         /// </summary>
         /// <param name="bin">The Binary to convert</param>
@@ -243,16 +197,6 @@ namespace ViewModel
         public static UserRole ConvertBinaryToRole(Binary bin)
         {
             return (UserRole)bin.ToArray()[2];
-        }
-
-        /// <summary>
-        /// Converts a Binary to a string
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>A string matching the given binary</returns>
-        public static String ConvertBinaryToString(Binary bin)
-        {
-            return ConvertToString(ConvertBinaryToRole(bin));
         }
     }
 }
