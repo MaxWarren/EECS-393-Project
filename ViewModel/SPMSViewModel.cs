@@ -24,6 +24,7 @@ namespace ViewModel
         private ObservableCollection<StoryView> _storiesForSprint;
         private ObservableCollection<TaskView> _tasksForStory;
         private ObservableCollection<TeamView> _allTeams;
+        private ObservableCollection<UserView> _currTeamMembers;
 
         /// <summary>
         /// Indicates if the current user is a manager
@@ -115,6 +116,15 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// A list of all members of the current team
+        /// </summary>
+        public ObservableCollection<UserView> CurrTeamMembers
+        {
+            get { return _currTeamMembers; }
+            private set { _currTeamMembers = value; }
+        }
+
+        /// <summary>
         /// Initializes the view model
         /// </summary>
         public SPMSViewModel()
@@ -128,6 +138,7 @@ namespace ViewModel
             _tasksForStory = new ObservableCollection<TaskView>();
             _tasksForUser = new ObservableCollection<TaskView>();
             _allTeams = new ObservableCollection<TeamView>();
+            _currTeamMembers = new ObservableCollection<UserView>();
         }
 
         /// <summary>
@@ -152,6 +163,14 @@ namespace ViewModel
 
             _isLoggedIn = true;
             IsManager = !(CurrUser.Role == UserRole.Manager);
+
+            // Get members of CurrTeam
+            IEnumerable<User> members = DataModel.GetTeamMembers(CurrTeam.TeamID);
+
+            foreach (User m in members)
+            {
+                _currTeamMembers.Add(new UserView(m));
+            }
 
             UpdateProjectsForUser();
             UpdateTasksForUser();
