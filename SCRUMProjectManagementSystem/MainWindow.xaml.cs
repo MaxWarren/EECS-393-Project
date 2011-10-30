@@ -162,7 +162,7 @@ namespace SCRUMProjectManagementSystem
                     label.Content = "Owner:";
                     ComboBox cb = new ComboBox();
                     cb.ItemsSource = viewModel.GetManagers();
-                    cb.SelectedValue = viewModel.CurrProject.OwnerID;
+                    //cb.SelectedIndex
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
@@ -408,6 +408,7 @@ namespace SCRUMProjectManagementSystem
 
         private void menu_main_SubmenuOpened(object sender, RoutedEventArgs e)
         {
+            viewModel.UpdateAllTeams();
             MenuItem[] teams = new MenuItem[viewModel.AllTeams.Count];
             for (int i = 0; i < teams.Length; i++)
             {
