@@ -22,6 +22,7 @@ namespace ViewModel
                 13,
                 20,
                 40,
+                80,
                 100
             };
 
@@ -36,6 +37,7 @@ namespace ViewModel
                 13,
                 20,
                 40,
+                80,
                 100
             };
         }
