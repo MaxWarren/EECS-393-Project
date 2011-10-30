@@ -150,7 +150,7 @@ namespace ViewModel
         public bool AuthenticateUser(int userId, string password)
         {
             string passHash = hashPassword(password);
-            
+
             User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
@@ -432,7 +432,11 @@ namespace ViewModel
         /// <param name="task">The selected task</param>
         public void JumpToTask(TaskView task)
         {
-            if (task == null) // Bad input value
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (task == null) // Bad input value
             {
                 throw new ArgumentNullException("Arguments to JumpToTask must not be null");
             }
@@ -454,12 +458,72 @@ namespace ViewModel
         /// <returns>The Team to which the given user belongs</returns>
         public TeamView GetUserTeam(UserView user)
         {
-            if (user == null)
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (user == null)
             {
                 throw new ArgumentNullException("Arguments to GetUserTeam must not be null");
             }
 
             Team team = DataModel.GetTeamByID(user.TeamId);
+
+            if (team != null)
+            {
+                return new TeamView(team);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a User by their id
+        /// </summary>
+        /// <param name="userId">The user id for which to search</param>
+        /// <returns>The user if one exists with that id</returns>
+        public UserView GetUserByID(int userId)
+        {
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User is not logged in");
+            }
+            else if (userId <= 0)
+            {
+                throw new ArgumentOutOfRangeException("userID must be positive");
+            }
+
+            User user = DataModel.GetUserByID(userId);
+
+            if (user != null)
+            {
+                return new UserView(user);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a Team by its id
+        /// </summary>
+        /// <param name="teamId">The team id for which to search</param>
+        /// <returns>The team if one exists with that id</returns>
+        public TeamView GetTeamByID(int teamId)
+        {
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User is not logged in");
+            }
+            else if (teamId <= 0)
+            {
+                throw new ArgumentOutOfRangeException("teamID must be positive");
+            }
+
+            Team team = DataModel.GetTeamByID(teamId);
 
             if (team != null)
             {
