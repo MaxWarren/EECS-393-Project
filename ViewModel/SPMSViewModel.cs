@@ -235,7 +235,14 @@ namespace ViewModel
             u.Team_ = t;
             u.Team_id = t.Team_id;
 
-            return DataModel.CommitChanges();
+            bool result =  DataModel.CommitChanges();
+
+            if (result && user.UserId == CurrUser.UserId)
+            {
+                UpdateProjectsForUser();
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -852,11 +859,12 @@ namespace ViewModel
             {
                 Sprint oldSprint = DataModel.GetSprintByID(story.Sprint_id);
                 Sprint newSprint = DataModel.GetSprintByID(sprint.SprintID);
+                
+                newSprint.Story.Add(story);
+                oldSprint.Story.Remove(story);
 
                 story.Sprint_id = sprint.SprintID;
                 story.Sprint = newSprint;
-                newSprint.Story.Add(story);
-                oldSprint.Story.Remove(story);
             }
 
             story.Priority_num = priority;
