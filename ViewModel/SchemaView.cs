@@ -17,10 +17,10 @@ namespace ViewModel
         public UserView(User u)
         {
             UserId = u.User_id;
-            PasswordHash = u.Password;
+            PasswordHash = u.Password.Trim();
             TeamId = u.Team_id;
             Role = UserRoleConverter.ConvertBinaryToRole(u.Role);
-            Name = u.Name;
+            Name = u.Name.Trim();
         }
     }
 
@@ -36,7 +36,7 @@ namespace ViewModel
             TeamID = t.Team_id;
             TeamLeadID = t.Team_lead;
             ManagerID = t.Manager;
-            Name = t.Team_name;
+            Name = t.Team_name.Trim();
         }
     }
 
@@ -55,7 +55,7 @@ namespace ViewModel
         public ProjectView(Project p)
         {
             ProjectID = p.Project_id;
-            Name = p.Project_name;
+            Name = p.Project_name.Trim();
             StartDate = p.Start_date;
             EndDate = p.End_date;
             OwnerID = p.Owner;
@@ -77,7 +77,7 @@ namespace ViewModel
         public SprintView(Sprint s)
         {
             SprintID = s.Sprint_id;
-            Name = s.Sprint_name;
+            Name = s.Sprint_name.Trim();
             StartDate = s.Start_date;
             EndDate = s.End_date;
             ProjectID = s.Project_id;
