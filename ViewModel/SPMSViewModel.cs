@@ -150,7 +150,7 @@ namespace ViewModel
         public bool AuthenticateUser(int userId, string password)
         {
             string passHash = hashPassword(password);
-
+            Console.Write(passHash);
             User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
@@ -441,6 +441,10 @@ namespace ViewModel
             CurrSprint = new SprintView(DataModel.GetSprintByID(CurrStory.SprintID));
             CurrProject = new ProjectView(DataModel.GetProjectByID(CurrSprint.ProjectID));
             CurrTask = task;
+
+            UpdateSprintsForProject();
+            UpdateStoriesForSprint();
+            UpdateTasksForStory();
         }
 
         /// <summary>
