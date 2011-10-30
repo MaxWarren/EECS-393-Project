@@ -150,7 +150,7 @@ namespace ViewModel
         public bool AuthenticateUser(int userId, string password)
         {
             string passHash = hashPassword(password);
-            Console.Write(passHash);
+            
             User curr = DataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
@@ -445,6 +445,30 @@ namespace ViewModel
             UpdateSprintsForProject();
             UpdateStoriesForSprint();
             UpdateTasksForStory();
+        }
+
+        /// <summary>
+        /// Gets the Team for a User
+        /// </summary>
+        /// <param name="user">The User for which to get the team</param>
+        /// <returns>The Team to which the given user belongs</returns>
+        public TeamView GetUserTeam(UserView user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("Arguments to GetUserTeam must not be null");
+            }
+
+            Team team = DataModel.GetTeamByID(user.TeamId);
+
+            if (team != null)
+            {
+                return new TeamView(team);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
