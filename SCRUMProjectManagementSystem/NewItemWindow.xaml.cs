@@ -93,7 +93,7 @@ namespace SCRUMProjectManagementSystem
                     _viewModel.AddProject(textBox_project1.Text, startDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
                     break;
                 case MainWindow.selection.Sprint:
-                    startDate = datePicker_project1.SelectedDate.Value;
+                    startDate = datePicker_sprint1.SelectedDate.Value;
                     _viewModel.AddSprint(textBox_sprint1.Text, startDate, datePicker_sprint2.SelectedDate);
                     break;
                 case MainWindow.selection.Story:
