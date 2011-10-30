@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using ViewModel;
@@ -226,6 +227,14 @@ namespace SCRUMProjectManagementSystem
                     label.Content = viewModel.CurrProject.Name;
                     stackPanel2.Children.Add(label);
                     label = new Label();
+                    label.Content = "Sprint:";
+                    stackPanel1.Children.Add(label);
+                    cb = new ComboBox();
+                    cb.ItemsSource = viewModel.SprintsForProject;
+                    cb.SelectedValue = viewModel.CurrSprint;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
+                    stackPanel2.Children.Add(cb);
+                    label = new Label();
                     label.Content = "Priority:";
                     stackPanel1.Children.Add(label);
                     tb = new TextBox();
@@ -288,10 +297,19 @@ namespace SCRUMProjectManagementSystem
                     stackPanel1.Children.Add(label);
                     stackPanel2.Children.Add(cb);
                     label = new Label();
+                    label.Content = "Type:";
+                    cb = new ComboBox();
+                    cb.ItemsSource = TaskTypeConverter.nameMap.Keys;
+                    cb.SelectedIndex = 0;
+                    cb.Margin = new Thickness(0, 0, 0, 4);
+                    cb.SelectedIndex = 2;
+                    stackPanel1.Children.Add(label);
+                    stackPanel2.Children.Add(cb);
+                    label = new Label();
                     label.Content = "State:";
                     cb = new ComboBox();
-                    cb.ItemsSource = new string[] { "Unassigned", "In Progress", "Completed", "Blocked" };
-                    cb.SelectedValue = TaskStateConverter.ConvertToString(viewModel.CurrTask.State);
+                    cb.ItemsSource = TaskStateConverter.nameMap.Keys;
+                    cb.SelectedIndex = 0;
                     cb.Margin = new Thickness(0, 0, 0, 4);
                     cb.SelectedIndex = 2;
                     stackPanel1.Children.Add(label);
@@ -322,21 +340,40 @@ namespace SCRUMProjectManagementSystem
 
         void save_project_Click(object sender, RoutedEventArgs e)
         {
+            TextBox name = (TextBox)stackPanel2.Children[0];
+            Label team = (Label)stackPanel2.Children[1];
+            DatePicker start = (DatePicker)stackPanel2.Children[2];
+            DatePicker end = (DatePicker)stackPanel2.Children[3];
+            ComboBox owner = (ComboBox)stackPanel2.Children[4];
+            viewModel.UpdateCurrProject(name.Text, start.SelectedDate.Value, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            TextBox name = (TextBox)stackPanel2.Children[1];
+            DatePicker start = (DatePicker)stackPanel2.Children[2];
+            DatePicker end = (DatePicker)stackPanel2.Children[3];
+            viewModel.UpdateCurrSprint(name.Text, start.SelectedDate.Value, end.SelectedDate);
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            ComboBox sprint = (ComboBox)stackPanel2.Children[1];
+            TextBox priority = (TextBox)stackPanel2.Children[2];
+            TextBox text = (TextBox)stackPanel2.Children[3];
+            viewModel.UpdateCurrStory(Int32.Parse(priority.Text), text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            ComboBox owner = (ComboBox)stackPanel2.Children[1];
+            ComboBox complexity = (ComboBox)stackPanel2.Children[2];
+            ComboBox value = (ComboBox)stackPanel2.Children[3];
+            ComboBox type = (ComboBox)stackPanel2.Children[4];
+            ComboBox state = (ComboBox)stackPanel2.Children[5];
+            DatePicker completion = (DatePicker)stackPanel2.Children[6];
+            TextBox text = (TextBox)stackPanel2.Children[7];
+            viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -371,21 +408,28 @@ namespace SCRUMProjectManagementSystem
 
         private void menu_main_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            string[] tempList = new string[] { "Maxxx & Friends", "HoN Team", "A Trail of Bagels", "If Everyone Attacked Me at Once, I Would Win" };
-            menu_addToTeam.ItemsSource = new MenuItem[] { new MenuItem(), new MenuItem(), new MenuItem(), new MenuItem() };
-            int temp = 0;
-            foreach (MenuItem i in menu_addToTeam.Items)
+            MenuItem[] teams = new MenuItem[viewModel.AllTeams.Count];
+            for (int i = 0; i < teams.Length; i++)
             {
-                i.Click += new RoutedEventHandler(i_Click);
-                i.Header = tempList[temp];
-                temp++;
+                teams[i] = new MenuItem();
+                teams[i].Header = viewModel.AllTeams[i].Name;
+                teams[i].Click += new RoutedEventHandler(i_Click);
             }
+            menu_addToTeam.ItemsSource = teams;
         }
 
         void i_Click(object sender, RoutedEventArgs e)
         {
-            TeamWindow tw = new TeamWindow(viewModel.CurrTeam, viewModel);
-            tw.Visibility = Visibility.Visible;
+            MenuItem mi = (MenuItem)sender;
+            foreach (TeamView tv in viewModel.AllTeams)
+            {
+                if (tv.Name.Equals(mi.Header))
+                {
+                    TeamWindow tw = new TeamWindow(tv, viewModel);
+                    tw.Visibility = Visibility.Visible;
+                    break;
+                }
+            }
         }
     }
 }

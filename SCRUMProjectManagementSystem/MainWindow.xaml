@@ -41,6 +41,11 @@
                 <TextBlock Text="{Binding Path=Name}"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TeamView}">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <Grid Name="grid1">
         <Grid Height="35" Name="grid3" VerticalAlignment="Top" Margin="0,23,0,0">

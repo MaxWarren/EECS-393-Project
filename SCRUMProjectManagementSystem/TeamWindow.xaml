@@ -1,7 +1,15 @@
 ﻿<Window x:Class="SCRUMProjectManagementSystem.TeamWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         Title="Team Members" Height="300" Width="300" Loaded="Window_Loaded">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:UserView}">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -9,7 +17,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <ListBox Name="listBox1" />
-        <ListBox Grid.Column="2" Name="listBox2" />
+        <ListBox Grid.Column="2" Name="listBox2" IsEnabled="False" />
         <Button Content="Add" Grid.Column="1" Height="23" HorizontalAlignment="Center" Name="button1" VerticalAlignment="Center" Width="30" Click="button1_Click" />
     </Grid>
 </Window>

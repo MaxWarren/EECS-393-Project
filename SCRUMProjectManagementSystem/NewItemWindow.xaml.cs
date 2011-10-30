@@ -69,8 +69,8 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task1.ItemsSource = ComplexityValues.sizeComplexity;
                 comboBox_task2.ItemsSource = ComplexityValues.businessValue;
                 comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
-                comboBox_task4.ItemsSource = new string[] { "Development", "Testing", "Documentation"};
-                comboBox_task5.ItemsSource = new string[] { "Unassigned", "In Progress", "Completed", "Blocked" };
+                comboBox_task4.ItemsSource = TaskTypeConverter.nameMap.Keys;
+                comboBox_task5.ItemsSource = TaskStateConverter.nameMap.Keys;
                 stackPanel_task.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Team)
@@ -100,7 +100,7 @@ namespace SCRUMProjectManagementSystem
                     _viewModel.AddStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
                     break;
                 case MainWindow.selection.Task:
-                    //_viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetManagers()[comboBox_task3.SelectedIndex], new TaskType(), new TaskState());
+                    _viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetManagers()[comboBox_task3.SelectedIndex], TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
                     break;
                 case MainWindow.selection.Team:
                     _viewModel.AddTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
