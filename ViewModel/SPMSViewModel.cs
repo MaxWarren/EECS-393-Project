@@ -230,15 +230,20 @@ namespace ViewModel
             }
 
             User u = DataModel.GetUserByID(user.UserId);
-            Team t = DataModel.GetTeamByID(team.TeamID);
+            Team newTeam = DataModel.GetTeamByID(team.TeamID);
+            Team oldTeam = DataModel.GetTeamByID(u.Team_id);
 
-            u.Team_ = t;
-            u.Team_id = t.Team_id;
+            oldTeam.Team_.Remove(u);
+            oldTeam.Team_.Add(u);
+
+            u.Team_ = newTeam;
+            u.Team_id = newTeam.Team_id;
 
             bool result =  DataModel.CommitChanges();
 
             if (result && user.UserId == CurrUser.UserId)
             {
+                CurrTeam = team;
                 UpdateProjectsForUser();
             }
 
