@@ -736,6 +736,7 @@ namespace ViewModel
         /// </summary>
         /// <param name="priority">The priority number for this story</param>
         /// <param name="text">The text of this story</param>
+        /// <param name="sprint">The sprint in which to place this story</param>
         /// <returns>True if the add succeeds, false otherwise</returns>
         public bool UpdateCurrStory(int priority, string text, SprintView sprint)
         {
