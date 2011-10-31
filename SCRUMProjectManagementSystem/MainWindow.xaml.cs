@@ -295,9 +295,11 @@ namespace SCRUMProjectManagementSystem
                         {
                             //assume no owner.  will fix this later to be more specific
                         }
+                        bool hasOwner = cb.SelectedIndex >= 0;
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
                         stackPanel2.Children.Add(cb);
+                        cb.SelectionChanged += new SelectionChangedEventHandler(taskOwnerChanged);
                         label = new Label();
                         label.Content = "Complexity:";
                         cb = new ComboBox();
@@ -330,6 +332,8 @@ namespace SCRUMProjectManagementSystem
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
                         stackPanel2.Children.Add(cb);
+                        cb.SelectionChanged += new SelectionChangedEventHandler(taskStateChanged);
+                        cb.IsEnabled = hasOwner;
                         label = new Label();
                         label.Content = "Completion Date:";
                         dp = new DatePicker();
@@ -354,6 +358,36 @@ namespace SCRUMProjectManagementSystem
                 }
             }
             isUpdating = false;
+        }
+
+        void taskOwnerChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox owner = (ComboBox)stackPanel2.Children[1];
+            ComboBox state = (ComboBox)stackPanel2.Children[5];
+            if (owner.SelectedIndex == -1)
+            {
+                state.SelectedIndex = 0;
+                state.IsEnabled = false;
+            }
+            else
+            {
+                if (state.SelectedIndex == 0)
+                {
+                    state.SelectedIndex = 1;
+                }
+                state.IsEnabled = true;
+            }
+        }
+
+        void taskStateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox owner = (ComboBox)stackPanel2.Children[1];
+            ComboBox state = (ComboBox)stackPanel2.Children[5];
+            if (state.SelectedIndex == 0)
+            {
+                owner.SelectedIndex = -1;
+                state.IsEnabled = false;
+            }
         }
 
         void save_project_Click(object sender, RoutedEventArgs e)
@@ -391,7 +425,14 @@ namespace SCRUMProjectManagementSystem
             ComboBox state = (ComboBox)stackPanel2.Children[5];
             DatePicker completion = (DatePicker)stackPanel2.Children[6];
             TextBox text = (TextBox)stackPanel2.Children[7];
-            viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
+            if (owner.SelectedIndex == -1 || state.SelectedIndex == 0)
+            {
+                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
+            }
+            else
+            {
+                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
+            }
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
