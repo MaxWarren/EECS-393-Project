@@ -71,6 +71,8 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
                 comboBox_task4.ItemsSource = TaskTypeConverter.nameMap.Keys;
                 comboBox_task5.ItemsSource = TaskStateConverter.nameMap.Keys;
+                comboBox_task5.SelectedIndex = 0;
+                comboBox_task5.IsEnabled = false;
                 stackPanel_task.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Team)
@@ -102,6 +104,9 @@ namespace SCRUMProjectManagementSystem
                         _viewModel.AddStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
                         break;
                     case MainWindow.selection.Task:
+                        if (comboBox_task3.SelectedIndex <= 0 || comboBox_task5.SelectedIndex == 0)
+                            _viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), null, TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
+                        else
                         _viewModel.AddTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
                         break;
                     case MainWindow.selection.Team:
@@ -140,6 +145,28 @@ namespace SCRUMProjectManagementSystem
 
         private void taskChanged(object sender, EventArgs e)
         {
+            if (comboBox_task5.SelectedIndex == 0)
+            {
+                comboBox_task3.SelectedIndex = -1;
+            }
+            button1.IsEnabled = textBox_task1.Text.Length > 0 && comboBox_task1.SelectedIndex > -1 && comboBox_task2.SelectedIndex > -1 && comboBox_task4.SelectedIndex > -1 && comboBox_task5.SelectedIndex > -1;
+        }
+
+        private void taskChanged2(object sender, EventArgs e)
+        {
+            if (comboBox_task3.SelectedIndex == -1)
+            {
+                comboBox_task5.SelectedIndex = 0;
+                comboBox_task5.IsEnabled = false;
+            }
+            else
+            {
+                if (comboBox_task5.SelectedIndex == 0)
+                {
+                    comboBox_task5.SelectedIndex = 1;
+                }
+                comboBox_task5.IsEnabled = true;
+            }
             button1.IsEnabled = textBox_task1.Text.Length > 0 && comboBox_task1.SelectedIndex > -1 && comboBox_task2.SelectedIndex > -1 && comboBox_task4.SelectedIndex > -1 && comboBox_task5.SelectedIndex > -1;
         }
 
