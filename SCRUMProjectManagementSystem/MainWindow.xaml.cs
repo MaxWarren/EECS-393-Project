@@ -286,8 +286,15 @@ namespace SCRUMProjectManagementSystem
                         cb = new ComboBox();
                         UserView[] userList = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1.ToArray();
                         cb.ItemsSource = userList;
-                        UserView tempUser = (from user in userList where user.UserId == viewModel.CurrTask.OwnerID select user).Single();
-                        cb.SelectedItem = tempUser;
+                        try
+                        {
+                            UserView tempUser = userList.Where(user => user.UserId == viewModel.CurrTask.OwnerID).FirstOrDefault();
+                            cb.SelectedItem = tempUser;
+                        }
+                        catch (Exception)
+                        {
+                            //assume no owner.  will fix this later to be more specific
+                        }
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
                         stackPanel2.Children.Add(cb);
