@@ -239,7 +239,7 @@ namespace ViewModel
             u.Team_ = newTeam;
             u.Team_id = newTeam.Team_id;
 
-            bool result =  DataModel.CommitChanges();
+            bool result = DataModel.CommitChanges();
 
             if (result && user.UserId == CurrUser.UserId)
             {
@@ -729,6 +729,10 @@ namespace ViewModel
             {
                 throw new InvalidOperationException("User must be logged in");
             }
+            else if (owner == null && state != TaskState.Unassigned) // Giving an unassigned task any state but unassigned is not allowed
+            {
+                throw new InvalidOperationException("A task without an owner must be marked Unassigned");
+            }
             else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
             {
                 throw new ArgumentOutOfRangeException("Invalid complexity value");
@@ -864,7 +868,7 @@ namespace ViewModel
             {
                 Sprint oldSprint = DataModel.GetSprintByID(story.Sprint_id);
                 Sprint newSprint = DataModel.GetSprintByID(sprint.SprintID);
-                
+
                 newSprint.Story.Add(story);
                 oldSprint.Story.Remove(story);
 
@@ -898,6 +902,10 @@ namespace ViewModel
             {
                 throw new InvalidOperationException("User must be logged in");
             }
+            else if (owner == null && state != TaskState.Unassigned) // Giving an unassigned task any state but unassigned is not allowed
+            {
+                throw new InvalidOperationException("A task without an owner must be marked Unassigned");
+            }
             else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
             {
                 throw new ArgumentOutOfRangeException("Invalid complexity value");
@@ -915,6 +923,11 @@ namespace ViewModel
             {
                 ownerUser = DataModel.GetUserByID(owner.UserId);
                 ownerId = owner.UserId;
+
+                if (state == TaskState.Unassigned)
+                {
+                    state = TaskState.In_Progress;
+                }
             }
 
             task.Text = text;
