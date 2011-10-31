@@ -358,7 +358,7 @@ namespace ViewModel
             return true;
         }
 
-        /// <summary>
+        /// <summary> 
         /// Updates the AllTeams collection
         /// </summary>
         /// <returns>True if the update succeeds, false otherwise</returns>
