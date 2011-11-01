@@ -807,6 +807,7 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
             UpdateProjectsForUser();
+            CurrProject = new ProjectView(project);
 
             return result;
         }
@@ -836,6 +837,7 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
             UpdateSprintsForProject();
+            CurrSprint = new SprintView(sprint);
 
             return result;
         }
@@ -881,6 +883,7 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
             UpdateStoriesForSprint();
+            CurrStory = new StoryView(story);
 
             return result;
         }
@@ -941,6 +944,7 @@ namespace ViewModel
 
             bool result = DataModel.CommitChanges();
             UpdateTasksForStory();
+            CurrTask = new TaskView(task);
 
             return result;
         }
