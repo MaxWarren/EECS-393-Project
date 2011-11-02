@@ -284,7 +284,7 @@ namespace ViewModel
             }
 
             IEnumerable<User> managers = from manager in users
-                                         where UserRoleConverter.ConvertBinaryToRole(manager.Role) == UserRole.Manager
+                                         where (UserRole)manager.Role.ConvertToInt() == UserRole.Manager
                                          select manager;
 
             if (managers != null)

@@ -19,7 +19,7 @@ namespace ViewModel
             UserID = u.User_id;
             PasswordHash = u.Password.Trim();
             TeamId = u.Team_id;
-            Role = UserRoleConverter.ConvertBinaryToRole(u.Role);
+            Role = (UserRole)u.Role.ConvertToInt();
             Name = u.Name.Trim();
         }
     }
@@ -124,11 +124,11 @@ namespace ViewModel
             StoryID = t.Story_id;
             Text = t.Text;
             OwnerID = t.Owner;
-            Type = TaskTypeConverter.ConvertBinaryToType(t.Type);
+            Type = (TaskType)t.Type.ConvertToInt();
             SizeComplexity = t.Size_complexity;
             BusinessValue = t.Business_value;
             CompletionDate = t.Completion_date;
-            State = TaskStateConverter.ConvertBinaryToState(t.State);
+            State = (TaskState)t.State.ConvertToInt();
         }
     }
 }

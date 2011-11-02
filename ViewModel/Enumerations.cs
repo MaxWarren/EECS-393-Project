@@ -109,16 +109,6 @@ namespace ViewModel
             res[2] = (byte)state;
             return new Binary(res);
         }
-
-        /// <summary>
-        /// Converts a Binary to a TaskState
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>The TaskState matching the given binary</returns>
-        public static TaskState ConvertBinaryToState(Binary bin)
-        {
-            return (TaskState)bin.ToArray()[2];
-        }
     }
 
     /// <summary>
@@ -148,16 +138,6 @@ namespace ViewModel
             byte[] res = new byte[3];
             res[2] = (byte)type;
             return new Binary(res);
-        }
-
-        /// <summary>
-        /// Converts a Binary to a TaskType
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>The TaskType matching the given binary</returns>
-        public static TaskType ConvertBinaryToType(Binary bin)
-        {
-            return (TaskType)bin.ToArray()[2];
         }
     }
 
@@ -189,16 +169,6 @@ namespace ViewModel
             byte[] res = new byte[3];
             res[2] = (byte)role;
             return new Binary(res);
-        }
-
-        /// <summary>
-        /// Converts a Binary to a UserRole
-        /// </summary>
-        /// <param name="bin">The Binary to convert</param>
-        /// <returns>The UserRole matching the given binary</returns>
-        public static UserRole ConvertBinaryToRole(Binary bin)
-        {
-            return (UserRole)bin.ToArray()[2];
         }
     }
 }

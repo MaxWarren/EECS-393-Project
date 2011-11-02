@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Linq;
 
 namespace ViewModel
 {
@@ -18,6 +19,16 @@ namespace ViewModel
         public static TKey GetKeyByValue<TKey, TValue>(this Dictionary<TKey, TValue> dict, TValue value)
         {
             return dict.SingleOrDefault(x => x.Value.Equals(value)).Key;
+        }
+
+        /// <summary>
+        /// Converts a Binary to an int
+        /// </summary>
+        /// <param name="bin">The binary to be converted</param>
+        /// <returns>The integer value contained in the given binary</returns>
+        public static int ConvertToInt(this Binary bin)
+        {
+            return (int)bin.ToArray()[2];
         }
     }
 }
