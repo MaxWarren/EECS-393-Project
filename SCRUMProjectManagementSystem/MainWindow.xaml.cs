@@ -167,7 +167,7 @@ namespace SCRUMProjectManagementSystem
                         ComboBox cb = new ComboBox();
                         UserView[] managerList = viewModel.GetManagers().ToArray();
                         cb.ItemsSource = managerList;
-                        UserView tempOwner = (from user in managerList where user.UserId == viewModel.CurrProject.OwnerID select user).Single();
+                        UserView tempOwner = (from user in managerList where user.UserID == viewModel.CurrProject.OwnerID select user).Single();
                         cb.SelectedItem = tempOwner;
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
@@ -287,7 +287,7 @@ namespace SCRUMProjectManagementSystem
                         cb.ItemsSource = userList;
                         try
                         {
-                            UserView tempUser = userList.Where(user => user.UserId == viewModel.CurrTask.OwnerID).FirstOrDefault();
+                            UserView tempUser = userList.Where(user => user.UserID == viewModel.CurrTask.OwnerID).FirstOrDefault();
                             cb.SelectedItem = tempUser;
                         }
                         catch (Exception)

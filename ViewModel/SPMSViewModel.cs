@@ -33,7 +33,6 @@ namespace ViewModel
         private ObservableCollection<StoryView> _storiesForSprint;
         private ObservableCollection<TaskView> _tasksForStory;
         private ObservableCollection<TeamView> _allTeams;
-        private ObservableCollection<UserView> _currTeamMembers;
 
         /// <summary>
         /// Indicates if the current user is a manager
@@ -149,15 +148,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// A list of all members of the current team
-        /// </summary>
-        public ObservableCollection<UserView> CurrTeamMembers
-        {
-            get { return _currTeamMembers; }
-            private set { _currTeamMembers = value; }
-        }
-
-        /// <summary>
         /// Initializes the view model with default DataModel
         /// </summary>
         public SPMSViewModel() : this(new DataModel()) { }
@@ -178,7 +168,6 @@ namespace ViewModel
             _tasksForStory = new ObservableCollection<TaskView>();
             _tasksForUser = new ObservableCollection<TaskView>();
             _allTeams = new ObservableCollection<TeamView>();
-            _currTeamMembers = new ObservableCollection<UserView>();
         }
 
         /// <summary>
@@ -204,14 +193,6 @@ namespace ViewModel
             CurrUser = new UserView(curr); // Store the user
 
             IsManager = !(CurrUser.Role == UserRole.Manager);
-
-            // Get members of CurrTeam
-            IEnumerable<User> members = _dataModel.GetTeamMembers(CurrTeam.TeamID);
-
-            foreach (User m in members)
-            {
-                _currTeamMembers.Add(new UserView(m));
-            }
 
             return true;
         }
@@ -255,19 +236,19 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Changes a user's team
+        /// Moves a user to a given team
         /// </summary>
         /// <param name="user">The user to change</param>
         /// <param name="team">The team to which to move the user</param>
         /// <returns>True if the move succeeds, false otherwise</returns>
-        public bool ChangeTeam(UserView user, TeamView team)
+        public bool MoveUserToTeam(UserView user, TeamView team)
         {
             if (user == null || team == null)
             {
                 throw new ArgumentNullException("Arguments to ChangeTeam must not be null");
             }
 
-            User u = _dataModel.GetUserByID(user.UserId);
+            User u = _dataModel.GetUserByID(user.UserID);
             Team newTeam = _dataModel.GetTeamByID(team.TeamID);
             Team oldTeam = _dataModel.GetTeamByID(u.Team_id);
 
@@ -279,7 +260,7 @@ namespace ViewModel
 
             bool result = _dataModel.CommitChanges();
 
-            if (result && user.UserId == CurrUser.UserId)
+            if (result && user.UserID == CurrUser.UserID)
             {
                 CurrTeam = team;
                 updateProjectsForUser();
@@ -306,9 +287,12 @@ namespace ViewModel
                                          where UserRoleConverter.ConvertBinaryToRole(manager.Role) == UserRole.Manager
                                          select manager;
 
-            foreach (User manager in managers)
+            if (managers != null)
             {
-                result.Add(new UserView(manager));
+                foreach (User manager in managers)
+                {
+                    result.Add(new UserView(manager));
+                }
             }
 
             return result;
@@ -425,8 +409,8 @@ namespace ViewModel
         /// <param name="name">The name of the new team</param>
         /// <param name="manager">The manager of the new team</param>
         /// <param name="lead">The team lead for the new team</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddTeam(string name, UserView manager, UserView lead)
+        /// <returns>True if creating the team succeeds, false otherwise</returns>
+        public bool CreateTeam(string name, UserView manager, UserView lead)
         {
             if (!_isLoggedIn)
             {
@@ -437,21 +421,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTeam must not be null");
             }
 
-            User managerUser = _dataModel.GetUserByID(manager.UserId);
-            User leadUser = _dataModel.GetUserByID(lead.UserId);
-
-            Team newTeam = new Team()
-            {
-                Manager = manager.UserId,
-                ManagerUser = managerUser,
-                Project = new System.Data.Linq.EntitySet<Project>(),
-                Team_ = new System.Data.Linq.EntitySet<User>() { leadUser },
-                Team_lead = lead.UserId,
-                Team_name = name,
-                User = leadUser
-            };
-
-            return _dataModel.CommitChanges();
+            return _dataModel.CreateTeam(name, manager.UserID, lead.UserID);
         }
 
         /// <summary>
@@ -462,8 +432,8 @@ namespace ViewModel
         /// <param name="endDate">The end date of the project</param>
         /// <param name="owner">The User who owns the new project</param>
         /// <param name="team">The team responsible for the new project</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        /// <returns>True if creating the project succeeds, false otherwise</returns>
+        public bool CreateProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
             if (!_isLoggedIn)
             {
@@ -474,39 +444,9 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            User ownerUser = _dataModel.GetUserByID(owner.UserId);
-            Team projectTeam = _dataModel.GetTeamByID(team.TeamID);
-
-            Project newProject = new Project()
-            {
-                Project_name = name,
-                Start_date = startDate,
-                End_date = endDate,
-                Owner = owner.UserId,
-                User = ownerUser,
-                Team_id = team.TeamID,
-                Team = projectTeam,
-                Sprint = new System.Data.Linq.EntitySet<Sprint>()
-            };
-
-            bool result = _dataModel.CommitChanges();
-
-            if (result)
-            {
-                // Add the backlog to the project
-                Sprint backog = new Sprint()
-                {
-                    Start_date = startDate,
-                    End_date = endDate,
-                    Project = newProject,
-                    Project_id = newProject.Project_id,
-                    Sprint_name = "Backlog",
-                    Story = new System.Data.Linq.EntitySet<Story>()
-                };
-                result &= _dataModel.CommitChanges();
-            }
-
+            bool result = _dataModel.CreateProject(name, startDate, endDate, owner.UserID, team.TeamID);
             updateProjectsForUser();
+
             return result;
         }
 
@@ -516,10 +456,10 @@ namespace ViewModel
         /// <param name="name">The name of the sprint</param>
         /// <param name="startDate">The start date of the sprint</param>
         /// <param name="endDate">The end date of the sprint</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
+        /// <returns>True if creating the sprint succeeds, false otherwise</returns>
+        public bool CreateSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
         {
-            if (!_isLoggedIn)
+            if (!_isLoggedIn || CurrProject == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
@@ -528,19 +468,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            Project curr = _dataModel.GetProjectByID(CurrProject.ProjectID);
-
-            Sprint newSprint = new Sprint()
-            {
-                Sprint_name = name,
-                Start_date = startDate,
-                End_date = endDate,
-                Project_id = curr.Project_id,
-                Project = curr,
-                Story = new System.Data.Linq.EntitySet<Story>()
-            };
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.CreateSprint(name, startDate, endDate, CurrProject.ProjectID)
             updateSprintsForProject();
 
             return result;
@@ -551,10 +479,10 @@ namespace ViewModel
         /// </summary>
         /// <param name="priority">The priority number for this story</param>
         /// <param name="text">The text of this story</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddStory(int priority, string text)
+        /// <returns>True if creating the story succeeds, false otherwise</returns>
+        public bool CreateStory(int priority, string text)
         {
-            if (!_isLoggedIn)
+            if (!_isLoggedIn || CurrSprint == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
@@ -567,18 +495,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
 
-            Sprint curr = _dataModel.GetSprintByID(CurrSprint.SprintID);
-
-            Story newStory = new Story()
-            {
-                Priority_num = priority,
-                Sprint_id = curr.Sprint_id,
-                Sprint = curr,
-                Text = text,
-                Task = new System.Data.Linq.EntitySet<Task>()
-            };
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.CreateStory(priority, text, CurrSprint.SprintID);
             updateStoriesForSprint();
 
             return result;
@@ -593,10 +510,10 @@ namespace ViewModel
         /// <param name="owner">The user who owns this task</param>
         /// <param name="type">The type of this task</param>
         /// <param name="state">The state of this task</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
-        public bool AddTask(String text, int size, int value, UserView owner, TaskType type, TaskState state)
+        /// <returns>True if creating the task succeeds, false otherwise</returns>
+        public bool CreateTask(string text, int size, int value, UserView owner, TaskType type, TaskState state)
         {
-            if (!_isLoggedIn)
+            if (!_isLoggedIn || CurrStory == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
@@ -613,31 +530,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            Story curr = _dataModel.GetStoryByID(CurrStory.StoryID);
-            User ownerUser = null;
-            int? ownerId = null;
-
-            if (owner != null)
-            {
-                ownerUser = _dataModel.GetUserByID(owner.UserId);
-                ownerId = owner.UserId;
-            }
-
-            Task newTask = new Task()
-            {
-                Text = text,
-                Business_value = value,
-                Size_complexity = size,
-                Completion_date = null,
-                Owner = ownerId,
-                State = TaskStateConverter.ConvertToBinary(state),
-                Type = TaskTypeConverter.ConvertToBinary(type),
-                Story = curr,
-                Story_id = curr.Story_id,
-                User = ownerUser
-            };
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), TaskTypeConverter.ConvertToBinary(type), TaskStateConverter.ConvertToBinary(state), CurrStory.StoryID);
             updateTasksForStory();
             updateTasksForUser();
 
@@ -664,14 +557,14 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            User ownerUser = _dataModel.GetUserByID(owner.UserId);
+            User ownerUser = _dataModel.GetUserByID(owner.UserID);
             Team projectTeam = _dataModel.GetTeamByID(team.TeamID);
             Project project = _dataModel.GetProjectByID(CurrProject.ProjectID);
 
             project.Project_name = name;
             project.Start_date = startDate;
             project.End_date = endDate;
-            project.Owner = owner.UserId;
+            project.Owner = owner.UserID;
             project.User = ownerUser;
             project.Team_id = team.TeamID;
             project.Team = projectTeam;
@@ -804,8 +697,8 @@ namespace ViewModel
 
             if (owner != null)
             {
-                ownerUser = _dataModel.GetUserByID(owner.UserId);
-                ownerId = owner.UserId;
+                ownerUser = _dataModel.GetUserByID(owner.UserID);
+                ownerId = owner.UserID;
 
                 if (state == TaskState.Unassigned)
                 {
@@ -832,6 +725,7 @@ namespace ViewModel
             return result;
         }
 
+        #region Private methods
         /// <summary>
         /// Hashes a user's password using SHA1
         /// </summary>
@@ -965,7 +859,7 @@ namespace ViewModel
 
             _tasksForUser.Clear(); // Clear the existing entries
 
-            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserId);
+            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserID);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -1005,5 +899,6 @@ namespace ViewModel
 
             return true;
         }
+        #endregion
     }
 }

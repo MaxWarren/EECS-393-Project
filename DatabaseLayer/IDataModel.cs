@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.Linq;
 
 namespace DatabaseLayer
 {
@@ -137,6 +136,58 @@ namespace DatabaseLayer
         /// <param name="password">The password provided by the user</param>
         /// <returns>The User if authentication succeeded, false otherwise</returns>
         User AuthenticateUser(int userID, string password);
+
+        /// <summary>
+        /// Creates a new team
+        /// </summary>
+        /// <param name="name">The name of the team</param>
+        /// <param name="managerID">The ID of the team's manager</param>
+        /// <param name="leadID">The ID of the team lead</param>
+        /// <returns>True if creating the team succeeds, false otherwise</returns>
+        bool CreateTeam(string name, int managerID, int leadID);
+
+        /// <summary>
+        /// Creates a new project
+        /// </summary>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project if it exists</param>
+        /// <param name="ownerID">The ID of the project owner</param>
+        /// <param name="teamID">The ID of the team to which this project belongs</param>
+        /// <returns>True if creating the project succeeds, false otherwise</returns>
+        bool CreateProject(string name, DateTime startDate, Nullable<DateTime> endDate, int ownerID, int teamID);
+
+        /// <summary>
+        /// Creates a new sprint
+        /// </summary>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint if it exists</param>
+        /// <param name="projectID">The ID of the project to which to add the sprint</param>
+        /// <returns>True if creating the sprint succeeds, false otherwise</returns>
+        bool CreateSprint(string name, DateTime startDate, Nullable<DateTime> endDate, int projectID);
+
+        /// <summary>
+        /// Creates a new user story
+        /// </summary>
+        /// <param name="priority">The priority of the story</param>
+        /// <param name="text">The text of the story</param>
+        /// <param name="sprintID">The ID of the sprint to which to add the story</param>
+        /// <returns>True if creating the story succeeds, false otherwise</returns>
+        bool CreateStory(int priority, string text, int sprintID);
+
+        /// <summary>
+        /// Creates a new task
+        /// </summary>
+        /// <param name="text">The text of the task</param>
+        /// <param name="size">The size complexity of the task</param>
+        /// <param name="value">The business value of the task</param>
+        /// <param name="ownerID">The ID of the owner if the task if it exists</param>
+        /// <param name="type">The type of this task</param>
+        /// <param name="state">The state of this task</param>
+        /// <param name="storyID">The ID of the story to which to add this task</param>
+        /// <returns>True if creating the task succeeds, false otherwise</returns>
+        bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID);
 
         /// <summary>
         /// Commits changes made in the object model to the database

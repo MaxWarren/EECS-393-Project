@@ -8,7 +8,7 @@ namespace ViewModel
     /// </summary>
     public class UserView
     {
-        public int UserId { get; set; }
+        public int UserID { get; set; }
         public string PasswordHash { get; set; }
         public int TeamId { get; set; }
         public UserRole Role { get; set; }
@@ -16,7 +16,7 @@ namespace ViewModel
 
         public UserView(User u)
         {
-            UserId = u.User_id;
+            UserID = u.User_id;
             PasswordHash = u.Password.Trim();
             TeamId = u.Team_id;
             Role = UserRoleConverter.ConvertBinaryToRole(u.Role);

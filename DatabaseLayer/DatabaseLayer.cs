@@ -439,6 +439,190 @@ namespace DatabaseLayer
         }
 
         /// <summary>
+        /// Creates a new team
+        /// </summary>
+        /// <param name="name">The name of the team</param>
+        /// <param name="managerID">The ID of the team's manager</param>
+        /// <param name="leadID">The ID of the team lead</param>
+        /// <returns>True if creating the team succeeds, false otherwise</returns>
+        public bool CreateTeam(string name, int managerID, int leadID)
+        {
+            User managerUser = GetUserByID(managerID);
+            User leadUser = GetUserByID(leadID);
+
+            if (managerUser == null || leadUser == null)
+            {
+                return false;
+            }
+
+            Team newTeam = new Team()
+            {
+                Manager = managerID,
+                ManagerUser = managerUser,
+                Project = new System.Data.Linq.EntitySet<Project>(),
+                Team_ = new System.Data.Linq.EntitySet<User>() { leadUser },
+                Team_lead = leadID,
+                Team_name = name,
+                User = leadUser
+            };
+
+            return CommitChanges();
+        }
+
+        /// <summary>
+        /// Creates a new project
+        /// </summary>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project if it exists</param>
+        /// <param name="ownerID">The ID of the project owner</param>
+        /// <param name="teamID">The ID of the team to which this project belongs</param>
+        /// <returns>True if creating the project succeeds, false otherwise</returns>
+        public bool CreateProject(string name, DateTime startDate, Nullable<DateTime> endDate, int ownerID, int teamID)
+        {
+            User ownerUser = GetUserByID(ownerID);
+            Team projectTeam = GetTeamByID(teamID);
+
+            if (ownerUser == null || projectTeam == null)
+            {
+                return false;
+            }
+
+            Project newProject = new Project()
+            {
+                Project_name = name,
+                Start_date = startDate,
+                End_date = endDate,
+                Owner = ownerID,
+                User = ownerUser,
+                Team_id = teamID,
+                Team = projectTeam,
+                Sprint = new System.Data.Linq.EntitySet<Sprint>()
+            };
+
+            bool result = CommitChanges();
+
+            if (result)
+            {
+                // Add the backlog to the project
+                Sprint backog = new Sprint()
+                {
+                    Start_date = startDate,
+                    End_date = endDate,
+                    Project = newProject,
+                    Project_id = newProject.Project_id,
+                    Sprint_name = "Backlog",
+                    Story = new System.Data.Linq.EntitySet<Story>()
+                };
+
+                result &= CommitChanges();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new sprint
+        /// </summary>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint if it exists</param>
+        /// <param name="projectID">The ID of the project to which to add the sprint</param>
+        /// <returns>True if creating the sprint succeeds, false otherwise</returns>
+        public bool CreateSprint(string name, DateTime startDate, Nullable<DateTime> endDate, int projectID)
+        {
+            Project curr = GetProjectByID(projectID);
+
+            if (curr == null)
+            {
+                return false;
+            }
+
+            Sprint newSprint = new Sprint()
+            {
+                Sprint_name = name,
+                Start_date = startDate,
+                End_date = endDate,
+                Project_id = projectID,
+                Project = curr,
+                Story = new System.Data.Linq.EntitySet<Story>()
+            };
+
+            return CommitChanges();
+        }
+
+        /// <summary>
+        /// Creates a new user story
+        /// </summary>
+        /// <param name="priority">The priority of the story</param>
+        /// <param name="text">The text of the story</param>
+        /// <param name="sprintID">The ID of the sprint to which to add the story</param>
+        /// <returns>True if creating the story succeeds, false otherwise</returns>
+        public bool CreateStory(int priority, string text, int sprintID)
+        {
+            Sprint curr = GetSprintByID(sprintID);
+
+            if (curr == null)
+            {
+                return false;
+            }
+
+            Story newStory = new Story()
+            {
+                Priority_num = priority,
+                Sprint_id = sprintID,
+                Sprint = curr,
+                Text = text,
+                Task = new System.Data.Linq.EntitySet<Task>()
+            };
+
+            return CommitChanges();
+        }
+
+        /// <summary>
+        /// Creates a new task
+        /// </summary>
+        /// <param name="text">The text of the task</param>
+        /// <param name="size">The size complexity of the task</param>
+        /// <param name="value">The business value of the task</param>
+        /// <param name="ownerID">The ID of the owner if the task if it exists</param>
+        /// <param name="type">The type of this task</param>
+        /// <param name="state">The state of this task</param>
+        /// <param name="storyID">The ID of the story to which to add this task</param>
+        /// <returns>True if creating the task succeeds, false otherwise</returns>
+        public bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID)
+        {
+            Story curr = GetStoryByID(storyID);
+            User ownerUser = null;
+
+            if (ownerID.HasValue)
+            {
+                ownerUser = GetUserByID(ownerID.Value);
+            }
+
+            if (curr == null || ownerUser == null)
+            {
+                return false;
+            }
+
+            Task newTask = new Task()
+            {
+                Text = text,
+                Business_value = value,
+                Size_complexity = size,
+                Completion_date = null,
+                Owner = ownerID,
+                State = state,
+                Type = type,
+                Story = curr,
+                Story_id = storyID,
+                User = ownerUser
+            };
+
+            return CommitChanges();
+        }
+
+        /// <summary>
         /// Commits changes made in the object model to the database
         /// </summary>
         /// <returns></returns>
