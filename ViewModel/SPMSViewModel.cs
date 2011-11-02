@@ -530,7 +530,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), TaskTypeConverter.ConvertToBinary(type), TaskStateConverter.ConvertToBinary(state), CurrStory.StoryID);
+            bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), type.ConvertToBinary(), state.ConvertToBinary(), CurrStory.StoryID);
             updateTasksForStory();
             updateTasksForUser();
 
@@ -710,8 +710,8 @@ namespace ViewModel
             task.Business_value = value;
             task.Size_complexity = size;
             task.Owner = ownerId;
-            task.State = TaskStateConverter.ConvertToBinary(state);
-            task.Type = TaskTypeConverter.ConvertToBinary(type);
+            task.State = state.ConvertToBinary();
+            task.Type = type.ConvertToBinary();
             task.User = ownerUser;
             task.Completion_date = completion;
 

@@ -30,5 +30,29 @@ namespace ViewModel
         {
             return (int)bin.ToArray()[2];
         }
+
+        /// <summary>
+        /// Converts a TaskState to a Binary
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public static Binary ConvertToBinary(this TaskState state)
+        {
+            byte[] res = new byte[3];
+            res[2] = (byte)state;
+            return new Binary(res);
+        }
+
+        /// <summary>
+        /// Converts a TaskType to a Binary
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Binary ConvertToBinary(this TaskType type)
+        {
+            byte[] res = new byte[3];
+            res[2] = (byte)type;
+            return new Binary(res);
+        }
     }
 }
