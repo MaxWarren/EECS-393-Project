@@ -20,6 +20,13 @@ namespace ViewModel
         /// </summary>
         private bool _isLoggedIn;
 
+        private UserView _currUser;
+        private TeamView _currTeam;
+        private ProjectView _currProject;
+        private SprintView _currSprint;
+        private StoryView _currStory;
+        private TaskView _currTask;
+
         private ObservableCollection<ProjectView> _projectsForUser;
         private ObservableCollection<TaskView> _tasksForUser;
         private ObservableCollection<SprintView> _sprintsForProject;
@@ -36,32 +43,56 @@ namespace ViewModel
         /// <summary>
         /// The currently logged in user
         /// </summary>
-        public UserView CurrUser { get; set; }
+        public UserView CurrUser
+        {
+            get { return _currUser; }
+            set { _currUser = value; updateTasksForUser(); }
+        }
 
         /// <summary>
         /// The team to which the current user belongs
         /// </summary>
-        public TeamView CurrTeam { get; set; }
+        public TeamView CurrTeam
+        {
+            get { return _currTeam; }
+            set { _currTeam = value; updateProjectsForUser(); }
+        }
 
         /// <summary>
         /// The project most recently selected by the user
         /// </summary>
-        public ProjectView CurrProject { get; set; }
+        public ProjectView CurrProject
+        {
+            get { return _currProject; }
+            set { _currProject = value; updateSprintsForProject(); }
+        }
 
         /// <summary>
         /// The sprint most recently selected by the user
         /// </summary>
-        public SprintView CurrSprint { get; set; }
+        public SprintView CurrSprint
+        {
+            get { return _currSprint; }
+            set { _currSprint = value; updateStoriesForSprint(); }
+        }
 
         /// <summary>
         /// The user story most recently selected by the user
         /// </summary>
-        public StoryView CurrStory { get; set; }
+        public StoryView CurrStory
+        {
+            get { return _currStory; }
+            set { _currStory = value; updateTasksForStory(); }
+        }
 
         /// <summary>
         /// The task most recently selected by the user
         /// </summary>
-        public TaskView CurrTask { get; set; }
+        public TaskView CurrTask
+        {
+            get { return _currTask; }
+            set { _currTask = value; }
+        }
 
         /// <summary>
         /// A list of all projects that belong to the team to which the current user belongs
@@ -113,7 +144,7 @@ namespace ViewModel
         /// </summary>
         public ObservableCollection<TeamView> AllTeams
         {
-            get { return _allTeams; }
+            get { updateAllTeams(); return _allTeams; }
             private set { _allTeams = value; }
         }
 
@@ -131,7 +162,7 @@ namespace ViewModel
         /// </summary>
         public SPMSViewModel() : this(new DataModel()) { }
 
-         /// <summary>
+        /// <summary>
         /// Initializes the view model
         /// </summary>
         /// <param name="dataModel">The IDataModel to use in the view model</param>
@@ -167,10 +198,11 @@ namespace ViewModel
                 return false;
             }
 
-            CurrUser = new UserView(curr); // Store the user
-            CurrTeam = new TeamView(curr.Team_); // Store the team
-
             _isLoggedIn = true;
+
+            CurrTeam = new TeamView(curr.Team_); // Store the team
+            CurrUser = new UserView(curr); // Store the user
+
             IsManager = !(CurrUser.Role == UserRole.Manager);
 
             // Get members of CurrTeam
@@ -180,9 +212,6 @@ namespace ViewModel
             {
                 _currTeamMembers.Add(new UserView(m));
             }
-
-            UpdateProjectsForUser();
-            UpdateTasksForUser();
 
             return true;
         }
@@ -253,172 +282,10 @@ namespace ViewModel
             if (result && user.UserId == CurrUser.UserId)
             {
                 CurrTeam = team;
-                UpdateProjectsForUser();
+                updateProjectsForUser();
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Updates the ProjectsForUser collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateProjectsForUser()
-        {
-            if (!_isLoggedIn) // No one is logged in
-            {
-                throw new InvalidOperationException("User must be logged in");
-            }
-
-            _projectsForUser.Clear(); // Clear the existing entries
-
-            IEnumerable<Project> projects = _dataModel.GetProjectsByTeam(CurrTeam.TeamID);
-            if (projects == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Project p in projects)
-            {
-                _projectsForUser.Add(new ProjectView(p));
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Updates the SprintsForProject collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateSprintsForProject()
-        {
-            if (!_isLoggedIn || CurrProject == null) // No one is logged in or a project has not been selected
-            {
-                throw new InvalidOperationException("User must be logged in and CurrProject must be set");
-            }
-
-            _sprintsForProject.Clear(); // Clear the existing entries
-
-            IEnumerable<Sprint> sprints = _dataModel.GetSprintsForProject(CurrProject.ProjectID);
-            if (sprints == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Sprint s in sprints)
-            {
-                _sprintsForProject.Add(new SprintView(s));
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Updates the StoriesForSprint collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateStoriesForSprint()
-        {
-            if (!_isLoggedIn || CurrSprint == null) // No one is logged in or a sprint has not been selected
-            {
-                throw new InvalidOperationException("User must be logged in and CurrSprint must be set");
-            }
-
-            _storiesForSprint.Clear(); // Clear the existing entries
-
-            IEnumerable<Story> stories = _dataModel.GetStoriesForSprint(CurrSprint.SprintID);
-            if (stories == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Story s in stories)
-            {
-                _storiesForSprint.Add(new StoryView(s));
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Updates the TasksForStory collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateTasksForStory()
-        {
-            if (!_isLoggedIn || CurrStory == null) // No one is logged in or a user story has not been selected
-            {
-                throw new InvalidOperationException("User must be logged in and CurrStory must be set");
-            }
-
-            _tasksForStory.Clear(); // Clear the existing entries
-
-            IEnumerable<Task> tasks = _dataModel.GetTasksForStory(CurrStory.StoryID);
-            if (tasks == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Task t in tasks)
-            {
-                _tasksForStory.Add(new TaskView(t));
-            }
-
-            return true;
-        }
-
-        /// <summary> 
-        /// Updates the AllTeams collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateAllTeams()
-        {
-            if (!_isLoggedIn) // No one is logged in
-            {
-                throw new InvalidOperationException("User must be logged in");
-            }
-
-            _allTeams.Clear(); // Clear the existing entries
-
-            IEnumerable<Team> teams = _dataModel.GetAllTeams();
-            if (teams == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Team t in teams)
-            {
-                _allTeams.Add(new TeamView(t));
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Updates the TasksForUser collection
-        /// </summary>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool UpdateTasksForUser()
-        {
-            if (!_isLoggedIn) // No one is logged in
-            {
-                throw new InvalidOperationException("User must be logged in");
-            }
-
-            _tasksForUser.Clear(); // Clear the existing entries
-
-            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserId);
-            if (tasks == null) // An error occured
-            {
-                return false;
-            }
-
-            foreach (Task t in tasks)
-            {
-                _tasksForUser.Add(new TaskView(t));
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -466,10 +333,6 @@ namespace ViewModel
             CurrSprint = new SprintView(_dataModel.GetSprintByID(CurrStory.SprintID));
             CurrProject = new ProjectView(_dataModel.GetProjectByID(CurrSprint.ProjectID));
             CurrTask = task;
-
-            UpdateSprintsForProject();
-            UpdateStoriesForSprint();
-            UpdateTasksForStory();
         }
 
         /// <summary>
@@ -588,7 +451,6 @@ namespace ViewModel
                 User = leadUser
             };
 
-            UpdateAllTeams();
             return _dataModel.CommitChanges();
         }
 
@@ -644,7 +506,7 @@ namespace ViewModel
                 result &= _dataModel.CommitChanges();
             }
 
-            UpdateProjectsForUser();
+            updateProjectsForUser();
             return result;
         }
 
@@ -679,7 +541,7 @@ namespace ViewModel
             };
 
             bool result = _dataModel.CommitChanges();
-            UpdateSprintsForProject();
+            updateSprintsForProject();
 
             return result;
         }
@@ -717,7 +579,7 @@ namespace ViewModel
             };
 
             bool result = _dataModel.CommitChanges();
-            UpdateStoriesForSprint();
+            updateStoriesForSprint();
 
             return result;
         }
@@ -776,8 +638,8 @@ namespace ViewModel
             };
 
             bool result = _dataModel.CommitChanges();
-            UpdateTasksForStory();
-            UpdateTasksForUser();
+            updateTasksForStory();
+            updateTasksForUser();
 
             return result;
         }
@@ -815,8 +677,11 @@ namespace ViewModel
             project.Team = projectTeam;
 
             bool result = _dataModel.CommitChanges();
-            UpdateProjectsForUser();
-            CurrProject = new ProjectView(project);
+            if (result)
+            {
+                updateProjectsForUser();
+                CurrProject = new ProjectView(project);
+            }
 
             return result;
         }
@@ -845,8 +710,11 @@ namespace ViewModel
             sprint.End_date = endDate;
 
             bool result = _dataModel.CommitChanges();
-            UpdateSprintsForProject();
-            CurrSprint = new SprintView(sprint);
+            if (result)
+            {
+                CurrSprint = new SprintView(sprint);
+                updateSprintsForProject();
+            }
 
             return result;
         }
@@ -891,8 +759,11 @@ namespace ViewModel
             story.Text = text;
 
             bool result = _dataModel.CommitChanges();
-            UpdateStoriesForSprint();
-            CurrStory = new StoryView(story);
+            if (result)
+            {
+                updateStoriesForSprint();
+                CurrStory = new StoryView(story);
+            }
 
             return result;
         }
@@ -952,8 +823,11 @@ namespace ViewModel
             task.Completion_date = completion;
 
             bool result = _dataModel.CommitChanges();
-            UpdateTasksForStory();
-            CurrTask = new TaskView(task);
+            if (result)
+            {
+                updateTasksForStory();
+                CurrTask = new TaskView(task);
+            }
 
             return result;
         }
@@ -968,6 +842,168 @@ namespace ViewModel
             byte[] bytes = Encoding.Unicode.GetBytes(password);
             byte[] inArray = HashAlgorithm.Create("SHA1").ComputeHash(bytes);
             return Convert.ToBase64String(inArray);
+        }
+
+        /// <summary>
+        /// Updates the ProjectsForUser collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateProjectsForUser()
+        {
+            if (!_isLoggedIn || CurrTeam == null) // No one is logged in
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+
+            _projectsForUser.Clear(); // Clear the existing entries
+
+            IEnumerable<Project> projects = _dataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            if (projects == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Project p in projects)
+            {
+                _projectsForUser.Add(new ProjectView(p));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the SprintsForProject collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateSprintsForProject()
+        {
+            if (!_isLoggedIn || CurrProject == null) // No one is logged in or a project has not been selected
+            {
+                throw new InvalidOperationException("User must be logged in and CurrProject must be set");
+            }
+
+            _sprintsForProject.Clear(); // Clear the existing entries
+
+            IEnumerable<Sprint> sprints = _dataModel.GetSprintsForProject(CurrProject.ProjectID);
+            if (sprints == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Sprint s in sprints)
+            {
+                _sprintsForProject.Add(new SprintView(s));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the StoriesForSprint collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateStoriesForSprint()
+        {
+            if (!_isLoggedIn || CurrSprint == null) // No one is logged in or a sprint has not been selected
+            {
+                throw new InvalidOperationException("User must be logged in and CurrSprint must be set");
+            }
+
+            _storiesForSprint.Clear(); // Clear the existing entries
+
+            IEnumerable<Story> stories = _dataModel.GetStoriesForSprint(CurrSprint.SprintID);
+            if (stories == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Story s in stories)
+            {
+                _storiesForSprint.Add(new StoryView(s));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the TasksForStory collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateTasksForStory()
+        {
+            if (!_isLoggedIn || CurrStory == null) // No one is logged in or a user story has not been selected
+            {
+                throw new InvalidOperationException("User must be logged in and CurrStory must be set");
+            }
+
+            _tasksForStory.Clear(); // Clear the existing entries
+
+            IEnumerable<Task> tasks = _dataModel.GetTasksForStory(CurrStory.StoryID);
+            if (tasks == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Task t in tasks)
+            {
+                _tasksForStory.Add(new TaskView(t));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Updates the TasksForUser collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateTasksForUser()
+        {
+            if (!_isLoggedIn) // No one is logged in
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+
+            _tasksForUser.Clear(); // Clear the existing entries
+
+            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserId);
+            if (tasks == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Task t in tasks)
+            {
+                _tasksForUser.Add(new TaskView(t));
+            }
+
+            return true;
+        }
+
+        /// <summary> 
+        /// Updates the AllTeams collection
+        /// </summary>
+        /// <returns>True if the update succeeds, false otherwise</returns>
+        private bool updateAllTeams()
+        {
+            if (!_isLoggedIn) // No one is logged in
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+
+            _allTeams.Clear(); // Clear the existing entries
+
+            IEnumerable<Team> teams = _dataModel.GetAllTeams();
+            if (teams == null) // An error occured
+            {
+                return false;
+            }
+
+            foreach (Team t in teams)
+            {
+                _allTeams.Add(new TeamView(t));
+            }
+
+            return true;
         }
     }
 }

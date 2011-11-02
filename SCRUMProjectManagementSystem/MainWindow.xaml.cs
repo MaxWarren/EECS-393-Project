@@ -37,7 +37,6 @@ namespace SCRUMProjectManagementSystem
         {
             this.DataContext = viewModel;
             currentSelection = selection.Home;
-            viewModel.UpdateAllTeams();
             isUpdating = false;
             update();
         }
@@ -119,7 +118,7 @@ namespace SCRUMProjectManagementSystem
                         column1.Width = new GridLength(2, GridUnitType.Star);
                         column2.Width = new GridLength(0, GridUnitType.Star);
                         //left panel
-                        viewModel.UpdateProjectsForUser();
+                        //viewModel.UpdateProjectsForUser();
                         leftList.ItemsSource = viewModel.ProjectsForUser;
                         //right panel
                         stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
@@ -133,7 +132,7 @@ namespace SCRUMProjectManagementSystem
                     case selection.Project:
                         //left panel
                         button_project.Visibility = Visibility.Visible;
-                        viewModel.UpdateSprintsForProject();
+                        //viewModel.UpdateSprintsForProject();
                         leftList.ItemsSource = viewModel.SprintsForProject;
                         //right panel
                         stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
@@ -182,7 +181,7 @@ namespace SCRUMProjectManagementSystem
                         //left panel
                         button_project.Visibility = Visibility.Visible;
                         button_sprint.Visibility = Visibility.Visible;
-                        viewModel.UpdateStoriesForSprint();
+                        //viewModel.UpdateStoriesForSprint();
                         leftList.ItemsSource = viewModel.StoriesForSprint;
                         //right panel
                         stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
@@ -222,7 +221,7 @@ namespace SCRUMProjectManagementSystem
                         button_project.Visibility = Visibility.Visible;
                         button_sprint.Visibility = Visibility.Visible;
                         button_story.Visibility = Visibility.Visible;
-                        viewModel.UpdateTasksForStory();
+                        //viewModel.UpdateTasksForStory();
                         leftList.ItemsSource = viewModel.TasksForStory;
                         //right panel
                         stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
@@ -467,7 +466,7 @@ namespace SCRUMProjectManagementSystem
 
         private void menu_main_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            viewModel.UpdateAllTeams();
+            //viewModel.UpdateAllTeams();
             MenuItem[] teams = new MenuItem[viewModel.AllTeams.Count];
             for (int i = 0; i < teams.Length; i++)
             {
