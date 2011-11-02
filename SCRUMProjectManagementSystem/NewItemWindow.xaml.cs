@@ -22,13 +22,16 @@ namespace SCRUMProjectManagementSystem
     {
         private MainWindow.selection _type;
         private ViewModel.SPMSViewModel _viewModel;
+        private TaskStateConverter tsConverter;
+        private TaskTypeConverter ttConverter;
 
-
-        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm)
+        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
         {
             InitializeComponent();
             _type = type;
             _viewModel = vm;
+            tsConverter = ts;
+            ttConverter = tt;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -69,8 +72,8 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task1.ItemsSource = ComplexityValues.sizeComplexity;
                 comboBox_task2.ItemsSource = ComplexityValues.businessValue;
                 comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
-                comboBox_task4.ItemsSource = TaskTypeConverter.nameMap.Keys;
-                comboBox_task5.ItemsSource = TaskStateConverter.nameMap.Keys;
+                comboBox_task4.ItemsSource = Enum.GetValues(typeof(TaskType));
+                comboBox_task5.ItemsSource = Enum.GetValues(typeof(TaskState));
                 comboBox_task5.SelectedIndex = 0;
                 comboBox_task5.IsEnabled = false;
                 stackPanel_task.Visibility = Visibility.Visible;
@@ -104,10 +107,10 @@ namespace SCRUMProjectManagementSystem
                         _viewModel.CreateStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
                         break;
                     case MainWindow.selection.Task:
-                        if (comboBox_task3.SelectedIndex <= 0 || comboBox_task5.SelectedIndex == 0)
-                            _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), null, TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
+                        if (comboBox_task3.SelectedIndex < 0 || comboBox_task5.SelectedIndex == 0)
+                            _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), null, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
                         else
-                        _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], TaskTypeConverter.nameMap[comboBox_task4.SelectedItem.ToString()], TaskStateConverter.nameMap[comboBox_task5.SelectedItem.ToString()]);
+                            _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
                         break;
                     case MainWindow.selection.Team:
                         _viewModel.CreateTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);

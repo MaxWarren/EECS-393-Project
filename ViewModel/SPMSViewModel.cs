@@ -468,7 +468,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            bool result = _dataModel.CreateSprint(name, startDate, endDate, CurrProject.ProjectID)
+            bool result = _dataModel.CreateSprint(name, startDate, endDate, CurrProject.ProjectID);
             updateSprintsForProject();
 
             return result;

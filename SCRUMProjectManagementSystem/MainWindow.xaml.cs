@@ -16,6 +16,8 @@ namespace SCRUMProjectManagementSystem
         private selection currentSelection;
         private SPMSViewModel viewModel;
         private bool isUpdating;
+        private TaskStateConverter tsConverter;
+        private TaskTypeConverter ttConverter;
 
         public enum selection
         {
@@ -31,6 +33,8 @@ namespace SCRUMProjectManagementSystem
         {
             viewModel = vm;
             InitializeComponent();
+            tsConverter = new TaskStateConverter();
+            ttConverter = new TaskTypeConverter();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -318,16 +322,17 @@ namespace SCRUMProjectManagementSystem
                         label = new Label();
                         label.Content = "Type:";
                         cb = new ComboBox();
-                        cb.ItemsSource = TaskTypeConverter.nameMap.Keys;
-                        cb.SelectedItem = TaskTypeConverter.nameMap.GetKeyByValue(viewModel.CurrTask.Type);
+                        cb.ItemsSource = Enum.GetValues(typeof(TaskType)).Cast<TaskType>().Select(type => ttConverter.Convert(type, typeof(string), null, null));
+                        cb.SelectedItem = ttConverter.Convert(viewModel.CurrTask.Type, typeof(string), null, null);
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
                         stackPanel2.Children.Add(cb);
                         label = new Label();
                         label.Content = "State:";
                         cb = new ComboBox();
-                        cb.ItemsSource = TaskStateConverter.nameMap.Keys;
-                        cb.SelectedItem = TaskStateConverter.nameMap.GetKeyByValue(viewModel.CurrTask.State);
+                        // Max - this conversion and others like it can be done entirely in XAML
+                        cb.ItemsSource = Enum.GetValues(typeof(TaskState)).Cast<TaskState>().Select(state => tsConverter.Convert(state, typeof(string), null, null));
+                        cb.SelectedItem = tsConverter.Convert(viewModel.CurrTask.State, typeof(string), null, null);
                         cb.Margin = new Thickness(0, 0, 0, 4);
                         stackPanel1.Children.Add(label);
                         stackPanel2.Children.Add(cb);
@@ -424,13 +429,14 @@ namespace SCRUMProjectManagementSystem
             ComboBox state = (ComboBox)stackPanel2.Children[5];
             DatePicker completion = (DatePicker)stackPanel2.Children[6];
             TextBox text = (TextBox)stackPanel2.Children[7];
+            TaskStateConverter converter = new TaskStateConverter();
             if (owner.SelectedIndex == -1 || state.SelectedIndex == 0)
             {
-                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
+                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
             }
             else
             {
-                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], TaskTypeConverter.nameMap[type.SelectedItem.ToString()], TaskStateConverter.nameMap[state.SelectedItem.ToString()], completion.SelectedDate);
+                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
             }
         }
 
@@ -454,13 +460,13 @@ namespace SCRUMProjectManagementSystem
 
         private void button_New_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel);
+            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel, tsConverter, ttConverter);
             niw.Visibility = Visibility.Visible;
         }
 
         private void menu_addTeam_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel);
+            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel, tsConverter, ttConverter);
             niw.Visibility = Visibility.Visible;
         }
 

@@ -600,7 +600,7 @@ namespace DatabaseLayer
                 ownerUser = GetUserByID(ownerID.Value);
             }
 
-            if (curr == null || ownerUser == null)
+            if (curr == null)
             {
                 return false;
             }

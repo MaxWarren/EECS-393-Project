@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Linq;
 
 namespace ViewModel
@@ -62,7 +63,6 @@ namespace ViewModel
     [Flags]
     public enum TaskType
     {
-        None = 0,
         Development = 1,
         QA = 2,
         Documentation = 4
