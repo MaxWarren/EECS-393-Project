@@ -7,10 +7,10 @@
         <Style  TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="#19f39611"></Setter>
+                    <Setter Property="Background" Value="White"></Setter>
                 </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="#19000000"></Setter>
+                    <Setter Property="Background" Value="LightBlue"></Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
