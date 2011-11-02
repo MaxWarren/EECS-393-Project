@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using ViewModel;
-using System.Text.RegularExpressions;
-using Utilities;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -55,7 +53,7 @@ namespace SCRUMProjectManagementSystem
         /// <param name="e">Other event arguments</param>
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = Utility.IsTextNumeric(e.Text);
+            e.Handled = e.Text.IsNumeric();
         }
     }
 }

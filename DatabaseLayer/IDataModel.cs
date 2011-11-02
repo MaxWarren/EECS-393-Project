@@ -6,6 +6,7 @@ namespace DatabaseLayer
 {
     public interface IDataModel
     {
+        #region Get Projects
         /// <summary>
         /// Get all projects in the database
         /// </summary>
@@ -32,7 +33,9 @@ namespace DatabaseLayer
         /// <param name="projectID">The project ID for which to search</param>
         /// <returns>The project with the given ID</returns>
         Project GetProjectByID(int projectID);
+        #endregion
 
+        #region Get Sprints
         /// <summary>
         /// Gets all sprints for a project
         /// </summary>
@@ -53,7 +56,9 @@ namespace DatabaseLayer
         /// <param name="sprintID">The sprint ID for which to search</param>
         /// <returns>The sprint with the given ID</returns>
         Sprint GetSprintByID(int sprintID);
+        #endregion
 
+        #region Get Stories
         /// <summary>
         /// Gets all user stories assigned to a sprint
         /// </summary>
@@ -67,7 +72,9 @@ namespace DatabaseLayer
         /// <param name="storyID">The ID of the story for which to search</param>
         /// <returns>The story with the given ID</returns>
         Story GetStoryByID(int storyID);
+        #endregion
 
+        #region Get Tasks
         /// <summary>
         /// Gets all tasks for a given user story
         /// </summary>
@@ -88,7 +95,9 @@ namespace DatabaseLayer
         /// <param name="taskID">The ID of the task for which to search</param>
         /// <returns>The task with the given ID</returns>
         Task GetTaskByID(int taskID);
+        #endregion
 
+        #region Get Teams
         /// <summary>
         /// Gets all teams in the database
         /// </summary>
@@ -101,7 +110,9 @@ namespace DatabaseLayer
         /// <param name="teamID">The ID of the team for which to search</param>
         /// <returns>The team with the given ID</returns>
         Team GetTeamByID(int teamID);
+        #endregion
 
+        #region Get Users
         /// <summary>
         /// Gets the user with the given ID
         /// </summary>
@@ -136,7 +147,9 @@ namespace DatabaseLayer
         /// <param name="password">The password provided by the user</param>
         /// <returns>The User if authentication succeeded, false otherwise</returns>
         User AuthenticateUser(int userID, string password);
+        #endregion
 
+        #region Create New Entities
         /// <summary>
         /// Creates a new team
         /// </summary>
@@ -188,6 +201,10 @@ namespace DatabaseLayer
         /// <param name="storyID">The ID of the story to which to add this task</param>
         /// <returns>True if creating the task succeeds, false otherwise</returns>
         bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID);
+        #endregion
+
+        #region Change Existing Entities
+        #endregion
 
         /// <summary>
         /// Commits changes made in the object model to the database

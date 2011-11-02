@@ -1,26 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Data.Linq;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ViewModel
 {
     public static class Extensions
     {
-        /// <summary>
-        /// Lookup a key in a dictionary given its value
-        /// </summary>
-        /// <typeparam name="TKey">The type of the keys in the dictionary</typeparam>
-        /// <typeparam name="TValue">The type of the values in the dictionary</typeparam>
-        /// <param name="dict">The dictionary itself</param>
-        /// <param name="value">The value for which to lookup the key</param>
-        /// <returns>The key corresponding to the given value, or the default value</returns>
-        public static TKey GetKeyByValue<TKey, TValue>(this Dictionary<TKey, TValue> dict, TValue value)
-        {
-            return dict.SingleOrDefault(x => x.Value.Equals(value)).Key;
-        }
-
         /// <summary>
         /// Converts a Binary to an int
         /// </summary>
@@ -53,6 +39,17 @@ namespace ViewModel
             byte[] res = new byte[3];
             res[2] = (byte)type;
             return new Binary(res);
+        }
+
+        /// <summary>
+        /// Checks if a string is a nonnegative numeric value
+        /// </summary>
+        /// <param name="text">The string to check</param>
+        /// <returns>True if the string is a nonnegative number, false otherwise</returns>
+        public static bool IsNumeric(this string text)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            return regex.IsMatch(text);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace DatabaseLayer
     /// </summary>
     public class DataModel : IDataModel
     {
+        #region Private Fields and Constructors
         /// <summary>
         /// Connection to the database
         /// </summary>
@@ -35,7 +36,9 @@ namespace DatabaseLayer
 
             dbConnection = new Eecs393_project(connString);
         }
+        #endregion
 
+        #region Get Projects
         /// <summary>
         /// Get all projects in the database
         /// </summary>
@@ -117,7 +120,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Get Sprints
         /// <summary>
         /// Gets all sprints for a project
         /// </summary>
@@ -182,7 +187,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Get Stories
         /// <summary>
         /// Gets all user stories assigned to a sprint
         /// </summary>
@@ -225,7 +232,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Get Tasks
         /// <summary>
         /// Gets all tasks for a given user story
         /// </summary>
@@ -290,7 +299,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Get Teams
         /// <summary>
         /// Gets all teams in the database
         /// </summary>
@@ -331,7 +342,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Get Users
         /// <summary>
         /// Gets the user with the given ID
         /// </summary>
@@ -437,7 +450,9 @@ namespace DatabaseLayer
                 return null; // TODO add error handling for db failure
             }
         }
+        #endregion
 
+        #region Create New Entities
         /// <summary>
         /// Creates a new team
         /// </summary>
@@ -621,6 +636,7 @@ namespace DatabaseLayer
 
             return CommitChanges();
         }
+        #endregion
 
         /// <summary>
         /// Commits changes made in the object model to the database

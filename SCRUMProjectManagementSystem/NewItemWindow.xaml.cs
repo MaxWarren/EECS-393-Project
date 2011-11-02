@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Utilities;
 using ViewModel;
 
 namespace SCRUMProjectManagementSystem
@@ -128,7 +118,7 @@ namespace SCRUMProjectManagementSystem
 
         private void textBox_story1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = Utility.IsTextNumeric(e.Text);
+            e.Handled = e.Text.IsNumeric();
         }
 
         private void projectChanged(object sender, EventArgs e)

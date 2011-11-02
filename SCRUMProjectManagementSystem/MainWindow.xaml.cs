@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using ViewModel;
-using Utilities;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -401,7 +399,7 @@ namespace SCRUMProjectManagementSystem
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
             ComboBox owner = (ComboBox)stackPanel2.Children[4];
-            viewModel.UpdateCurrProject(name.Text, start.SelectedDate.Value, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
+            viewModel.ChangeCurrProject(name.Text, start.SelectedDate.Value, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
@@ -409,7 +407,7 @@ namespace SCRUMProjectManagementSystem
             TextBox name = (TextBox)stackPanel2.Children[1];
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
-            viewModel.UpdateCurrSprint(name.Text, start.SelectedDate.Value, end.SelectedDate);
+            viewModel.ChangeCurrSprint(name.Text, start.SelectedDate.Value, end.SelectedDate);
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)
@@ -417,7 +415,7 @@ namespace SCRUMProjectManagementSystem
             ComboBox sprint = (ComboBox)stackPanel2.Children[1];
             TextBox priority = (TextBox)stackPanel2.Children[2];
             TextBox text = (TextBox)stackPanel2.Children[3];
-            viewModel.UpdateCurrStory(Int32.Parse(priority.Text), text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
+            viewModel.ChangeCurrStory(Int32.Parse(priority.Text), text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
@@ -432,17 +430,17 @@ namespace SCRUMProjectManagementSystem
             TaskStateConverter converter = new TaskStateConverter();
             if (owner.SelectedIndex == -1 || state.SelectedIndex == 0)
             {
-                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
+                viewModel.ChangeCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
             }
             else
             {
-                viewModel.UpdateCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
+                viewModel.ChangeCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
             }
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = Utility.IsTextNumeric(e.Text);
+            e.Handled = e.Text.IsNumeric();
         }
 
         void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
