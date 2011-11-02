@@ -207,40 +207,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Moves a user to a given team
-        /// </summary>
-        /// <param name="user">The user to change</param>
-        /// <param name="team">The team to which to move the user</param>
-        /// <returns>True if the move succeeds, false otherwise</returns>
-        public bool MoveUserToTeam(UserView user, TeamView team)
-        {
-            if (user == null || team == null)
-            {
-                throw new ArgumentNullException("Arguments to ChangeTeam must not be null");
-            }
-
-            User u = _dataModel.GetUserByID(user.UserID);
-            Team newTeam = _dataModel.GetTeamByID(team.TeamID);
-            Team oldTeam = _dataModel.GetTeamByID(u.Team_id);
-
-            oldTeam.Team_.Remove(u);
-            oldTeam.Team_.Add(u);
-
-            u.Team_ = newTeam;
-            u.Team_id = newTeam.Team_id;
-
-            bool result = _dataModel.CommitChanges();
-
-            if (result && user.UserID == CurrUser.UserID)
-            {
-                CurrTeam = team;
-                updateProjectsForUser();
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Sets the current project, sprint, and story from a selected task
         /// </summary>
         /// <param name="task">The selected task</param>
@@ -419,6 +385,30 @@ namespace ViewModel
 
         #region Change Existing Entities
         /// <summary>
+        /// Moves a user to a given team
+        /// </summary>
+        /// <param name="user">The user to change</param>
+        /// <param name="team">The team to which to move the user</param>
+        /// <returns>True if moving the user succeeds, false otherwise</returns>
+        public bool MoveUserToTeam(UserView user, TeamView team)
+        {
+            if (user == null || team == null)
+            {
+                throw new ArgumentNullException("Arguments to ChangeTeam must not be null");
+            }
+
+            bool result = _dataModel.MoveUserToTeam(user.UserID, team.TeamID);
+
+            if (result && user.UserID == CurrUser.UserID)
+            {
+                CurrTeam = team;
+                updateProjectsForUser();
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Updates the current project
         /// </summary>
         /// <param name="name">The name of the project</param>
@@ -426,7 +416,7 @@ namespace ViewModel
         /// <param name="endDate">The end date of the project</param>
         /// <param name="owner">The User who owns the new project</param>
         /// <param name="team">The team responsible for the new project</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
+        /// <returns>True if the changes succeed, false otherwise</returns>
         public bool ChangeCurrProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
             if (!_isLoggedIn || CurrProject == null)
@@ -438,23 +428,11 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            User ownerUser = _dataModel.GetUserByID(owner.UserID);
-            Team projectTeam = _dataModel.GetTeamByID(team.TeamID);
-            Project project = _dataModel.GetProjectByID(CurrProject.ProjectID);
-
-            project.Project_name = name;
-            project.Start_date = startDate;
-            project.End_date = endDate;
-            project.Owner = owner.UserID;
-            project.User = ownerUser;
-            project.Team_id = team.TeamID;
-            project.Team = projectTeam;
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.ChangeProject(CurrProject.ProjectID, name, startDate, endDate, owner.UserID, team.TeamID);
             if (result)
             {
                 updateProjectsForUser();
-                CurrProject = new ProjectView(project);
+                CurrProject = new ProjectView(_dataModel.GetProjectByID(CurrProject.ProjectID));
             }
 
             return result;
@@ -466,7 +444,7 @@ namespace ViewModel
         /// <param name="name">The name of the sprint</param>
         /// <param name="startDate">The start date of the sprint</param>
         /// <param name="endDate">The end date of the sprint</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
+        /// <returns>True if the changes succeed, false otherwise</returns>
         public bool ChangeCurrSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
         {
             if (!_isLoggedIn || CurrSprint == null)
@@ -478,15 +456,10 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            Sprint sprint = _dataModel.GetSprintByID(CurrSprint.SprintID);
-            sprint.Sprint_name = name;
-            sprint.Start_date = startDate;
-            sprint.End_date = endDate;
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.ChangeSprint(CurrSprint.SprintID, name, startDate, endDate);
             if (result)
             {
-                CurrSprint = new SprintView(sprint);
+                CurrSprint = new SprintView(_dataModel.GetSprintByID(CurrSprint.SprintID));
                 updateSprintsForProject();
             }
 
@@ -499,7 +472,7 @@ namespace ViewModel
         /// <param name="priority">The priority number for this story</param>
         /// <param name="text">The text of this story</param>
         /// <param name="sprint">The sprint in which to place this story</param>
-        /// <returns>True if the add succeeds, false otherwise</returns>
+        /// <returns>True if the changes succeed, false otherwise</returns>
         public bool ChangeCurrStory(int priority, string text, SprintView sprint)
         {
             if (!_isLoggedIn || CurrStory == null)
@@ -515,28 +488,11 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
 
-            Story story = _dataModel.GetStoryByID(CurrStory.StoryID);
-
-            if (CurrSprint.SprintID != sprint.SprintID) // Move the story to a new sprint
-            {
-                Sprint oldSprint = _dataModel.GetSprintByID(story.Sprint_id);
-                Sprint newSprint = _dataModel.GetSprintByID(sprint.SprintID);
-
-                newSprint.Story.Add(story);
-                oldSprint.Story.Remove(story);
-
-                story.Sprint_id = sprint.SprintID;
-                story.Sprint = newSprint;
-            }
-
-            story.Priority_num = priority;
-            story.Text = text;
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.ChangeStory(CurrStory.StoryID, priority, text, sprint.SprintID);
             if (result)
             {
                 updateStoriesForSprint();
-                CurrStory = new StoryView(story);
+                CurrStory = new StoryView(_dataModel.GetStoryByID(CurrStory.StoryID));
             }
 
             return result;
@@ -552,8 +508,8 @@ namespace ViewModel
         /// <param name="type">The type of this task</param>
         /// <param name="state">The state of this task</param>
         /// <param name="completion">The date this task was completed</param>
-        /// <returns>True if the update succeeds, false otherwise</returns>
-        public bool ChangeCurrTask(String text, int size, int value, UserView owner, TaskType type, TaskState state, Nullable<DateTime> completion)
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        public bool ChangeCurrTask(string text, int size, int value, UserView owner, TaskType type, TaskState state, Nullable<DateTime> completion)
         {
             if (!_isLoggedIn || CurrTask == null)
             {
@@ -572,35 +528,11 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            Task task = _dataModel.GetTaskByID(CurrTask.TaskID);
-            User ownerUser = null;
-            int? ownerId = null;
-
-            if (owner != null)
-            {
-                ownerUser = _dataModel.GetUserByID(owner.UserID);
-                ownerId = owner.UserID;
-
-                if (state == TaskState.Unassigned)
-                {
-                    state = TaskState.In_Progress;
-                }
-            }
-
-            task.Text = text;
-            task.Business_value = value;
-            task.Size_complexity = size;
-            task.Owner = ownerId;
-            task.State = state.ConvertToBinary();
-            task.Type = type.ConvertToBinary();
-            task.User = ownerUser;
-            task.Completion_date = completion;
-
-            bool result = _dataModel.CommitChanges();
+            bool result = _dataModel.ChangeTask(CurrTask.TaskID, text, size, value, owner == null ? null : new int?(owner.UserID), type.ConvertToBinary(), state.ConvertToBinary(), completion);
             if (result)
             {
                 updateTasksForStory();
-                CurrTask = new TaskView(task);
+                CurrTask = new TaskView(_dataModel.GetTaskByID(CurrTask.TaskID));
             }
 
             return result;

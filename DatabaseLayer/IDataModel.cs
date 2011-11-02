@@ -204,12 +204,59 @@ namespace DatabaseLayer
         #endregion
 
         #region Change Existing Entities
-        #endregion
+        /// <summary>
+        /// Moves a user to the given team
+        /// </summary>
+        /// <param name="userID">The ID of the user to move</param>
+        /// <param name="teamID">The ID of the team to which to move the user</param>
+        /// <returns>True if moving the user succeeds, false otherwise</returns>
+        bool MoveUserToTeam(int userID, int teamID);
 
         /// <summary>
-        /// Commits changes made in the object model to the database
+        /// Changes an existing project
         /// </summary>
-        /// <returns></returns>
-        bool CommitChanges();
+        /// <param name="projectID">The ID of the project to change</param>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project if it exists</param>
+        /// <param name="ownerID">The ID of the owner of the project</param>
+        /// <param name="teamID">The ID of the team to which the project belongs</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        bool ChangeProject(int projectID, string name, DateTime startDate, Nullable<DateTime> endDate, int ownerID, int teamID);
+
+        /// <summary>
+        /// Changes an existing sprint
+        /// </summary>
+        /// <param name="sprintID">The ID of the sprint to change</param>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint if it exists</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        bool ChangeSprint(int sprintID, string name, DateTime startDate, Nullable<DateTime> endDate);
+
+        /// <summary>
+        /// Changes an existing story
+        /// </summary>
+        /// <param name="storyID">The ID of the story to change</param>
+        /// <param name="priority">The priority of the story</param>
+        /// <param name="text">The text of the story</param>
+        /// <param name="sprintID">The ID of the sprint to which to move the story</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        bool ChangeStory(int storyID, int priority, string text, int sprintID);
+
+        /// <summary>
+        /// Changes an existing task
+        /// </summary>
+        /// <param name="taskID">The ID of the task to change</param>
+        /// <param name="text">The text of the task</param>
+        /// <param name="size">The size complexity of the task</param>
+        /// <param name="value">The business value of the task</param>
+        /// <param name="ownerID">The ID of the owner if it exists</param>
+        /// <param name="type">The type of the task</param>
+        /// <param name="state">The state of the task</param>
+        /// <param name="completion">The date the task was completed if it exists</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        bool ChangeTask(int taskID, string text, int size, int value, int? ownerID, Binary type, Binary state, Nullable<DateTime> completion);
+        #endregion
     }
 }

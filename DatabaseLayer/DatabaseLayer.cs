@@ -481,7 +481,7 @@ namespace DatabaseLayer
                 User = leadUser
             };
 
-            return CommitChanges();
+            return commitChanges();
         }
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace DatabaseLayer
                 Sprint = new System.Data.Linq.EntitySet<Sprint>()
             };
 
-            bool result = CommitChanges();
+            bool result = commitChanges();
 
             if (result)
             {
@@ -530,7 +530,7 @@ namespace DatabaseLayer
                     Story = new System.Data.Linq.EntitySet<Story>()
                 };
 
-                result &= CommitChanges();
+                result &= commitChanges();
             }
 
             return result;
@@ -563,7 +563,7 @@ namespace DatabaseLayer
                 Story = new System.Data.Linq.EntitySet<Story>()
             };
 
-            return CommitChanges();
+            return commitChanges();
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace DatabaseLayer
                 Task = new System.Data.Linq.EntitySet<Task>()
             };
 
-            return CommitChanges();
+            return commitChanges();
         }
 
         /// <summary>
@@ -634,15 +634,184 @@ namespace DatabaseLayer
                 User = ownerUser
             };
 
-            return CommitChanges();
+            return commitChanges();
         }
         #endregion
 
+        #region Change Existing Entities
+        /// <summary>
+        /// Moves a user to the given team
+        /// </summary>
+        /// <param name="userID">The ID of the user to move</param>
+        /// <param name="teamID">The ID of the team to which to move the user</param>
+        /// <returns>True if moving the user succeeds, false otherwise</returns>
+        public bool MoveUserToTeam(int userID, int teamID)
+        {
+            User u = GetUserByID(userID);
+            Team newTeam = GetTeamByID(teamID);
+            Team oldTeam = GetTeamByID(u.Team_id);
+
+            if (u == null || newTeam == null || oldTeam == null)
+            {
+                return false;
+            }
+
+            oldTeam.Team_.Remove(u);
+            oldTeam.Team_.Add(u);
+
+            u.Team_ = newTeam;
+            u.Team_id = newTeam.Team_id;
+
+            return commitChanges();
+        }
+
+        /// <summary>
+        /// Changes an existing project
+        /// </summary>
+        /// <param name="projectID">The ID of the project to change</param>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project if it exists</param>
+        /// <param name="ownerID">The ID of the owner of the project</param>
+        /// <param name="teamID">The ID of the team to which the project belongs</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        public bool ChangeProject(int projectID, string name, DateTime startDate, Nullable<DateTime> endDate, int ownerID, int teamID)
+        {
+            User ownerUser = GetUserByID(ownerID);
+            Team projectTeam = GetTeamByID(teamID);
+            Project project = GetProjectByID(projectID);
+
+            if (project == null || projectTeam == null || ownerUser == null)
+            {
+                return false;
+            }
+
+            project.Project_name = name;
+            project.Start_date = startDate;
+            project.End_date = endDate;
+            project.Owner = ownerID;
+            project.User = ownerUser;
+            project.Team_id = teamID;
+            project.Team = projectTeam;
+
+            return commitChanges();
+        }
+
+        /// <summary>
+        /// Changes an existing sprint
+        /// </summary>
+        /// <param name="sprintID">The ID of the sprint to change</param>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint if it exists</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        public bool ChangeSprint(int sprintID, string name, DateTime startDate, Nullable<DateTime> endDate)
+        {
+            Sprint sprint = GetSprintByID(sprintID);
+
+            if (sprint == null)
+            {
+                return false;
+            }
+
+            sprint.Sprint_name = name;
+            sprint.Start_date = startDate;
+            sprint.End_date = endDate;
+
+            return commitChanges();
+        }
+
+        /// <summary>
+        /// Changes an existing story
+        /// </summary>
+        /// <param name="storyID">The ID of the story to change</param>
+        /// <param name="priority">The priority of the story</param>
+        /// <param name="text">The text of the story</param>
+        /// <param name="sprintID">The ID of the sprint to which to move the story</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        public bool ChangeStory(int storyID, int priority, string text, int sprintID)
+        {
+            Story story = GetStoryByID(storyID);
+
+            if (story == null)
+            {
+                return false;
+            }
+
+            if (sprintID != story.Sprint_id) // Move the story to a new sprint
+            {
+                Sprint oldSprint = GetSprintByID(story.Sprint_id);
+                Sprint newSprint = GetSprintByID(sprintID);
+
+                if (newSprint == null || oldSprint == null)
+                {
+                    return false;
+                }
+
+                newSprint.Story.Add(story);
+                oldSprint.Story.Remove(story);
+
+                story.Sprint_id = sprintID;
+                story.Sprint = newSprint;
+            }
+
+            story.Priority_num = priority;
+            story.Text = text;
+
+            return commitChanges();
+        }
+
+        /// <summary>
+        /// Changes an existing task
+        /// </summary>
+        /// <param name="taskID">The ID of the task to change</param>
+        /// <param name="text">The text of the task</param>
+        /// <param name="size">The size complexity of the task</param>
+        /// <param name="value">The business value of the task</param>
+        /// <param name="ownerID">The ID of the owner if it exists</param>
+        /// <param name="type">The type of the task</param>
+        /// <param name="state">The state of the task</param>
+        /// <param name="completion">The date the task was completed if it exists</param>
+        /// <returns>True if the changes succeed, false otherwise</returns>
+        public bool ChangeTask(int taskID, string text, int size, int value, int? ownerID, Binary type, Binary state, Nullable<DateTime> completion)
+        {
+            Task task = GetTaskByID(taskID);
+            User ownerUser = null;
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            if (ownerID.HasValue)
+            {
+                ownerUser = GetUserByID(ownerID.Value);
+
+                if (ownerUser == null)
+                {
+                    return false;
+                }
+            }
+
+            task.Text = text;
+            task.Business_value = value;
+            task.Size_complexity = size;
+            task.Owner = ownerID;
+            task.State = state;
+            task.Type = type;
+            task.User = ownerUser;
+            task.Completion_date = completion;
+
+            return commitChanges();
+        }
+        #endregion
+
+        #region Private Methods
         /// <summary>
         /// Commits changes made in the object model to the database
         /// </summary>
         /// <returns></returns>
-        public bool CommitChanges()
+        private bool commitChanges()
         {
             dbConnection.SubmitChanges(ConflictMode.ContinueOnConflict);
 
@@ -656,5 +825,6 @@ namespace DatabaseLayer
                 return false;
             }
         }
+        #endregion
     }
 }
