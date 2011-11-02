@@ -13,6 +13,8 @@ namespace ViewModel
     /// </summary>
     public class SPMSViewModel
     {
+        private IDataModel _dataModel;
+
         /// <summary>
         /// Indicates whether or not a user is logged in
         /// </summary>
@@ -125,10 +127,17 @@ namespace ViewModel
         }
 
         /// <summary>
+        /// Initializes the view model with default DataModel
+        /// </summary>
+        public SPMSViewModel() : this(new DataModel()) { }
+
+         /// <summary>
         /// Initializes the view model
         /// </summary>
-        public SPMSViewModel()
+        /// <param name="dataModel">The IDataModel to use in the view model</param>
+        public SPMSViewModel(IDataModel dataModel)
         {
+            _dataModel = dataModel;
             _isLoggedIn = false;
 
             // Set all the observable collections to empty lists
@@ -151,7 +160,7 @@ namespace ViewModel
         {
             string passHash = hashPassword(password);
 
-            User curr = DataModel.AuthenticateUser(userId, passHash);
+            User curr = _dataModel.AuthenticateUser(userId, passHash);
 
             if (curr == null) //  Authentication failed
             {
@@ -165,7 +174,7 @@ namespace ViewModel
             IsManager = !(CurrUser.Role == UserRole.Manager);
 
             // Get members of CurrTeam
-            IEnumerable<User> members = DataModel.GetTeamMembers(CurrTeam.TeamID);
+            IEnumerable<User> members = _dataModel.GetTeamMembers(CurrTeam.TeamID);
 
             foreach (User m in members)
             {
@@ -194,8 +203,8 @@ namespace ViewModel
                 new ObservableCollection<UserView>(),
                 new ObservableCollection<UserView>());
 
-            IEnumerable<User> members = DataModel.GetTeamMembers(team.TeamID);
-            IEnumerable<User> nonMembers = DataModel.GetUsersNotInTeam(team.TeamID);
+            IEnumerable<User> members = _dataModel.GetTeamMembers(team.TeamID);
+            IEnumerable<User> nonMembers = _dataModel.GetUsersNotInTeam(team.TeamID);
 
             if (members != null) // An error occurred
             {
@@ -229,9 +238,9 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to ChangeTeam must not be null");
             }
 
-            User u = DataModel.GetUserByID(user.UserId);
-            Team newTeam = DataModel.GetTeamByID(team.TeamID);
-            Team oldTeam = DataModel.GetTeamByID(u.Team_id);
+            User u = _dataModel.GetUserByID(user.UserId);
+            Team newTeam = _dataModel.GetTeamByID(team.TeamID);
+            Team oldTeam = _dataModel.GetTeamByID(u.Team_id);
 
             oldTeam.Team_.Remove(u);
             oldTeam.Team_.Add(u);
@@ -239,7 +248,7 @@ namespace ViewModel
             u.Team_ = newTeam;
             u.Team_id = newTeam.Team_id;
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
 
             if (result && user.UserId == CurrUser.UserId)
             {
@@ -263,7 +272,7 @@ namespace ViewModel
 
             _projectsForUser.Clear(); // Clear the existing entries
 
-            IEnumerable<Project> projects = DataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            IEnumerable<Project> projects = _dataModel.GetProjectsByTeam(CurrTeam.TeamID);
             if (projects == null) // An error occured
             {
                 return false;
@@ -290,7 +299,7 @@ namespace ViewModel
 
             _sprintsForProject.Clear(); // Clear the existing entries
 
-            IEnumerable<Sprint> sprints = DataModel.GetSprintsForProject(CurrProject.ProjectID);
+            IEnumerable<Sprint> sprints = _dataModel.GetSprintsForProject(CurrProject.ProjectID);
             if (sprints == null) // An error occured
             {
                 return false;
@@ -317,7 +326,7 @@ namespace ViewModel
 
             _storiesForSprint.Clear(); // Clear the existing entries
 
-            IEnumerable<Story> stories = DataModel.GetStoriesForSprint(CurrSprint.SprintID);
+            IEnumerable<Story> stories = _dataModel.GetStoriesForSprint(CurrSprint.SprintID);
             if (stories == null) // An error occured
             {
                 return false;
@@ -344,7 +353,7 @@ namespace ViewModel
 
             _tasksForStory.Clear(); // Clear the existing entries
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForStory(CurrStory.StoryID);
+            IEnumerable<Task> tasks = _dataModel.GetTasksForStory(CurrStory.StoryID);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -371,7 +380,7 @@ namespace ViewModel
 
             _allTeams.Clear(); // Clear the existing entries
 
-            IEnumerable<Team> teams = DataModel.GetAllTeams();
+            IEnumerable<Team> teams = _dataModel.GetAllTeams();
             if (teams == null) // An error occured
             {
                 return false;
@@ -398,7 +407,7 @@ namespace ViewModel
 
             _tasksForUser.Clear(); // Clear the existing entries
 
-            IEnumerable<Task> tasks = DataModel.GetTasksForUser(CurrUser.UserId);
+            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserId);
             if (tasks == null) // An error occured
             {
                 return false;
@@ -418,7 +427,7 @@ namespace ViewModel
         /// <returns>A list of all managers in the database</returns>
         public ObservableCollection<UserView> GetManagers()
         {
-            IEnumerable<User> users = DataModel.GetAllUsers();
+            IEnumerable<User> users = _dataModel.GetAllUsers();
             ObservableCollection<UserView> result = new ObservableCollection<UserView>();
 
             if (users == null)
@@ -453,9 +462,9 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to JumpToTask must not be null");
             }
 
-            CurrStory = new StoryView(DataModel.GetStoryByID(task.StoryID));
-            CurrSprint = new SprintView(DataModel.GetSprintByID(CurrStory.SprintID));
-            CurrProject = new ProjectView(DataModel.GetProjectByID(CurrSprint.ProjectID));
+            CurrStory = new StoryView(_dataModel.GetStoryByID(task.StoryID));
+            CurrSprint = new SprintView(_dataModel.GetSprintByID(CurrStory.SprintID));
+            CurrProject = new ProjectView(_dataModel.GetProjectByID(CurrSprint.ProjectID));
             CurrTask = task;
 
             UpdateSprintsForProject();
@@ -479,7 +488,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to GetUserTeam must not be null");
             }
 
-            Team team = DataModel.GetTeamByID(user.TeamId);
+            Team team = _dataModel.GetTeamByID(user.TeamId);
 
             if (team != null)
             {
@@ -507,7 +516,7 @@ namespace ViewModel
                 throw new ArgumentOutOfRangeException("userID must be positive");
             }
 
-            User user = DataModel.GetUserByID(userId);
+            User user = _dataModel.GetUserByID(userId);
 
             if (user != null)
             {
@@ -535,7 +544,7 @@ namespace ViewModel
                 throw new ArgumentOutOfRangeException("teamID must be positive");
             }
 
-            Team team = DataModel.GetTeamByID(teamId);
+            Team team = _dataModel.GetTeamByID(teamId);
 
             if (team != null)
             {
@@ -565,8 +574,8 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTeam must not be null");
             }
 
-            User managerUser = DataModel.GetUserByID(manager.UserId);
-            User leadUser = DataModel.GetUserByID(lead.UserId);
+            User managerUser = _dataModel.GetUserByID(manager.UserId);
+            User leadUser = _dataModel.GetUserByID(lead.UserId);
 
             Team newTeam = new Team()
             {
@@ -580,7 +589,7 @@ namespace ViewModel
             };
 
             UpdateAllTeams();
-            return DataModel.CommitChanges();
+            return _dataModel.CommitChanges();
         }
 
         /// <summary>
@@ -603,8 +612,8 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            User ownerUser = DataModel.GetUserByID(owner.UserId);
-            Team projectTeam = DataModel.GetTeamByID(team.TeamID);
+            User ownerUser = _dataModel.GetUserByID(owner.UserId);
+            Team projectTeam = _dataModel.GetTeamByID(team.TeamID);
 
             Project newProject = new Project()
             {
@@ -618,7 +627,7 @@ namespace ViewModel
                 Sprint = new System.Data.Linq.EntitySet<Sprint>()
             };
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
 
             if (result)
             {
@@ -632,7 +641,7 @@ namespace ViewModel
                     Sprint_name = "Backlog",
                     Story = new System.Data.Linq.EntitySet<Story>()
                 };
-                result &= DataModel.CommitChanges();
+                result &= _dataModel.CommitChanges();
             }
 
             UpdateProjectsForUser();
@@ -657,7 +666,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            Project curr = DataModel.GetProjectByID(CurrProject.ProjectID);
+            Project curr = _dataModel.GetProjectByID(CurrProject.ProjectID);
 
             Sprint newSprint = new Sprint()
             {
@@ -669,7 +678,7 @@ namespace ViewModel
                 Story = new System.Data.Linq.EntitySet<Story>()
             };
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateSprintsForProject();
 
             return result;
@@ -696,7 +705,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
 
-            Sprint curr = DataModel.GetSprintByID(CurrSprint.SprintID);
+            Sprint curr = _dataModel.GetSprintByID(CurrSprint.SprintID);
 
             Story newStory = new Story()
             {
@@ -707,7 +716,7 @@ namespace ViewModel
                 Task = new System.Data.Linq.EntitySet<Task>()
             };
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateStoriesForSprint();
 
             return result;
@@ -742,13 +751,13 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            Story curr = DataModel.GetStoryByID(CurrStory.StoryID);
+            Story curr = _dataModel.GetStoryByID(CurrStory.StoryID);
             User ownerUser = null;
             int? ownerId = null;
 
             if (owner != null)
             {
-                ownerUser = DataModel.GetUserByID(owner.UserId);
+                ownerUser = _dataModel.GetUserByID(owner.UserId);
                 ownerId = owner.UserId;
             }
 
@@ -766,7 +775,7 @@ namespace ViewModel
                 User = ownerUser
             };
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateTasksForStory();
             UpdateTasksForUser();
 
@@ -793,9 +802,9 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            User ownerUser = DataModel.GetUserByID(owner.UserId);
-            Team projectTeam = DataModel.GetTeamByID(team.TeamID);
-            Project project = DataModel.GetProjectByID(CurrProject.ProjectID);
+            User ownerUser = _dataModel.GetUserByID(owner.UserId);
+            Team projectTeam = _dataModel.GetTeamByID(team.TeamID);
+            Project project = _dataModel.GetProjectByID(CurrProject.ProjectID);
 
             project.Project_name = name;
             project.Start_date = startDate;
@@ -805,7 +814,7 @@ namespace ViewModel
             project.Team_id = team.TeamID;
             project.Team = projectTeam;
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateProjectsForUser();
             CurrProject = new ProjectView(project);
 
@@ -830,12 +839,12 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            Sprint sprint = DataModel.GetSprintByID(CurrSprint.SprintID);
+            Sprint sprint = _dataModel.GetSprintByID(CurrSprint.SprintID);
             sprint.Sprint_name = name;
             sprint.Start_date = startDate;
             sprint.End_date = endDate;
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateSprintsForProject();
             CurrSprint = new SprintView(sprint);
 
@@ -864,12 +873,12 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
 
-            Story story = DataModel.GetStoryByID(CurrStory.StoryID);
+            Story story = _dataModel.GetStoryByID(CurrStory.StoryID);
 
             if (CurrSprint.SprintID != sprint.SprintID) // Move the story to a new sprint
             {
-                Sprint oldSprint = DataModel.GetSprintByID(story.Sprint_id);
-                Sprint newSprint = DataModel.GetSprintByID(sprint.SprintID);
+                Sprint oldSprint = _dataModel.GetSprintByID(story.Sprint_id);
+                Sprint newSprint = _dataModel.GetSprintByID(sprint.SprintID);
 
                 newSprint.Story.Add(story);
                 oldSprint.Story.Remove(story);
@@ -881,7 +890,7 @@ namespace ViewModel
             story.Priority_num = priority;
             story.Text = text;
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateStoriesForSprint();
             CurrStory = new StoryView(story);
 
@@ -918,13 +927,13 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            Task task = DataModel.GetTaskByID(CurrTask.TaskID);
+            Task task = _dataModel.GetTaskByID(CurrTask.TaskID);
             User ownerUser = null;
             int? ownerId = null;
 
             if (owner != null)
             {
-                ownerUser = DataModel.GetUserByID(owner.UserId);
+                ownerUser = _dataModel.GetUserByID(owner.UserId);
                 ownerId = owner.UserId;
 
                 if (state == TaskState.Unassigned)
@@ -942,7 +951,7 @@ namespace ViewModel
             task.User = ownerUser;
             task.Completion_date = completion;
 
-            bool result = DataModel.CommitChanges();
+            bool result = _dataModel.CommitChanges();
             UpdateTasksForStory();
             CurrTask = new TaskView(task);
 

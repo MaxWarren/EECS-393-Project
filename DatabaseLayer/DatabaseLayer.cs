@@ -6,24 +6,24 @@ using System.Linq;
 namespace DatabaseLayer
 {
     /// <summary>
-    /// Static class that interfaces with the database
+    /// Class that interfaces with the database
     /// </summary>
-    public static class DataModel
+    public class DataModel : IDataModel
     {
         /// <summary>
         /// Connection to the database
         /// </summary>
-        private static Eecs393_project dbConnection;
+        private Eecs393_project dbConnection;
 
         /// <summary>
         /// Connection string for connecting to the database
         /// </summary>
-        private static string connString;
+        private string connString;
 
         /// <summary>
         /// Initialize the database connection
         /// </summary>
-        static DataModel()
+        public DataModel()
         {
             // Set connection string
             connString = string.Format("user id={0};password={1};server={2};Trusted_Connection=no;database={3};connection timeout={4}",
@@ -40,7 +40,7 @@ namespace DatabaseLayer
         /// Get all projects in the database
         /// </summary>
         /// <returns>A list of all projects in the database</returns>
-        public static IEnumerable<Project> GetAllProjects()
+        public IEnumerable<Project> GetAllProjects()
         {
             try
             {
@@ -60,7 +60,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="teamId">The ID of the team for which to search</param>
         /// <returns>A list of all projects belonging to the given team</returns>
-        public static IEnumerable<Project> GetProjectsByTeam(int teamId)
+        public IEnumerable<Project> GetProjectsByTeam(int teamId)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="ownerID">The ID of the user for whom to search</param>
         /// <returns>A list of all projects owned by the given user</returns>
-        public static IEnumerable<Project> GetProjectsByOwner(int ownerID)
+        public IEnumerable<Project> GetProjectsByOwner(int ownerID)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="projectID">The project ID for which to search</param>
         /// <returns>The project with the given ID</returns>
-        public static Project GetProjectByID(int projectID)
+        public Project GetProjectByID(int projectID)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="projectID">The project for which to retrieve sprints</param>
         /// <returns>A list of all sprints for the given project</returns>
-        public static IEnumerable<Sprint> GetSprintsForProject(int projectID)
+        public IEnumerable<Sprint> GetSprintsForProject(int projectID)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="projectID"></param>
         /// <returns></returns>
-        public static Sprint GetProjectBacklog(int projectID)
+        public Sprint GetProjectBacklog(int projectID)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="sprintID">The sprint ID for which to search</param>
         /// <returns>The sprint with the given ID</returns>
-        public static Sprint GetSprintByID(int sprintID)
+        public Sprint GetSprintByID(int sprintID)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="sprintID">The ID of the sprint for which to search</param>
         /// <returns>A list of all user stories assigned to the given sprint</returns>
-        public static IEnumerable<Story> GetStoriesForSprint(int sprintID)
+        public IEnumerable<Story> GetStoriesForSprint(int sprintID)
         {
             try
             {
@@ -210,7 +210,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="storyID">The ID of the story for which to search</param>
         /// <returns>The story with the given ID</returns>
-        public static Story GetStoryByID(int storyID)
+        public Story GetStoryByID(int storyID)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="storyID">The ID of the story for which to search</param>
         /// <returns>A list of all tasks for the given user story</returns>
-        public static IEnumerable<Task> GetTasksForStory(int storyID)
+        public IEnumerable<Task> GetTasksForStory(int storyID)
         {
             try
             {
@@ -253,7 +253,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="userID">The ID of the user for which to search</param>
         /// <returns>A list of all tasks belonging to the given user</returns>
-        public static IEnumerable<Task> GetTasksForUser(int userID)
+        public IEnumerable<Task> GetTasksForUser(int userID)
         {
             try
             {
@@ -275,7 +275,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="taskID">The ID of the task for which to search</param>
         /// <returns>The task with the given ID</returns>
-        public static Task GetTaskByID(int taskID)
+        public Task GetTaskByID(int taskID)
         {
             try
             {
@@ -295,7 +295,7 @@ namespace DatabaseLayer
         /// Gets all teams in the database
         /// </summary>
         /// <returns>A list of all teams in the database</returns>
-        public static IEnumerable<Team> GetAllTeams()
+        public IEnumerable<Team> GetAllTeams()
         {
             try
             {
@@ -316,7 +316,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="teamID">The ID of the team for which to search</param>
         /// <returns>The team with the given ID</returns>
-        public static Team GetTeamByID(int teamID)
+        public Team GetTeamByID(int teamID)
         {
             try
             {
@@ -337,7 +337,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="userID">The ID of the user for which to search</param>
         /// <returns>The user with the given ID</returns>
-        public static User GetUserByID(int userID)
+        public User GetUserByID(int userID)
         {
             try
             {
@@ -357,7 +357,7 @@ namespace DatabaseLayer
         /// Gets all users in the database
         /// </summary>
         /// <returns>A list of all users in the database</returns>
-        public static IEnumerable<User> GetAllUsers()
+        public IEnumerable<User> GetAllUsers()
         {
             try
             {
@@ -378,7 +378,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="teamID">The ID of the team for which to search</param>
         /// <returns>A list of all members of the given team</returns>
-        public static IEnumerable<User> GetTeamMembers(int teamID)
+        public IEnumerable<User> GetTeamMembers(int teamID)
         {
             try
             {
@@ -399,7 +399,7 @@ namespace DatabaseLayer
         /// </summary>
         /// <param name="teamID">The ID of the team for which to search</param>
         /// <returns>A list of all Users not in the given team</returns>
-        public static IEnumerable<User> GetUsersNotInTeam(int teamID)
+        public IEnumerable<User> GetUsersNotInTeam(int teamID)
         {
             try
             {
@@ -421,7 +421,7 @@ namespace DatabaseLayer
         /// <param name="userID">The ID of the user to authenticate</param>
         /// <param name="password">The password provided by the user</param>
         /// <returns>The User if authentication succeeded, false otherwise</returns>
-        public static User AuthenticateUser(int userID, string password)
+        public User AuthenticateUser(int userID, string password)
         {
             try
             {
@@ -438,7 +438,11 @@ namespace DatabaseLayer
             }
         }
 
-        public static bool CommitChanges()
+        /// <summary>
+        /// Commits changes made in the object model to the database
+        /// </summary>
+        /// <returns></returns>
+        public bool CommitChanges()
         {
             dbConnection.SubmitChanges(ConflictMode.ContinueOnConflict);
 
