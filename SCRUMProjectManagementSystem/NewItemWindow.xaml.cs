@@ -138,7 +138,7 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task3.SelectedIndex = -1;
             }
 
-            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType)(comboBox_task4.SelectedItem ?? TaskType.Development), (int)(comboBox_task1.SelectedItem ?? -1), (int)(comboBox_task2.SelectedItem ?? -1), null, (TaskState)(comboBox_task5.SelectedItem ?? TaskState.Unassigned));
+            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, null, (TaskState?)comboBox_task5.SelectedItem);
         }
 
         private void taskChanged2(object sender, EventArgs e)
@@ -156,7 +156,7 @@ namespace SCRUMProjectManagementSystem
                 }
                 comboBox_task5.IsEnabled = true;
             }
-            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType)(comboBox_task4.SelectedItem ?? TaskType.Development), (int)(comboBox_task1.SelectedItem ?? -1), (int)(comboBox_task2.SelectedItem ?? -1), null, (TaskState)(comboBox_task5.SelectedItem ?? TaskState.Unassigned));
+            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, null, (TaskState?)comboBox_task5.SelectedItem);
         }
 
         private void teamChanged(object sender, EventArgs e)

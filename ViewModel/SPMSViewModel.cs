@@ -779,15 +779,16 @@ namespace ViewModel
             return result;
         }
 
-        public bool ValidateTask(string text, UserView owner, TaskType type, int size, int value, Nullable<DateTime> completion, TaskState state)
+        public bool ValidateTask(string text, UserView owner, TaskType? type, int? size, int? value, Nullable<DateTime> completion, TaskState? state)
         {
             bool result = true;
 
             result &= (text != null && text.Length > 0); // Text is required
-            result &= (ComplexityValues.sizeComplexity.Contains(size)); // Size complexity is required to be one of a set of values
-            result &= (ComplexityValues.businessValue.Contains(value)); // Business value is required to be one of a set of values
+            result &= (type.HasValue); // Type is required
+            result &= (size.HasValue && ComplexityValues.sizeComplexity.Contains(size.Value)); // Size complexity is required to be one of a set of values
+            result &= (value.HasValue && ComplexityValues.businessValue.Contains(value.Value)); // Business value is required to be one of a set of values
             // If the owner is null, the state must be Unassigned.  Otherwise the state cannot be Unassigned
-            result &= ((owner == null && state == TaskState.Unassigned) || (owner != null && state != TaskState.Unassigned));
+            result &= (state.HasValue && ((owner == null && state.Value == TaskState.Unassigned) || (owner != null && state.Value != TaskState.Unassigned)));
 
             return result;
         }
