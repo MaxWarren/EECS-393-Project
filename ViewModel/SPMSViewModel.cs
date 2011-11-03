@@ -456,7 +456,7 @@ namespace ViewModel
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            bool result = _dataModel.ChangeSprint(CurrSprint.SprintID, name, startDate, endDate);
+            bool result = _dataModel.ChangeSprint(CurrSprint.SprintID, name, startDate.Value, endDate);
             if (result)
             {
                 CurrSprint = new SprintView(_dataModel.GetSprintByID(CurrSprint.SprintID));
