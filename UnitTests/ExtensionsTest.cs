@@ -5,8 +5,6 @@ using System.Data.Linq;
 
 namespace UnitTests
 {
-    
-    
     /// <summary>
     ///This is a test class for ExtensionsTest and is intended
     ///to contain all ExtensionsTest Unit Tests
@@ -14,8 +12,6 @@ namespace UnitTests
     [TestClass()]
     public class ExtensionsTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -64,12 +60,11 @@ namespace UnitTests
         //
         #endregion
 
-
         /// <summary>
         ///A test for ConvertToBinary
         ///</summary>
         [TestMethod()]
-        public void ConvertToBinaryTest()
+        public void ConvertTypeToBinaryTest()
         {
             TaskType type = new TaskType(); // TODO: Initialize to an appropriate value
             Binary expected = null; // TODO: Initialize to an appropriate value
@@ -83,7 +78,7 @@ namespace UnitTests
         ///A test for ConvertToBinary
         ///</summary>
         [TestMethod()]
-        public void ConvertToBinaryTest1()
+        public void ConvertStateToBinaryTest()
         {
             TaskState state = new TaskState(); // TODO: Initialize to an appropriate value
             Binary expected = null; // TODO: Initialize to an appropriate value
