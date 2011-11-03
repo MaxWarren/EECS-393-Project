@@ -33,14 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -51,6 +58,8 @@
     <Compile Include="ExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPMSViewModelTest.cs" />
+    <Compile Include="TaskStateConverterTest.cs" />
+    <Compile Include="TaskTypeConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\ViewModel.accessor" />
@@ -59,6 +68,10 @@
     <ProjectReference Include="..\DatabaseLayer\DatabaseLayer.csproj">
       <Project>{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}</Project>
       <Name>DatabaseLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCRUMProjectManagementSystem\SCRUMProjectManagementSystem.csproj">
+      <Project>{FE32E882-1B3A-4B58-84FE-4C6EF2F6BAF8}</Project>
+      <Name>SCRUMProjectManagementSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
       <Project>{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}</Project>
