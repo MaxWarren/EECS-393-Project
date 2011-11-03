@@ -417,18 +417,18 @@ namespace ViewModel
         /// <param name="owner">The User who owns the new project</param>
         /// <param name="team">The team responsible for the new project</param>
         /// <returns>True if the changes succeed, false otherwise</returns>
-        public bool ChangeCurrProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        public bool ChangeCurrProject(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
             if (!_isLoggedIn || CurrProject == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (name == null || startDate == null || owner == null || team == null)
+            else if (name == null || !startDate.HasValue || owner == null || team == null)
             {
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            bool result = _dataModel.ChangeProject(CurrProject.ProjectID, name, startDate, endDate, owner.UserID, team.TeamID);
+            bool result = _dataModel.ChangeProject(CurrProject.ProjectID, name, startDate.Value, endDate, owner.UserID, team.TeamID);
             if (result)
             {
                 updateProjectsForUser();
@@ -445,13 +445,13 @@ namespace ViewModel
         /// <param name="startDate">The start date of the sprint</param>
         /// <param name="endDate">The end date of the sprint</param>
         /// <returns>True if the changes succeed, false otherwise</returns>
-        public bool ChangeCurrSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
+        public bool ChangeCurrSprint(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate)
         {
             if (!_isLoggedIn || CurrSprint == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (startDate == null || name == null)
+            else if (!startDate.HasValue || name == null)
             {
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
@@ -570,18 +570,18 @@ namespace ViewModel
         /// <param name="owner">The User who owns the new project</param>
         /// <param name="team">The team responsible for the new project</param>
         /// <returns>True if creating the project succeeds, false otherwise</returns>
-        public bool CreateProject(string name, DateTime startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        public bool CreateProject(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
         {
             if (!_isLoggedIn)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (name == null || startDate == null || owner == null || team == null)
+            else if (name == null || owner == null || team == null || !startDate.HasValue)
             {
                 throw new ArgumentNullException("Arguments to AddProject must not be null");
             }
 
-            bool result = _dataModel.CreateProject(name, startDate, endDate, owner.UserID, team.TeamID);
+            bool result = _dataModel.CreateProject(name, startDate.Value, endDate, owner.UserID, team.TeamID);
             updateProjectsForUser();
 
             return result;
@@ -594,18 +594,18 @@ namespace ViewModel
         /// <param name="startDate">The start date of the sprint</param>
         /// <param name="endDate">The end date of the sprint</param>
         /// <returns>True if creating the sprint succeeds, false otherwise</returns>
-        public bool CreateSprint(string name, DateTime startDate, Nullable<DateTime> endDate)
+        public bool CreateSprint(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate)
         {
             if (!_isLoggedIn || CurrProject == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (startDate == null || name == null)
+            else if (!startDate.HasValue || name == null)
             {
                 throw new ArgumentNullException("Arguments to AddSprint must not be null");
             }
 
-            bool result = _dataModel.CreateSprint(name, startDate, endDate, CurrProject.ProjectID);
+            bool result = _dataModel.CreateSprint(name, startDate.Value, endDate, CurrProject.ProjectID);
             updateSprintsForProject();
 
             return result;

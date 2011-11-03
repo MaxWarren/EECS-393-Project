@@ -399,7 +399,7 @@ namespace SCRUMProjectManagementSystem
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
             ComboBox owner = (ComboBox)stackPanel2.Children[4];
-            viewModel.ChangeCurrProject(name.Text, start.SelectedDate.Value, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
+            viewModel.ChangeCurrProject(name.Text, start.SelectedDate, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
@@ -407,7 +407,7 @@ namespace SCRUMProjectManagementSystem
             TextBox name = (TextBox)stackPanel2.Children[1];
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
-            viewModel.ChangeCurrSprint(name.Text, start.SelectedDate.Value, end.SelectedDate);
+            viewModel.ChangeCurrSprint(name.Text, start.SelectedDate, end.SelectedDate);
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)

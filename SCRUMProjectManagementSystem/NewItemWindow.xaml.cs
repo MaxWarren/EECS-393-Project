@@ -86,21 +86,16 @@ namespace SCRUMProjectManagementSystem
                 switch (_type)
                 {
                     case MainWindow.selection.Project:
-                        DateTime startDate = datePicker_project1.SelectedDate.Value;
-                        _viewModel.CreateProject(textBox_project1.Text, startDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
+                        _viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
                         break;
                     case MainWindow.selection.Sprint:
-                        startDate = datePicker_sprint1.SelectedDate.Value;
-                        _viewModel.CreateSprint(textBox_sprint1.Text, startDate, datePicker_sprint2.SelectedDate);
+                        _viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate);
                         break;
                     case MainWindow.selection.Story:
                         _viewModel.CreateStory(Int32.Parse(textBox_story1.Text), textBox_story2.Text);
                         break;
                     case MainWindow.selection.Task:
-                        if (comboBox_task3.SelectedIndex < 0 || comboBox_task5.SelectedIndex == 0)
-                            _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), null, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
-                        else
-                            _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1[comboBox_task3.SelectedIndex], (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
+                        _viewModel.CreateTask(textBox_task1.Text, Int32.Parse(comboBox_task1.SelectedValue.ToString()), Int32.Parse(comboBox_task2.SelectedValue.ToString()), (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
                         break;
                     case MainWindow.selection.Team:
                         _viewModel.CreateTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
