@@ -2,11 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
+using ViewModel;
 
 namespace UnitTests
 {
-    
-    
     /// <summary>
     ///This is a test class for TaskTypeConverterTest and is intended
     ///to contain all TaskTypeConverterTest Unit Tests
@@ -14,8 +13,6 @@ namespace UnitTests
     [TestClass()]
     public class TaskTypeConverterTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -34,63 +31,20 @@ namespace UnitTests
             }
         }
 
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
-        /// <summary>
-        ///A test for TaskTypeConverter Constructor
-        ///</summary>
-        [TestMethod()]
-        public void TaskTypeConverterConstructorTest()
-        {
-            TaskTypeConverter target = new TaskTypeConverter();
-            Assert.Inconclusive("TODO: Implement code to verify target");
-        }
-
         /// <summary>
         ///A test for Convert
         ///</summary>
         [TestMethod()]
         public void ConvertTest()
         {
-            TaskTypeConverter target = new TaskTypeConverter(); // TODO: Initialize to an appropriate value
-            object value = null; // TODO: Initialize to an appropriate value
-            Type targetType = null; // TODO: Initialize to an appropriate value
-            object paramter = null; // TODO: Initialize to an appropriate value
-            CultureInfo culture = null; // TODO: Initialize to an appropriate value
-            object expected = null; // TODO: Initialize to an appropriate value
-            object actual;
-            actual = target.Convert(value, targetType, paramter, culture);
+            TaskTypeConverter target = new TaskTypeConverter();
+            TaskType value = TaskType.Development;
+            Type targetType = typeof(string);
+            object paramter = null;
+            CultureInfo culture = null;
+            string expected = "Development";
+            string actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -100,15 +54,13 @@ namespace UnitTests
         public void ConvertBackTest()
         {
             TaskTypeConverter target = new TaskTypeConverter(); // TODO: Initialize to an appropriate value
-            object value = null; // TODO: Initialize to an appropriate value
-            Type targetType = null; // TODO: Initialize to an appropriate value
-            object paramter = null; // TODO: Initialize to an appropriate value
-            CultureInfo culture = null; // TODO: Initialize to an appropriate value
-            object expected = null; // TODO: Initialize to an appropriate value
-            object actual;
-            actual = target.ConvertBack(value, targetType, paramter, culture);
+            string value = "Development";
+            Type targetType = typeof(TaskType);
+            object paramter = null;
+            CultureInfo culture = null;
+            TaskType expected = TaskType.Development;
+            TaskType actual = (TaskType)target.ConvertBack(value, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }
 }
