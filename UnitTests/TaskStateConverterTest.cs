@@ -45,6 +45,31 @@ namespace UnitTests
             string expected = "Unassigned";
             string actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
+
+            value = TaskState.In_Progress;
+            expected = "In Progress";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            value = TaskState.Completed;
+            expected = "Completed";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            value = TaskState.Blocked;
+            expected = "Blocked";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            value = (TaskState)3;
+            expected = "None";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            object nullVal = null;
+            expected = string.Empty;
+            actual = target.Convert(nullVal, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -60,6 +85,31 @@ namespace UnitTests
             CultureInfo culture = null;
             TaskState expected = TaskState.Unassigned;
             TaskState actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "In Progress";
+            expected = TaskState.In_Progress;
+            actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Completed";
+            expected = TaskState.Completed;
+            actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Blocked";
+            expected = TaskState.Blocked;
+            actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Invalid";
+            expected = TaskState.Unassigned;
+            actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            object nullVal = null;
+            expected = TaskState.Unassigned;
+            actual = (TaskState)target.ConvertBack(nullVal, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
         }
     }
