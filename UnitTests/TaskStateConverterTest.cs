@@ -2,11 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
+using ViewModel;
 
 namespace UnitTests
 {
-    
-    
     /// <summary>
     ///This is a test class for TaskStateConverterTest and is intended
     ///to contain all TaskStateConverterTest Unit Tests
@@ -14,8 +13,6 @@ namespace UnitTests
     [TestClass()]
     public class TaskStateConverterTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -34,47 +31,6 @@ namespace UnitTests
             }
         }
 
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
-
-        /// <summary>
-        ///A test for TaskStateConverter Constructor
-        ///</summary>
-        [TestMethod()]
-        public void TaskStateConverterConstructorTest()
-        {
-            TaskStateConverter target = new TaskStateConverter();
-            Assert.Inconclusive("TODO: Implement code to verify target");
-        }
-
         /// <summary>
         ///A test for Convert
         ///</summary>
@@ -82,15 +38,13 @@ namespace UnitTests
         public void ConvertTest()
         {
             TaskStateConverter target = new TaskStateConverter(); // TODO: Initialize to an appropriate value
-            object value = null; // TODO: Initialize to an appropriate value
-            Type targetType = null; // TODO: Initialize to an appropriate value
-            object paramter = null; // TODO: Initialize to an appropriate value
-            CultureInfo culture = null; // TODO: Initialize to an appropriate value
-            object expected = null; // TODO: Initialize to an appropriate value
-            object actual;
-            actual = target.Convert(value, targetType, paramter, culture);
+            TaskState value = TaskState.Unassigned;
+            Type targetType = typeof(string);
+            object paramter = null;
+            CultureInfo culture = null;
+            string expected = "Unassigned";
+            string actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -100,15 +54,13 @@ namespace UnitTests
         public void ConvertBackTest()
         {
             TaskStateConverter target = new TaskStateConverter(); // TODO: Initialize to an appropriate value
-            object value = null; // TODO: Initialize to an appropriate value
-            Type targetType = null; // TODO: Initialize to an appropriate value
-            object paramter = null; // TODO: Initialize to an appropriate value
-            CultureInfo culture = null; // TODO: Initialize to an appropriate value
-            object expected = null; // TODO: Initialize to an appropriate value
-            object actual;
-            actual = target.ConvertBack(value, targetType, paramter, culture);
+            string value = "Unassigned";
+            Type targetType = typeof(TaskState);
+            object paramter = null;
+            CultureInfo culture = null;
+            TaskState expected = TaskState.Unassigned;
+            TaskState actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }
 }
