@@ -473,22 +473,27 @@ namespace ViewModel
         /// <param name="text">The text of this story</param>
         /// <param name="sprint">The sprint in which to place this story</param>
         /// <returns>True if the changes succeed, false otherwise</returns>
-        public bool ChangeCurrStory(int priority, string text, SprintView sprint)
+        public bool ChangeCurrStory(string priority, string text, SprintView sprint)
         {
             if (!_isLoggedIn || CurrStory == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (priority < 0)
-            {
-                throw new ArgumentOutOfRangeException("Story priority must be nonnegative");
-            }
-            else if (text == null || sprint == null)
+            else if (priority == null || text == null || sprint == null)
             {
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
+            int p;
+            if (!int.TryParse(priority, out p))
+            {
+                throw new ArgumentException("Priority must be a number");
+            }
+            if (p <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Priority must be positive");
+            }
 
-            bool result = _dataModel.ChangeStory(CurrStory.StoryID, priority, text, sprint.SprintID);
+            bool result = _dataModel.ChangeStory(CurrStory.StoryID, p, text, sprint.SprintID);
             if (result)
             {
                 updateStoriesForSprint();
@@ -617,22 +622,27 @@ namespace ViewModel
         /// <param name="priority">The priority number for this story</param>
         /// <param name="text">The text of this story</param>
         /// <returns>True if creating the story succeeds, false otherwise</returns>
-        public bool CreateStory(int priority, string text)
+        public bool CreateStory(string priority, string text)
         {
             if (!_isLoggedIn || CurrSprint == null)
             {
                 throw new InvalidOperationException("User must be logged in");
             }
-            else if (priority < 0)
-            {
-                throw new ArgumentOutOfRangeException("Story priority must be nonnegative");
-            }
-            else if (text == null)
+            else if (text == null || priority == null)
             {
                 throw new ArgumentNullException("Arguments to AddStory must not be null");
             }
+            int p;
+            if (!int.TryParse(priority, out p))
+            {
+                throw new ArgumentException("Priority must be a number");
+            }
+            if (p <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Priority must be positive");
+            }
 
-            bool result = _dataModel.CreateStory(priority, text, CurrSprint.SprintID);
+            bool result = _dataModel.CreateStory(p, text, CurrSprint.SprintID);
             updateStoriesForSprint();
 
             return result;
@@ -670,6 +680,114 @@ namespace ViewModel
             bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), type.ConvertToBinary(), state.ConvertToBinary(), CurrStory.StoryID);
             updateTasksForStory();
             updateTasksForUser();
+
+            return result;
+        }
+        #endregion
+
+        #region Validation
+        /// <summary>
+        /// Checks if user input for a team is valid
+        /// </summary>
+        /// <param name="name">The name of the team</param>
+        /// <param name="manager">The manager of the team</param>
+        /// <param name="lead">The team lead</param>
+        /// <returns>True if the data is valid, false otherwise</returns>
+        public bool ValidateTeam(string name, UserView manager, UserView lead)
+        {
+            bool result = true;
+
+            result &= (name != null && name.Length > 0 && name.Length <= 50); // Name between 1 and 50 characters
+            result &= (manager != null); // Manager is required
+            result &= (lead != null); // Team lead is required
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks if user input for a project is valid
+        /// </summary>
+        /// <param name="name">The name of the project</param>
+        /// <param name="startDate">The start date of the project</param>
+        /// <param name="endDate">The end date of the project</param>
+        /// <param name="owner">The owner of the project</param>
+        /// <param name="team">The team responsible for the project</param>
+        /// <returns>True if the data is valid, false otherwise</returns>
+        public bool ValidateProject(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate, UserView owner, TeamView team)
+        {
+            bool result = true;
+
+            result &= (name != null && name.Length > 0 && name.Length <= 50); // Name between 1 and 50 characters
+            result &= startDate.HasValue; // Start date is required
+            result &= (owner != null); // Owner is required
+            result &= (team != null); // Team is required
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks if user input for a sprint is valid
+        /// </summary>
+        /// <param name="name">The name of the sprint</param>
+        /// <param name="startDate">The start date of the sprint</param>
+        /// <param name="endDate">The end date of the sprint</param>
+        /// <returns>True if the data is valid, false otherwise</returns>
+        public bool ValidateSprint(string name, Nullable<DateTime> startDate, Nullable<DateTime> endDate)
+        {
+            bool result = true;
+
+            result &= (name != null && name.Length > 0 && name.Length <= 50); // Name between 1 and 50 characters
+            result &= startDate.HasValue; // Start date is required
+
+            if (startDate.HasValue)
+            {
+                result &= (startDate.Value.CompareTo(CurrProject.StartDate) >= 0); // Sprint must start during the project
+                if (CurrProject.EndDate.HasValue)
+                {
+                    result &= (startDate.Value.CompareTo(CurrProject.EndDate.Value) < 0); // Sprint must start during the project
+                }
+
+                if (endDate.HasValue)
+                {
+                    result &= (endDate.Value.CompareTo(startDate.Value) > 0); // Sprint must end after it starts
+                    if (CurrProject.EndDate.HasValue)
+                    {
+                        result &= (endDate.Value.CompareTo(CurrProject.EndDate.Value) < 0); // Sprint must end during the project
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks if user input for a story is valid
+        /// </summary>
+        /// <param name="priority">The priority of the story</param>
+        /// <param name="text">The text of the sprint</param>
+        /// <returns>True if the data is valid, false otherwise</returns>
+        public bool ValidateStory(string priority, string text)
+        {
+            bool result = true;
+
+            result &= (text != null && text.Length > 0); // Text is required
+
+            int p;
+            result &= int.TryParse(priority, out p); // Priority is required to be a number
+            result &= (p > 0); // Priority must be positive
+
+            return result;
+        }
+
+        public bool ValidateTask(string text, UserView owner, TaskType type, int size, int value, Nullable<DateTime> completion, TaskState state)
+        {
+            bool result = true;
+
+            result &= (text != null && text.Length > 0); // Text is required
+            result &= (ComplexityValues.sizeComplexity.Contains(size)); // Size complexity is required to be one of a set of values
+            result &= (ComplexityValues.businessValue.Contains(value)); // Business value is required to be one of a set of values
+            // If the owner is null, the state must be Unassigned.  Otherwise the state cannot be Unassigned
+            result &= ((owner == null && state == TaskState.Unassigned) || (owner != null && state != TaskState.Unassigned));
 
             return result;
         }

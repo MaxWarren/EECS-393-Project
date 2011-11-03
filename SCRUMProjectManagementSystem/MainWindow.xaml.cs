@@ -415,7 +415,7 @@ namespace SCRUMProjectManagementSystem
             ComboBox sprint = (ComboBox)stackPanel2.Children[1];
             TextBox priority = (TextBox)stackPanel2.Children[2];
             TextBox text = (TextBox)stackPanel2.Children[3];
-            viewModel.ChangeCurrStory(Int32.Parse(priority.Text), text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
+            viewModel.ChangeCurrStory(priority.Text, text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
@@ -428,14 +428,8 @@ namespace SCRUMProjectManagementSystem
             DatePicker completion = (DatePicker)stackPanel2.Children[6];
             TextBox text = (TextBox)stackPanel2.Children[7];
             TaskStateConverter converter = new TaskStateConverter();
-            if (owner.SelectedIndex == -1 || state.SelectedIndex == 0)
-            {
-                viewModel.ChangeCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), null, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
-            }
-            else
-            {
-                viewModel.ChangeCurrTask(text.Text, Int32.Parse(complexity.SelectedItem.ToString()), Int32.Parse(value.SelectedItem.ToString()), viewModel.GetTeamMembers(viewModel.CurrTeam).Item1[owner.SelectedIndex], (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
-            }
+
+            viewModel.ChangeCurrTask(text.Text, (int)complexity.SelectedItem, (int)value.SelectedItem, (UserView)owner.SelectedItem, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)

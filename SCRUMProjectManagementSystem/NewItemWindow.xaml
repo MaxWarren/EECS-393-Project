@@ -46,14 +46,14 @@
         <StackPanel Grid.Column="1" Name="stackPanel_project" Margin="0,0,0,29" Visibility="Hidden">
             <TextBox Height="23" Name="textBox_project1" Width="120" TextChanged="projectChanged" />
             <DatePicker Height="25" Name="datePicker_project1" Width="115" SelectedDateChanged="projectChanged" />
-            <DatePicker Height="25" Name="datePicker_project2" Width="115" />
+            <DatePicker Height="25" Name="datePicker_project2" Width="115" SelectedDateChanged="projectChanged" />
             <ComboBox Height="23" Name="comboBox_project1" Width="120" ItemsSource="{Binding Path=Name}" SelectionChanged="projectChanged" />
             <ComboBox Height="23" Name="comboBox_project2" Width="120" SelectionChanged="projectChanged" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_sprint" Margin="0,0,0,29" Visibility="Hidden">
             <TextBox Height="23" Name="textBox_sprint1" Width="120" TextChanged="sprintChanged" />
             <DatePicker Height="25" Name="datePicker_sprint1" Width="115" SelectedDateChanged="sprintChanged" />
-            <DatePicker Height="25" Name="datePicker_sprint2" Width="115" />
+            <DatePicker Height="25" Name="datePicker_sprint2" Width="115" SelectedDateChanged="sprintChanged" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_story" Margin="0,0,0,29" Visibility="Hidden">
             <TextBox Height="23" Name="textBox_story1" Width="120" PreviewTextInput="textBox_story1_PreviewTextInput" TextChanged="storyChanged" />
