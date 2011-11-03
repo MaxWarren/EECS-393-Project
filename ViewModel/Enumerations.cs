@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ViewModel
 {
@@ -8,6 +9,7 @@ namespace ViewModel
         public static IEnumerable<int> businessValue;
         public static IEnumerable<int> sizeComplexity;
 
+        [ExcludeFromCodeCoverage]
         static ComplexityValues()
         {
             businessValue = new List<int>

@@ -1,10 +1,12 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 
 namespace SCRUMProjectManagementSystem
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class TeamWindow : Window
     {
         private ViewModel.TeamView _team;

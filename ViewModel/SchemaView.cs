@@ -1,11 +1,12 @@
 ﻿using System;
-using DatabaseLayer;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ViewModel
 {
     /// <summary>
     /// Represents a User
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class UserView
     {
         public int UserID { get; set; }
@@ -24,7 +25,11 @@ namespace ViewModel
         }
     }
 
-     public class TeamView
+    /// <summary>
+    /// Represents a Team
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    public class TeamView
     {
         public int TeamID { get; set; }
         public int TeamLeadID { get; set; }
@@ -43,6 +48,7 @@ namespace ViewModel
     /// <summary>
     /// Represents a Project
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ProjectView
     {
         public int ProjectID { get; set; }
@@ -66,6 +72,7 @@ namespace ViewModel
     /// <summary>
     /// Represents a Sprint
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class SprintView
     {
         public int SprintID { get; set; }
@@ -87,6 +94,7 @@ namespace ViewModel
     /// <summary>
     /// Represents a Story
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class StoryView
     {
         public int StoryID { get; set; }
@@ -102,10 +110,11 @@ namespace ViewModel
             Text = s.Text;
         }
     }
-    
+
     /// <summary>
     /// Represents a Task
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class TaskView
     {
         public int TaskID { get; set; }

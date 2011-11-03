@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Input;
 using ViewModel;
 
@@ -7,6 +8,7 @@ namespace SCRUMProjectManagementSystem
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class Login : Window
     {
         public Login()
@@ -53,7 +55,7 @@ namespace SCRUMProjectManagementSystem
         /// <param name="e">Other event arguments</param>
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = e.Text.IsNumeric();
+            e.Handled = e.Text.IsNonNumeric();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace ViewModel
         /// </summary>
         /// <param name="text">The string to check</param>
         /// <returns>True if the string is a nonnegative number, false otherwise</returns>
-        public static bool IsNumeric(this string text)
+        public static bool IsNonNumeric(this string text)
         {
             Regex regex = new Regex("[^0-9]+");
             return regex.IsMatch(text);

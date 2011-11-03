@@ -30,48 +30,17 @@ namespace UnitTests
             }
         }
 
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
         /// <summary>
         ///A test for ConvertToBinary
         ///</summary>
         [TestMethod()]
         public void ConvertTypeToBinaryTest()
         {
-            TaskType type = new TaskType(); // TODO: Initialize to an appropriate value
-            Binary expected = null; // TODO: Initialize to an appropriate value
+            TaskType type = TaskType.Development; // TODO: Initialize to an appropriate value
+            Binary expected = new Binary(new byte[] { 0, 0, 1 });
             Binary actual;
             actual = Extensions.ConvertToBinary(type);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -80,12 +49,11 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertStateToBinaryTest()
         {
-            TaskState state = new TaskState(); // TODO: Initialize to an appropriate value
-            Binary expected = null; // TODO: Initialize to an appropriate value
+            TaskState state = TaskState.In_Progress;
+            Binary expected = new Binary(new byte[] { 0, 0, 1 });
             Binary actual;
             actual = Extensions.ConvertToBinary(state);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -94,26 +62,34 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertToIntTest()
         {
-            Binary bin = null; // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
+            Binary bin = new Binary(new byte[] { 0, 0, 4 });
+            int expected = 4;
             int actual;
             actual = Extensions.ConvertToInt(bin);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for IsNumeric
         ///</summary>
         [TestMethod()]
-        public void IsNumericTest()
+        public void IsNonNumericTest()
         {
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string text = "123";
+            bool expected = false;
             bool actual;
-            actual = Extensions.IsNumeric(text);
+            actual = Extensions.IsNonNumeric(text);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            text = "-123";
+            expected = true;
+            actual = Extensions.IsNonNumeric(text);
+            Assert.AreEqual(expected, actual);
+
+            text = "12aab3";
+            expected = true;
+            actual = Extensions.IsNonNumeric(text);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

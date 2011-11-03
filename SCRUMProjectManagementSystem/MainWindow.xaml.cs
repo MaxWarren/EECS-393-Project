@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ namespace SCRUMProjectManagementSystem
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class MainWindow : Window
     {
         private selection currentSelection;
@@ -434,7 +436,7 @@ namespace SCRUMProjectManagementSystem
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = e.Text.IsNumeric();
+            e.Handled = e.Text.IsNonNumeric();
         }
 
         void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)

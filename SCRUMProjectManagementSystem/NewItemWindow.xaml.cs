@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using ViewModel;
@@ -8,6 +9,7 @@ namespace SCRUMProjectManagementSystem
     /// <summary>
     /// Interaction logic for NewItemWindow.xaml
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class NewItemWindow : Window
     {
         private MainWindow.selection _type;
@@ -113,7 +115,7 @@ namespace SCRUMProjectManagementSystem
 
         private void textBox_story1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = e.Text.IsNumeric();
+            e.Handled = e.Text.IsNonNumeric();
         }
 
         private void projectChanged(object sender, EventArgs e)
