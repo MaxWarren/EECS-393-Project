@@ -66,9 +66,8 @@ namespace UnitTests
             actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
 
-            object nullVal = null;
             expected = string.Empty;
-            actual = target.Convert(nullVal, targetType, paramter, culture) as string;
+            actual = target.Convert(null, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
         }
 
@@ -107,9 +106,8 @@ namespace UnitTests
             actual = (TaskState)target.ConvertBack(value, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
 
-            object nullVal = null;
             expected = TaskState.Unassigned;
-            actual = (TaskState)target.ConvertBack(nullVal, targetType, paramter, culture);
+            actual = (TaskState)target.ConvertBack(null, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
         }
     }

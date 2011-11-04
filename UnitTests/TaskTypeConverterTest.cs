@@ -45,6 +45,25 @@ namespace UnitTests
             string expected = "Development";
             string actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
+
+            value = TaskType.Documentation;
+            expected = "Documentation";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            value = TaskType.QA;
+            expected = "Testing";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            value = (TaskType)3;
+            expected = "None";
+            actual = target.Convert(value, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
+
+            expected = string.Empty;
+            actual = target.Convert(null, targetType, paramter, culture) as string;
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -60,6 +79,25 @@ namespace UnitTests
             CultureInfo culture = null;
             TaskType expected = TaskType.Development;
             TaskType actual = (TaskType)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Documentation";
+            expected = TaskType.Documentation;
+            actual = (TaskType)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Testing";
+            expected = TaskType.QA;
+            actual = (TaskType)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            value = "Invalid";
+            expected = TaskType.Development;
+            actual = (TaskType)target.ConvertBack(value, targetType, paramter, culture);
+            Assert.AreEqual(expected, actual);
+
+            expected = TaskType.Development;
+            actual = (TaskType)target.ConvertBack(null, targetType, paramter, culture);
             Assert.AreEqual(expected, actual);
         }
     }
