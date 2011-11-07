@@ -90,6 +90,7 @@ namespace DatabaseLayer
             {
                 IEnumerable<Project> projects = from p in dbConnection.Project
                                                 where p.Owner == ownerID
+                                                where (!p.End_date.HasValue || p.End_date <= DateTime.Today)
                                                 orderby p.Project_name ascending
                                                 select p;
                 return projects;
@@ -268,6 +269,7 @@ namespace DatabaseLayer
             {
                 IEnumerable<Task> tasks = from t in dbConnection.Task
                                           where t.Owner == userID
+                                          where !t.Completion_date.HasValue
                                           orderby t.Business_value descending
                                           select t;
 
