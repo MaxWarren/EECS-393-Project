@@ -76,6 +76,12 @@ namespace DatabaseLayer
 
         #region Get Tasks
         /// <summary>
+        /// Gets all tasks in the database
+        /// </summary>
+        /// <returns>A list of all tasks in the database</returns>
+        IEnumerable<Task> GetAllTasks();
+
+        /// <summary>
         /// Gets all tasks for a given user story
         /// </summary>
         /// <param name="storyID">The ID of the story for which to search</param>

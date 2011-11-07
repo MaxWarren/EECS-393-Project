@@ -237,6 +237,25 @@ namespace DatabaseLayer
 
         #region Get Tasks
         /// <summary>
+        /// Gets all tasks in the database
+        /// </summary>
+        /// <returns>A list of all tasks in the database</returns>
+        public IEnumerable<Task> GetAllTasks()
+        {
+            try
+            {
+                IEnumerable<Task> tasks = from t in dbConnection.Task
+                                          select t;
+
+                return tasks;
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
         /// Gets all tasks for a given user story
         /// </summary>
         /// <param name="storyID">The ID of the story for which to search</param>

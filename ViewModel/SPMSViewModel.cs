@@ -43,6 +43,11 @@ namespace ViewModel
         public bool IsManager { get; set; }
 
         /// <summary>
+        /// Indicates whether or not the client is in "historic view"
+        /// </summary>
+        public bool HistoricMode { get; set; }
+
+        /// <summary>
         /// The currently logged in user
         /// </summary>
         public UserView CurrUser
@@ -225,6 +230,16 @@ namespace ViewModel
             CurrSprint = new SprintView(_dataModel.GetSprintByID(CurrStory.SprintID));
             CurrProject = new ProjectView(_dataModel.GetProjectByID(CurrSprint.ProjectID));
             CurrTask = task;
+        }
+
+        /// <summary>
+        /// Toggles whether or not the client is in historic mode
+        /// </summary>
+        public void ToggleHistoricMode()
+        {
+            HistoricMode = !HistoricMode; // Toggle the state
+            updateProjectsForUser();
+            updateTasksForUser();
         }
         #endregion
 
@@ -821,7 +836,16 @@ namespace ViewModel
 
             _projectsForUser.Clear(); // Clear the existing entries
 
-            IEnumerable<Project> projects = _dataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            IEnumerable<Project> projects;
+            if (!HistoricMode)
+            {
+                projects = _dataModel.GetProjectsByTeam(CurrTeam.TeamID);
+            }
+            else
+            {
+                projects = _dataModel.GetAllProjects();
+            }
+
             if (projects == null) // An error occured
             {
                 return false;
@@ -928,8 +952,17 @@ namespace ViewModel
             }
 
             _tasksForUser.Clear(); // Clear the existing entries
+            IEnumerable<Task> tasks;
 
-            IEnumerable<Task> tasks = _dataModel.GetTasksForUser(CurrUser.UserID);
+            if (!HistoricMode)
+            {
+                tasks = _dataModel.GetTasksForUser(CurrUser.UserID);
+            }
+            else
+            {
+                tasks = _dataModel.GetAllTasks();
+            }
+
             if (tasks == null) // An error occured
             {
                 return false;
