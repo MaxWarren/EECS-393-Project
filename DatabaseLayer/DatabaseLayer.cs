@@ -289,6 +289,27 @@ namespace DatabaseLayer
         }
 
         /// <summary>
+        /// Gets all tasks for a given sprint
+        /// </summary>
+        /// <param name="sprintID">The ID of the sprint for which to search</param>
+        /// <returns>A list of all taks for the given sprint</returns>
+        public IEnumerable<Task> GetAllTasksForSprint(int sprintID)
+        {
+            try
+            {
+                IEnumerable<Task> tasks = from t in dbConnection.Task
+                                          where t.Story.Sprint_id == sprintID
+                                          select t;
+
+                return tasks;
+            }
+            catch (Exception)
+            {
+                return null; // TODO add error handling for db failure
+            }
+        }
+
+        /// <summary>
         /// Gets all tasks owned by a given user
         /// </summary>
         /// <param name="userID">The ID of the user for which to search</param>

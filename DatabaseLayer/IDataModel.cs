@@ -89,6 +89,13 @@ namespace DatabaseLayer
         IEnumerable<Task> GetTasksForStory(int storyID);
 
         /// <summary>
+        /// Gets all tasks for a given sprint
+        /// </summary>
+        /// <param name="sprintID">The ID of the sprint for which to search</param>
+        /// <returns>A list of all taks for the given sprint</returns>
+        IEnumerable<Task> GetAllTasksForSprint(int sprintID);
+
+        /// <summary>
         /// Gets all tasks owned by a given user
         /// </summary>
         /// <param name="userID">The ID of the user for which to search</param>

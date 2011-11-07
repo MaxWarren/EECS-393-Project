@@ -241,6 +241,44 @@ namespace ViewModel
             updateProjectsForUser();
             updateTasksForUser();
         }
+
+        /// <summary>
+        /// Calculates and returns the burndown for the current sprint
+        /// </summary>
+        /// <returns>A tuple, where the first element is the ideal burndown and the second is the actual burndown</returns>
+        public Tuple<IDictionary<DateTime, double>, IDictionary<DateTime, int>> GetCurrSprintBurndown()
+        {
+            if (!_isLoggedIn || CurrSprint == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (CurrSprint.StartDate > DateTime.Today)
+            {
+                throw new InvalidOperationException("The sprint must have started to view its burndown");
+            }
+
+            // If the sprint doesn't have an end date, calculate through the current day
+            DateTime endDate = CurrSprint.EndDate.HasValue ? CurrSprint.EndDate.Value : DateTime.Today;
+            DateTime startDate = CurrSprint.StartDate;
+            TimeSpan days = endDate - startDate;
+
+            IEnumerable<TaskView> allTasks = _dataModel.GetAllTasksForSprint(CurrSprint.SprintID).Select(t => new TaskView(t)); // Get all tasks for this sprint
+            int numTasks = allTasks.Count();
+
+            var result = new Tuple<IDictionary<DateTime, double>, IDictionary<DateTime, int>>(new Dictionary<DateTime, double>(), new Dictionary<DateTime, int>());
+
+            for (int i = 0; i <= days.Days; i++)
+            {
+                DateTime date = startDate.AddDays(i);
+                int actual = numTasks - allTasks.Where(t => (t.CompletionDate.HasValue && t.CompletionDate.Value <= date)).Count(); // Actual burndown
+                double ideal = numTasks - i * ((double)numTasks / days.Days); // Ideal burndown
+
+                result.Item1.Add(date, ideal);
+                result.Item2.Add(date, actual);
+            }
+
+            return result;
+        }
         #endregion
 
         #region Get Lists of Users
@@ -756,18 +794,18 @@ namespace ViewModel
 
             if (startDate.HasValue)
             {
-                result &= (startDate.Value.CompareTo(CurrProject.StartDate) >= 0); // Sprint must start during the project
+                result &= (startDate.Value >= CurrProject.StartDate); // Sprint must start during the project
                 if (CurrProject.EndDate.HasValue)
                 {
-                    result &= (startDate.Value.CompareTo(CurrProject.EndDate.Value) < 0); // Sprint must start during the project
+                    result &= (startDate.Value < CurrProject.EndDate.Value); // Sprint must start during the project
                 }
 
                 if (endDate.HasValue)
                 {
-                    result &= (endDate.Value.CompareTo(startDate.Value) > 0); // Sprint must end after it starts
+                    result &= (endDate.Value > startDate.Value); // Sprint must end after it starts
                     if (CurrProject.EndDate.HasValue)
                     {
-                        result &= (endDate.Value.CompareTo(CurrProject.EndDate.Value) < 0); // Sprint must end during the project
+                        result &= (endDate.Value < CurrProject.EndDate.Value); // Sprint must end during the project
                     }
                 }
             }
