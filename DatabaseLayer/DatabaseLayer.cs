@@ -65,7 +65,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -86,7 +86,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -108,7 +108,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -129,7 +129,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -153,7 +153,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -175,7 +175,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -196,7 +196,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -220,7 +220,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -241,7 +241,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -262,7 +262,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -284,7 +284,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -305,7 +305,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -328,7 +328,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -349,7 +349,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -371,7 +371,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -392,7 +392,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -415,7 +415,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -435,7 +435,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -456,7 +456,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -477,7 +477,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
 
@@ -500,7 +500,7 @@ namespace DatabaseLayer
             }
             catch (Exception)
             {
-                return null; // TODO add error handling for db failure
+                return null;
             }
         }
         #endregion
@@ -874,7 +874,12 @@ namespace DatabaseLayer
             }
             else
             {
-                // TODO add error handling
+                // Resolve each conflict by keeping the values currently in the db
+                foreach (ObjectChangeConflict conflict in dbConnection.ChangeConflicts)
+                {
+                    conflict.Resolve(RefreshMode.OverwriteCurrentValues, true);
+                }
+
                 return false;
             }
         }
