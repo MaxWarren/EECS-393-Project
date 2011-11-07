@@ -162,7 +162,7 @@ namespace ViewModel
         /// <summary>
         /// Initializes the view model with default DataModel
         /// </summary>
-        public SPMSViewModel() : this(new DataModel()) { }
+        public SPMSViewModel() : this(DataModel.Instance) { }
 
         /// <summary>
         /// Initializes the view model

@@ -10,7 +10,7 @@ namespace DatabaseLayer
     /// </summary>
     public class DataModel : IDataModel
     {
-        #region Private Fields and Constructors
+        #region Fields and Constructors
         /// <summary>
         /// Connection to the database
         /// </summary>
@@ -22,9 +22,20 @@ namespace DatabaseLayer
         private string connString;
 
         /// <summary>
+        /// The single instance of this class
+        /// </summary>
+        public static readonly DataModel Instance = new DataModel();
+
+        /// <summary>
+        /// Empty static constructor to prevent compiler from marking with beforefieldinit
+        /// DO NOT REMOVE
+        /// </summary>
+        static DataModel() { }
+
+        /// <summary>
         /// Initialize the database connection
         /// </summary>
-        public DataModel()
+        private DataModel()
         {
             // Set connection string
             connString = string.Format("user id={0};password={1};server={2};Trusted_Connection=no;database={3};connection timeout={4}",
