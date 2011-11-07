@@ -789,6 +789,7 @@ namespace ViewModel
             result &= (value.HasValue && ComplexityValues.businessValue.Contains(value.Value)); // Business value is required to be one of a set of values
             // If the owner is null, the state must be Unassigned.  Otherwise the state cannot be Unassigned
             result &= (state.HasValue && ((owner == null && state.Value == TaskState.Unassigned) || (owner != null && state.Value != TaskState.Unassigned)));
+            result &= (state.HasValue && (state.Value != TaskState.Completed || completion.HasValue)); // A completed task must have a completed date
 
             return result;
         }
