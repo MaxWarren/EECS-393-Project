@@ -15,6 +15,7 @@ namespace UnitTests
     public class SPMSViewModelTest
     {
         private TestContext testContextInstance;
+        private SPMSViewModel_Accessor target;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -32,11 +33,11 @@ namespace UnitTests
             }
         }
 
-        //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize()]
+        public void TestInitialize()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(new MockDataModel());
+            target = new SPMSViewModel_Accessor(new MockDataModel());
+            target.AuthenticateUser(1, "password");
         }
 
         /// <summary>
@@ -46,7 +47,6 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void TasksForUserTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
             ObservableCollection<TaskView> expected = null; // TODO: Initialize to an appropriate value
             ObservableCollection<TaskView> actual;
             target.TasksForUser = expected;
@@ -755,27 +755,6 @@ namespace UnitTests
             actual = target.AuthenticateUser(userId, password);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for SPMSViewModel Constructor
-        ///</summary>
-        [TestMethod()]
-        public void SPMSViewModelConstructorTest()
-        {
-            SPMSViewModel target = new SPMSViewModel();
-            Assert.Inconclusive("TODO: Implement code to verify target");
-        }
-
-        /// <summary>
-        ///A test for SPMSViewModel Constructor
-        ///</summary>
-        [TestMethod()]
-        public void SPMSViewModelConstructorTest1()
-        {
-            IDataModel dataModel = null; // TODO: Initialize to an appropriate value
-            SPMSViewModel target = new SPMSViewModel(dataModel);
-            Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }
 }
