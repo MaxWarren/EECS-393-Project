@@ -59,6 +59,8 @@ namespace UnitTests
                     Team_lead = 2,
                 }
             };
+            _users.ElementAt(0).Team_ = _teams.ElementAt(0);
+            _users.ElementAt(1).Team_ = _teams.ElementAt(1);
 
             _projects = new List<Project>()
             {

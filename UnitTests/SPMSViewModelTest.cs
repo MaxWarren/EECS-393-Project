@@ -41,233 +41,31 @@ namespace UnitTests
         }
 
         /// <summary>
-        ///A test for TasksForUser
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void TasksForUserTest()
-        {
-            ObservableCollection<TaskView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<TaskView> actual;
-            target.TasksForUser = expected;
-            actual = target.TasksForUser;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for TasksForStory
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void TasksForStoryTest()
-        {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            ObservableCollection<TaskView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<TaskView> actual;
-            target.TasksForStory = expected;
-            actual = target.TasksForStory;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for StoriesForSprint
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void StoriesForSprintTest()
-        {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            ObservableCollection<StoryView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<StoryView> actual;
-            target.StoriesForSprint = expected;
-            actual = target.StoriesForSprint;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for SprintsForProject
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void SprintsForProjectTest()
-        {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            ObservableCollection<SprintView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<SprintView> actual;
-            target.SprintsForProject = expected;
-            actual = target.SprintsForProject;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for ProjectsForUser
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void ProjectsForUserTest()
-        {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            ObservableCollection<ProjectView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<ProjectView> actual;
-            target.ProjectsForUser = expected;
-            actual = target.ProjectsForUser;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for IsManager
-        ///</summary>
-        [TestMethod()]
-        public void IsManagerTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            target.IsManager = expected;
-            actual = target.IsManager;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for HistoricMode
-        ///</summary>
-        [TestMethod()]
-        public void HistoricModeTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            target.HistoricMode = expected;
-            actual = target.HistoricMode;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrUser
-        ///</summary>
-        [TestMethod()]
-        public void CurrUserTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            UserView expected = null; // TODO: Initialize to an appropriate value
-            UserView actual;
-            target.CurrUser = expected;
-            actual = target.CurrUser;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrTeam
-        ///</summary>
-        [TestMethod()]
-        public void CurrTeamTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            TeamView expected = null; // TODO: Initialize to an appropriate value
-            TeamView actual;
-            target.CurrTeam = expected;
-            actual = target.CurrTeam;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrTask
-        ///</summary>
-        [TestMethod()]
-        public void CurrTaskTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            TaskView expected = null; // TODO: Initialize to an appropriate value
-            TaskView actual;
-            target.CurrTask = expected;
-            actual = target.CurrTask;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrStory
-        ///</summary>
-        [TestMethod()]
-        public void CurrStoryTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            StoryView expected = null; // TODO: Initialize to an appropriate value
-            StoryView actual;
-            target.CurrStory = expected;
-            actual = target.CurrStory;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrSprint
-        ///</summary>
-        [TestMethod()]
-        public void CurrSprintTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            SprintView expected = null; // TODO: Initialize to an appropriate value
-            SprintView actual;
-            target.CurrSprint = expected;
-            actual = target.CurrSprint;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for CurrProject
-        ///</summary>
-        [TestMethod()]
-        public void CurrProjectTest()
-        {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            ProjectView expected = null; // TODO: Initialize to an appropriate value
-            ProjectView actual;
-            target.CurrProject = expected;
-            actual = target.CurrProject;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
-        ///A test for AllTeams
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("ViewModel.dll")]
-        public void AllTeamsTest()
-        {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            ObservableCollection<TeamView> expected = null; // TODO: Initialize to an appropriate value
-            ObservableCollection<TeamView> actual;
-            target.AllTeams = expected;
-            actual = target.AllTeams;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        /// <summary>
         ///A test for updateTasksForUser
         ///</summary>
         [TestMethod()]
         [DeploymentItem("ViewModel.dll")]
         public void updateTasksForUserTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
             actual = target.updateTasksForUser();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            target.HistoricMode = true;
+            actual = target.updateTasksForUser();
+            Assert.AreEqual(expected, actual);
+
+            target._isLoggedIn = false;
+            try
+            {
+                target.updateTasksForUser();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
         }
 
         /// <summary>
@@ -277,12 +75,21 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void updateTasksForStoryTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
+            try
+            {
+                target.updateTasksForStory();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
             actual = target.updateTasksForStory();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -292,12 +99,22 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void updateStoriesForSprintTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
-            actual = target.updateStoriesForSprint();
+            try
+            {
+
+                actual = target.updateStoriesForSprint();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            actual = target.updateTasksForStory();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -307,12 +124,21 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void updateSprintsForProjectTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.updateSprintsForProject();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
             actual = target.updateSprintsForProject();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
