@@ -108,7 +108,7 @@ namespace SCRUMProjectManagementSystem
         }
 
         private void update()
-        {
+        {/*
             if (!isUpdating)
             {
                 isUpdating = true;
@@ -362,10 +362,11 @@ namespace SCRUMProjectManagementSystem
                 }
             }
             isUpdating = false;
+          */
         }
 
         void taskOwnerChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {/*
             ComboBox owner = (ComboBox)stackPanel2.Children[1];
             ComboBox state = (ComboBox)stackPanel2.Children[5];
             if (owner.SelectedIndex == -1)
@@ -381,10 +382,11 @@ namespace SCRUMProjectManagementSystem
                 }
                 state.IsEnabled = true;
             }
+          */
         }
 
         void taskStateChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {/*
             ComboBox owner = (ComboBox)stackPanel2.Children[1];
             ComboBox state = (ComboBox)stackPanel2.Children[5];
             if (state.SelectedIndex == 0)
@@ -392,36 +394,40 @@ namespace SCRUMProjectManagementSystem
                 owner.SelectedIndex = -1;
                 state.IsEnabled = false;
             }
+          */
         }
 
         void save_project_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             TextBox name = (TextBox)stackPanel2.Children[0];
             Label team = (Label)stackPanel2.Children[1];
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
             ComboBox owner = (ComboBox)stackPanel2.Children[4];
             viewModel.ChangeCurrProject(name.Text, start.SelectedDate, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
+          */
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             TextBox name = (TextBox)stackPanel2.Children[1];
             DatePicker start = (DatePicker)stackPanel2.Children[2];
             DatePicker end = (DatePicker)stackPanel2.Children[3];
             viewModel.ChangeCurrSprint(name.Text, start.SelectedDate, end.SelectedDate);
+          */
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             ComboBox sprint = (ComboBox)stackPanel2.Children[1];
             TextBox priority = (TextBox)stackPanel2.Children[2];
             TextBox text = (TextBox)stackPanel2.Children[3];
             viewModel.ChangeCurrStory(priority.Text, text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
+          */
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             ComboBox owner = (ComboBox)stackPanel2.Children[1];
             ComboBox complexity = (ComboBox)stackPanel2.Children[2];
             ComboBox value = (ComboBox)stackPanel2.Children[3];
@@ -432,6 +438,7 @@ namespace SCRUMProjectManagementSystem
             TaskStateConverter converter = new TaskStateConverter();
 
             viewModel.ChangeCurrTask(text.Text, (int)complexity.SelectedItem, (int)value.SelectedItem, (UserView)owner.SelectedItem, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
+          */
         }
 
         void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
