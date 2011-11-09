@@ -148,12 +148,26 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void updateProjectsForUserTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.updateProjectsForUser();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
             actual = target.updateProjectsForUser();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            target.HistoricMode = true;
+            actual = target.updateProjectsForUser();
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -163,12 +177,23 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void updateAllTeamsTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.updateAllTeams();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
             actual = target.updateAllTeams();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            actual = target.updateAllTeams();
         }
 
         /// <summary>
@@ -178,13 +203,11 @@ namespace UnitTests
         [DeploymentItem("ViewModel.dll")]
         public void hashPasswordTest()
         {
-            SPMSViewModel_Accessor target = new SPMSViewModel_Accessor(); // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
+            string password = "password";
+            string expected = "6Pl/upEE0epQR5SObftn+s2fW3M=";
             string actual;
             actual = target.hashPassword(password);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -193,15 +216,20 @@ namespace UnitTests
         [TestMethod()]
         public void ValidateTeamTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            UserView manager = null; // TODO: Initialize to an appropriate value
-            UserView lead = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = string.Empty;
+            UserView manager = null;
+            UserView lead = null;
+            bool expected = false;
             bool actual;
             actual = target.ValidateTeam(name, manager, lead);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            name = "Team name";
+            manager = target.GetUserByID(1);
+            lead = target.GetUserByID(1);
+            expected = true;
+            actual = target.ValidateTeam(name, manager, lead);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -210,19 +238,45 @@ namespace UnitTests
         [TestMethod()]
         public void ValidateTaskTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            Nullable<TaskType> type = new Nullable<TaskType>(); // TODO: Initialize to an appropriate value
-            Nullable<int> size = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> value = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> completion = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<TaskState> state = new Nullable<TaskState>(); // TODO: Initialize to an appropriate value
+            string text = null;
+            UserView owner = null;
+            Nullable<TaskType> type = new Nullable<TaskType>();
+            Nullable<int> size = new Nullable<int>();
+            Nullable<int> value = new Nullable<int>();
+            Nullable<DateTime> completion = new Nullable<DateTime>();
+            Nullable<TaskState> state = new Nullable<TaskState>();
+
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = target.ValidateTask(text, owner, type, size, value, completion, state);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            text = "text";
+            size = 1;
+            value = 1;
+            state = TaskState.In_Progress;
+            type = TaskType.Development;
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
+
+            state = TaskState.Unassigned;
+            expected = true;
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
+
+            state = TaskState.In_Progress;
+            owner = target.GetUserByID(1);
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
+
+            state = TaskState.Unassigned;
+            expected = false;
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
+
+            state = TaskState.Completed;
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -231,14 +285,18 @@ namespace UnitTests
         [TestMethod()]
         public void ValidateStoryTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string priority = string.Empty; // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string priority = string.Empty;
+            string text = null;
+            bool expected = false;
             bool actual;
             actual = target.ValidateStory(priority, text);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            priority = "100";
+            text = "text";
+            expected = true;
+            actual = target.ValidateStory(priority, text);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -247,16 +305,29 @@ namespace UnitTests
         [TestMethod()]
         public void ValidateSprintTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = null;
+            Nullable<DateTime> startDate = null;
+            Nullable<DateTime> endDate = null;
+            bool expected = false;
             bool actual;
             actual = target.ValidateSprint(name, startDate, endDate);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            expected = true;
+            name = "name";
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            startDate = new DateTime(2011, 10, 29);
+            endDate = new DateTime(2011, 11, 2);
+            actual = target.ValidateSprint(name, startDate, endDate);
+            Assert.AreEqual(expected, actual);
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(2)));
+            startDate = new DateTime(2012, 10, 29);
+            endDate = new DateTime(2012, 11, 2);
+            actual = target.ValidateSprint(name, startDate, endDate);
+            Assert.AreEqual(expected, actual);
         }
+
 
         /// <summary>
         ///A test for ValidateProject
@@ -264,17 +335,24 @@ namespace UnitTests
         [TestMethod()]
         public void ValidateProjectTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            TeamView team = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = null;
+            Nullable<DateTime> startDate = new Nullable<DateTime>();
+            Nullable<DateTime> endDate = new Nullable<DateTime>();
+            UserView owner = null;
+            TeamView team = null;
+            bool expected = false;
             bool actual;
             actual = target.ValidateProject(name, startDate, endDate, owner, team);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            name = "name";
+            startDate = DateTime.Today;
+            endDate = null;
+            owner = target.GetUserByID(1);
+            team = target.GetTeamByID(1);
+            expected = true;
+            actual = target.ValidateProject(name, startDate, endDate, owner, team);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -283,9 +361,18 @@ namespace UnitTests
         [TestMethod()]
         public void ToggleHistoricModeTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
+            target.HistoricMode = false;
+
+            bool expected = true;
             target.ToggleHistoricMode();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            bool actual = target.HistoricMode;
+            Assert.AreEqual(actual, expected);
+
+            expected = false;
+            target.ToggleHistoricMode();
+            actual = target.HistoricMode;
+            Assert.AreEqual(target.HistoricMode, expected);
+
         }
 
         /// <summary>
@@ -294,14 +381,35 @@ namespace UnitTests
         [TestMethod()]
         public void MoveUserToTeamTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            UserView user = null; // TODO: Initialize to an appropriate value
-            TeamView team = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            UserView user = null;
+            TeamView team = null;
+            bool expected = false;
             bool actual;
+            try
+            {
+                actual = target.MoveUserToTeam(user, team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            user = target.GetUserByID(1);
+            try
+            {
+                actual = target.MoveUserToTeam(user, team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            team = target.GetTeamByID(1);
+            expected = true;
             actual = target.MoveUserToTeam(user, team);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -310,10 +418,33 @@ namespace UnitTests
         [TestMethod()]
         public void JumpToTaskTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
             TaskView task = null; // TODO: Initialize to an appropriate value
+
+            target._isLoggedIn = false;
+            try
+            {
+                target.JumpToTask(task);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                target.JumpToTask(task);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            task = new TaskView(target._dataModel.GetTaskByID(1));
             target.JumpToTask(task);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            Assert.AreEqual(task.TaskID, target.CurrTask.TaskID);
         }
 
         /// <summary>
@@ -322,13 +453,35 @@ namespace UnitTests
         [TestMethod()]
         public void GetUserByIDTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            int userId = 0; // TODO: Initialize to an appropriate value
-            UserView expected = null; // TODO: Initialize to an appropriate value
+            int userId = -1;
+            UserView expected = new UserView(target._dataModel.GetUserByID(1));
             UserView actual;
+
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.GetUserByID(userId);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                actual = target.GetUserByID(userId);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            userId = 1;
             actual = target.GetUserByID(userId);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -337,13 +490,39 @@ namespace UnitTests
         [TestMethod()]
         public void GetTeamMembersTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            TeamView team = null; // TODO: Initialize to an appropriate value
-            Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>> expected = null; // TODO: Initialize to an appropriate value
+            TeamView team = null;
             Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>> actual;
+
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.GetTeamMembers(team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                actual = target.GetTeamMembers(team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            team = target.GetTeamByID(1);
             actual = target.GetTeamMembers(team);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            Assert.AreEqual(actual.Item1.Count, 1);
+            Assert.AreEqual(actual.Item1.Count, 1);
+
+            Assert.AreEqual(actual.Item1[0], target.GetUserByID(1));
+            Assert.AreEqual(actual.Item2[0], target.GetUserByID(2));
         }
 
         /// <summary>
@@ -352,13 +531,34 @@ namespace UnitTests
         [TestMethod()]
         public void GetTeamForUserTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            UserView user = null; // TODO: Initialize to an appropriate value
-            TeamView expected = null; // TODO: Initialize to an appropriate value
+            UserView user = null;
+            TeamView expected = target.GetTeamByID(1);
             TeamView actual;
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.GetTeamForUser(user);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                actual = target.GetTeamForUser(user);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            user = target.GetUserByID(1);
             actual = target.GetTeamForUser(user);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -367,13 +567,34 @@ namespace UnitTests
         [TestMethod()]
         public void GetTeamByIDTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            int teamId = 0; // TODO: Initialize to an appropriate value
-            TeamView expected = null; // TODO: Initialize to an appropriate value
+            int teamId = -1;
+            TeamView expected = new TeamView(target._dataModel.GetTeamByID(1));
             TeamView actual;
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.GetTeamByID(teamId);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                actual = target.GetTeamByID(teamId);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            teamId = 1;
             actual = target.GetTeamByID(teamId);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -382,12 +603,26 @@ namespace UnitTests
         [TestMethod()]
         public void GetManagersTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            ObservableCollection<UserView> expected = null; // TODO: Initialize to an appropriate value
             ObservableCollection<UserView> actual;
+            UserView userOne = target.GetUserByID(1);
+            UserView userTwo = target.GetUserByID(2);
+
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.GetManagers();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
             actual = target.GetManagers();
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Assert.AreEqual(actual.Count, 2);
+            Assert.AreEqual(actual[0], userOne);
+            Assert.AreEqual(actual[1], userTwo);
         }
 
         /// <summary>
@@ -410,15 +645,38 @@ namespace UnitTests
         [TestMethod()]
         public void CreateTeamTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            UserView manager = null; // TODO: Initialize to an appropriate value
-            UserView lead = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = null;
+            UserView manager = null;
+            UserView lead = null;
+            bool expected = true;
             bool actual;
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.CreateTeam(name, manager, lead);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            manager = target.GetUserByID(1);
+            lead = target.GetUserByID(1);
+            try
+            {
+                actual = target.CreateTeam(name, manager, lead);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            name = "name";
             actual = target.CreateTeam(name, manager, lead);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -427,18 +685,66 @@ namespace UnitTests
         [TestMethod()]
         public void CreateTaskTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            int size = 0; // TODO: Initialize to an appropriate value
-            int value = 0; // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            TaskType type = new TaskType(); // TODO: Initialize to an appropriate value
-            TaskState state = new TaskState(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string text = null;
+            int size = -1;
+            int value = 1;
+            UserView owner = null;
+            TaskType type = TaskType.Development;
+            TaskState state = TaskState.Unassigned;
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            size = 1;
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            text = "text";
+            state = TaskState.In_Progress;
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            state = TaskState.Unassigned;
             actual = target.CreateTask(text, size, value, owner, type, state);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            state = TaskState.In_Progress;
+            owner = target.GetUserByID(1);
+            actual = target.CreateTask(text, size, value, owner, type, state);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -447,14 +753,56 @@ namespace UnitTests
         [TestMethod()]
         public void CreateStoryTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string priority = string.Empty; // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string priority = null;
+            string text = "text";
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.CreateStory(priority, text);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.CreateStory(priority, text);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            priority = "abc";
+            try
+            {
+                actual = target.CreateStory(priority, text);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentException)
+            {
+                ;
+            }
+
+            priority = "-1";
+            try
+            {
+                actual = target.CreateStory(priority, text);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            priority = "1";
             actual = target.CreateStory(priority, text);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -463,15 +811,35 @@ namespace UnitTests
         [TestMethod()]
         public void CreateSprintTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = null;
+            Nullable<DateTime> startDate = DateTime.Today;
+            Nullable<DateTime> endDate = null;
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.CreateSprint(name, startDate, endDate);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.CreateSprint(name, startDate, endDate);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            name = "name";
             actual = target.CreateSprint(name, startDate, endDate);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -480,17 +848,37 @@ namespace UnitTests
         [TestMethod()]
         public void CreateProjectTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            TeamView team = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = "name";
+            Nullable<DateTime> startDate = null;
+            Nullable<DateTime> endDate = null;
+            UserView owner = target.GetUserByID(1);
+            TeamView team = target.GetTeamByID(1);
+            bool expected = true;
             bool actual;
+
+            target._isLoggedIn = false;
+            try
+            {
+                actual = target.CreateProject(name, startDate, endDate, owner, team);
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
+            try
+            {
+                actual = target.CreateProject(name, startDate, endDate, owner, team);
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            startDate = DateTime.Today;
             actual = target.CreateProject(name, startDate, endDate, owner, team);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -573,14 +961,17 @@ namespace UnitTests
         [TestMethod()]
         public void AuthenticateUserTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            int userId = 0; // TODO: Initialize to an appropriate value
-            string password = string.Empty; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            int userId = 1;
+            string password = "bad_pass";
+            bool expected = false;
             bool actual;
             actual = target.AuthenticateUser(userId, password);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            password = "password";
+            expected = true;
+            actual = target.AuthenticateUser(userId, password);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

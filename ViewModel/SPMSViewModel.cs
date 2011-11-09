@@ -305,6 +305,11 @@ namespace ViewModel
         /// <returns>A list of all managers in the database</returns>
         public ObservableCollection<UserView> GetManagers()
         {
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+
             IEnumerable<User> users = _dataModel.GetAllUsers();
             ObservableCollection<UserView> result = new ObservableCollection<UserView>();
 
@@ -335,7 +340,11 @@ namespace ViewModel
         /// <returns>A tuple, the first element of which is the list of team members and the second is the list of Users not in the team</returns>
         public Tuple<ObservableCollection<UserView>, ObservableCollection<UserView>> GetTeamMembers(TeamView team)
         {
-            if (team == null) // Bad value
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (team == null) // Bad value
             {
                 throw new ArgumentNullException("Arguments to GetTeamMembers must not be null");
             }

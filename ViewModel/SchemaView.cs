@@ -23,6 +23,22 @@ namespace ViewModel
             Role = (UserRole)u.Role.ConvertToInt();
             Name = u.Name.Trim();
         }
+
+        public override bool Equals(object obj)
+        {
+            UserView other = obj as UserView;
+            if (other != null)
+            {
+                return this.UserID == other.UserID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.UserID;
+        }
     }
 
     /// <summary>
@@ -42,6 +58,22 @@ namespace ViewModel
             TeamLeadID = t.Team_lead;
             ManagerID = t.Manager;
             Name = t.Team_name.Trim();
+        }
+
+        public override bool Equals(object obj)
+        {
+            TeamView other = obj as TeamView;
+            if (other != null)
+            {
+                return this.TeamID == other.TeamID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.TeamID;
         }
     }
 
@@ -67,6 +99,22 @@ namespace ViewModel
             OwnerID = p.Owner;
             TeamID = p.Team_id;
         }
+
+        public override bool Equals(object obj)
+        {
+            ProjectView other = obj as ProjectView;
+            if (other != null)
+            {
+                return this.ProjectID == other.ProjectID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ProjectID;
+        }
     }
 
     /// <summary>
@@ -89,6 +137,22 @@ namespace ViewModel
             EndDate = s.End_date;
             ProjectID = s.Project_id;
         }
+
+        public override bool Equals(object obj)
+        {
+            SprintView other = obj as SprintView;
+            if (other != null)
+            {
+                return this.SprintID == other.SprintID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.SprintID;
+        }
     }
 
     /// <summary>
@@ -108,6 +172,22 @@ namespace ViewModel
             Priority = s.Priority_num;
             SprintID = s.Sprint_id;
             Text = s.Text;
+        }
+
+        public override bool Equals(object obj)
+        {
+            StoryView other = obj as StoryView;
+            if (other != null)
+            {
+                return this.StoryID == other.StoryID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.StoryID;
         }
     }
 
@@ -138,6 +218,22 @@ namespace ViewModel
             BusinessValue = t.Business_value;
             CompletionDate = t.Completion_date;
             State = (TaskState)t.State.ConvertToInt();
+        }
+
+        public override bool Equals(object obj)
+        {
+            TaskView other = obj as TaskView;
+            if (other != null)
+            {
+                return this.TaskID == other.TaskID;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.TaskID;
         }
     }
 }

@@ -323,52 +323,52 @@ namespace UnitTests
 
         public bool CreateTeam(string name, int managerID, int leadID)
         {
-            return (name == "Invalid Team");
+            return (name != "Invalid Team");
         }
 
         public bool CreateProject(string name, DateTime startDate, DateTime? endDate, int ownerID, int teamID)
         {
-            return (name == "Invalid Project");
+            return (name != "Invalid Project");
         }
 
         public bool CreateSprint(string name, DateTime startDate, DateTime? endDate, int projectID)
         {
-            return (name == "Invalid Sprint");
+            return (name != "Invalid Sprint");
         }
 
         public bool CreateStory(int priority, string text, int sprintID)
         {
-            return (text == "Fail creating");
+            return (text != "Fail creating");
         }
 
         public bool CreateTask(string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, int storyID)
         {
-            return (text == "Fail creating");
+            return (text != "Fail creating");
         }
 
         public bool MoveUserToTeam(int userID, int teamID)
         {
-            return (teamID <= 0);
+            return (teamID > 0);
         }
 
         public bool ChangeProject(int projectID, string name, DateTime startDate, DateTime? endDate, int ownerID, int teamID)
         {
-            return (teamID <= 0);
+            return (teamID > 0);
         }
 
         public bool ChangeSprint(int sprintID, string name, DateTime startDate, DateTime? endDate)
         {
-            return (name == "Invalid Sprint");
+            return (name != "Invalid Sprint");
         }
 
         public bool ChangeStory(int storyID, int priority, string text, int sprintID)
         {
-            return (text == "Fail changing");
+            return (text != "Fail changing");
         }
 
         public bool ChangeTask(int taskID, string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, DateTime? completion)
         {
-            return (text == "Fail changing");
+            return (text != "Fail changing");
         }
     }
 }
