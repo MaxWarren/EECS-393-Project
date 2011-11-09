@@ -56,7 +56,7 @@ namespace UnitTests
             actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);
 
-            value = (TaskType)3;
+            value = (TaskType)5;
             expected = "None";
             actual = target.Convert(value, targetType, paramter, culture) as string;
             Assert.AreEqual(expected, actual);

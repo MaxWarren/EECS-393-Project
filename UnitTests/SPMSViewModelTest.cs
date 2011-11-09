@@ -631,12 +631,37 @@ namespace UnitTests
         [TestMethod()]
         public void GetCurrSprintBurndownTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            Tuple<IDictionary<DateTime, double>, IDictionary<DateTime, int>> expected = null; // TODO: Initialize to an appropriate value
             Tuple<IDictionary<DateTime, double>, IDictionary<DateTime, int>> actual;
+            try
+            {
+                actual = target.GetCurrSprintBurndown();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(2)));
+            try
+            {
+                actual = target.GetCurrSprintBurndown();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
             actual = target.GetCurrSprintBurndown();
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Assert.AreEqual(actual.Item1.Count, (target.CurrSprint.EndDate.Value - target.CurrSprint.StartDate).Days + 1);
+            Assert.AreEqual(actual.Item2.Count, (target.CurrSprint.EndDate.Value - target.CurrSprint.StartDate).Days + 1);
+
+            target.CurrSprint.EndDate = null;
+            actual = target.GetCurrSprintBurndown();
+            Assert.AreEqual(actual.Item1.Count, (DateTime.Today - target.CurrSprint.StartDate).Days + 1);
+            Assert.AreEqual(actual.Item2.Count, (DateTime.Today - target.CurrSprint.StartDate).Days + 1);
         }
 
         /// <summary>

@@ -138,6 +138,18 @@ namespace UnitTests
                 },
                 new Task()
                 {
+                    Task_id = 3,
+                    Story_id = 1,
+                    Business_value = 1,
+                    Size_complexity = 1,
+                    Completion_date = new DateTime(2011, 10, 31),
+                    Owner = null,
+                    Text = "Task 1",
+                    State = one,
+                    Type = one,
+                },
+                new Task()
+                {
                     Task_id = 2,
                     Story_id = 2,
                     Business_value = 3,
