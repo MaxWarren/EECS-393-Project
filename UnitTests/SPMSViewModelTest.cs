@@ -912,19 +912,66 @@ namespace UnitTests
         [TestMethod()]
         public void ChangeCurrTaskTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
-            int size = 0; // TODO: Initialize to an appropriate value
-            int value = 0; // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            TaskType type = new TaskType(); // TODO: Initialize to an appropriate value
-            TaskState state = new TaskState(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> completion = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string text = null;
+            int size = -1;
+            int value = 1;
+            UserView owner = null; 
+            TaskType type = TaskType.Development;
+            TaskState state = TaskState.In_Progress;
+            Nullable<DateTime> completion = null;
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+            
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            state = TaskState.Unassigned;
+            try
+            {
+                actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            size = 1;
+            try
+            {
+                actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            text = "text";
             actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+
+            owner = target.GetUserByID(1);
+            state = TaskState.In_Progress;
+            actual = target.ChangeCurrTask(text, size, value, owner, type, state, completion);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -933,15 +980,57 @@ namespace UnitTests
         [TestMethod()]
         public void ChangeCurrStoryTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string priority = string.Empty; // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
+            string priority = "abc";
+            string text = "text";
             SprintView sprint = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.ChangeCurrStory(priority, text, sprint);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.ChangeCurrStory(priority, text, sprint);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            sprint = target.CurrSprint;
+            try
+            {
+                actual = target.ChangeCurrStory(priority, text, sprint);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentException)
+            {
+                ;
+            }
+
+            priority = "-1";
+            try
+            {
+                actual = target.ChangeCurrStory(priority, text, sprint);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                ;
+            }
+
+            priority = "1";
             actual = target.ChangeCurrStory(priority, text, sprint);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -950,15 +1039,35 @@ namespace UnitTests
         [TestMethod()]
         public void ChangeCurrSprintTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = null;
+            Nullable<DateTime> startDate = DateTime.Today;
+            Nullable<DateTime> endDate = null;
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.ChangeCurrSprint(name, startDate, endDate);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.ChangeCurrSprint(name, startDate, endDate);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            name = "name";
             actual = target.ChangeCurrSprint(name, startDate, endDate);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
@@ -967,17 +1076,37 @@ namespace UnitTests
         [TestMethod()]
         public void ChangeCurrProjectTest()
         {
-            SPMSViewModel target = new SPMSViewModel(); // TODO: Initialize to an appropriate value
-            string name = string.Empty; // TODO: Initialize to an appropriate value
-            Nullable<DateTime> startDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            Nullable<DateTime> endDate = new Nullable<DateTime>(); // TODO: Initialize to an appropriate value
-            UserView owner = null; // TODO: Initialize to an appropriate value
-            TeamView team = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            string name = "name";
+            Nullable<DateTime> startDate = DateTime.Today;
+            Nullable<DateTime> endDate = null;
+            UserView owner = target.GetUserByID(1);
+            TeamView team = null;
+            bool expected = true;
             bool actual;
+            try
+            {
+                actual = target.ChangeCurrProject(name, startDate, endDate, owner, team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            try
+            {
+                actual = target.ChangeCurrProject(name, startDate, endDate, owner, team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+                ;
+            }
+
+            team = target.GetTeamByID(1);
             actual = target.ChangeCurrProject(name, startDate, endDate, owner, team);
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
