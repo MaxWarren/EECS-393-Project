@@ -108,7 +108,12 @@ namespace SCRUMProjectManagementSystem
         }
 
         private void update()
-        {/*
+        {
+            leftList.ItemsSource = viewModel.ProjectsForUser;
+            grid_projectInfo.Visibility = Visibility.Visible;
+            if (viewModel.CurrProject != null)
+                this.Title = viewModel.CurrProject.Name;
+            /*
             if (!isUpdating)
             {
                 isUpdating = true;

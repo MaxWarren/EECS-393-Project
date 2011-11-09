@@ -96,7 +96,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
-                <TextBox Grid.Column="1" Name="textBox_project_name" />
+                <TextBox Grid.Column="1" Name="textBox_project_name" Text="{Binding Path=CurrProject}" />
                 <Label Content="Team:" Grid.Row="1" HorizontalContentAlignment="Right" />
                 <Label Grid.Column="1" Grid.Row="1" Name="label_project_team" />
                 <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
