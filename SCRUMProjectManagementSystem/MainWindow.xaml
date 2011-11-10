@@ -13,7 +13,7 @@
                     <Setter Property="Background" Value="White"></Setter>
                 </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="LightBlue"></Setter>
+                    <Setter Property="Background" Value="Light Blue"></Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -77,14 +77,56 @@
         </Grid>
         <Grid Name="grid2" Margin="0,58,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" Name="column1" />
-                <ColumnDefinition Width="1*" Name="column2" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <ListBox Name="leftList" SelectionChanged="leftList_SelectionChanged" AlternationCount="2"></ListBox>
-            <GridSplitter HorizontalAlignment="Left" Name="gridSplitter1" Grid.Column="1" Width="2" />
-            <StackPanel Grid.Column="1" Name="stackPanel1" Background="White"></StackPanel>
-            <StackPanel Grid.Column="2" Name="stackPanel2" Background="White" />
+            <GridSplitter HorizontalAlignment="Left" Name="gridSplitter1" Grid.Column="1" Width="2" ResizeDirection="Columns" />
+            <Grid Grid.Column="1" Name="grid_projectInfo" Background="White" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Project Name:" HorizontalContentAlignment="Right" />
+                <TextBox Grid.Column="1" Name="textBox_project_name" Text="{Binding Path=CurrProject}" />
+                <Label Content="Team:" Grid.Row="1" HorizontalContentAlignment="Right" />
+                <Label Grid.Column="1" Grid.Row="1" Name="label_project_team" />
+                <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_project_start" />
+                <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_project_end" />
+                <Label Content="Owner" Grid.Row="4" HorizontalContentAlignment="Right" />
+                <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_project_owner" />
+            </Grid>
+            <Grid Grid.Column="1" Name="grid_sprintInfo" Background="White" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Project Name:" HorizontalContentAlignment="Right" />
+                <Label Grid.Column="1" Name="label_sprint_project" />
+                <Label Content="Sprint Name:" Grid.Row="1" HorizontalContentAlignment="Right" />
+                <TextBox Grid.Row="1" Grid.Column="1" Name="textBox_sprint_name" />
+                <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_sprint_start" />
+                <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" />
+            </Grid>
         </Grid>
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />
         <Menu Height="23" Name="menu1" VerticalAlignment="Top">
