@@ -66,6 +66,12 @@ namespace UnitTests
             {
                 ;
             }
+
+            target._isLoggedIn = true;
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
+            actual = target.updateTasksForUser();
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -88,6 +94,11 @@ namespace UnitTests
             }
 
             target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            actual = target.updateTasksForStory();
+            Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
             actual = target.updateTasksForStory();
             Assert.AreEqual(expected, actual);
         }
@@ -113,7 +124,12 @@ namespace UnitTests
             }
 
             target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
-            actual = target.updateTasksForStory();
+            actual = target.updateStoriesForSprint();
+            Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
+            actual = target.updateStoriesForSprint();
             Assert.AreEqual(expected, actual);
         }
 
@@ -137,6 +153,11 @@ namespace UnitTests
             }
 
             target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            actual = target.updateSprintsForProject();
+            Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
             actual = target.updateSprintsForProject();
             Assert.AreEqual(expected, actual);
         }
@@ -168,6 +189,11 @@ namespace UnitTests
             target.HistoricMode = true;
             actual = target.updateProjectsForUser();
             Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
+            actual = target.updateProjectsForUser();
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -194,6 +220,11 @@ namespace UnitTests
             actual = target.updateAllTeams();
             Assert.AreEqual(expected, actual);
             actual = target.updateAllTeams();
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            expected = false;
+            actual = target.updateAllTeams();
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -482,6 +513,10 @@ namespace UnitTests
             userId = 1;
             actual = target.GetUserByID(userId);
             Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            actual = target.GetUserByID(userId);
+            Assert.IsNull(actual);
         }
 
         /// <summary>
@@ -559,6 +594,10 @@ namespace UnitTests
             user = target.GetUserByID(1);
             actual = target.GetTeamForUser(user);
             Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            actual = target.GetTeamForUser(user);
+            Assert.IsNull(actual);
         }
 
         /// <summary>
@@ -595,6 +634,10 @@ namespace UnitTests
             teamId = 1;
             actual = target.GetTeamByID(teamId);
             Assert.AreEqual(expected, actual);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            actual = target.GetTeamByID(teamId);
+            Assert.IsNull(actual);
         }
 
         /// <summary>
@@ -623,6 +666,10 @@ namespace UnitTests
             Assert.AreEqual(actual.Count, 2);
             Assert.AreEqual(actual[0], userOne);
             Assert.AreEqual(actual[1], userTwo);
+
+            (target._dataModel as MockDataModel).failureOn = true;
+            actual = target.GetManagers();
+            Assert.AreEqual(actual.Count, 0);
         }
 
         /// <summary>
@@ -915,7 +962,7 @@ namespace UnitTests
             string text = null;
             int size = -1;
             int value = 1;
-            UserView owner = null; 
+            UserView owner = null;
             TaskType type = TaskType.Development;
             TaskState state = TaskState.In_Progress;
             Nullable<DateTime> completion = null;
@@ -930,7 +977,7 @@ namespace UnitTests
             {
                 ;
             }
-            
+
             target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
             try
             {

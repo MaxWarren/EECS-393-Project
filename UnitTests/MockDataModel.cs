@@ -18,6 +18,8 @@ namespace UnitTests
         private IEnumerable<Story> _stories;
         private IEnumerable<Task> _tasks;
 
+        public bool failureOn = false;
+
         public MockDataModel()
         {
             Binary one = new Binary(new byte[] { 0, 0, 1 });
@@ -165,7 +167,7 @@ namespace UnitTests
 
         public IEnumerable<Project> GetAllProjects()
         {
-            return _projects;
+            return failureOn ? null : _projects;
         }
 
         public IEnumerable<Project> GetProjectsByTeam(int teamId)
@@ -174,7 +176,7 @@ namespace UnitTests
                                           where p.Team_id == teamId
                                           select p;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public IEnumerable<Project> GetProjectsByOwner(int ownerID)
@@ -183,7 +185,7 @@ namespace UnitTests
                                           where p.Owner == ownerID
                                           select p;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public Project GetProjectByID(int projectID)
@@ -192,7 +194,7 @@ namespace UnitTests
                                           where p.Project_id == projectID
                                           select p;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public IEnumerable<Sprint> GetSprintsForProject(int projectID)
@@ -201,7 +203,7 @@ namespace UnitTests
                                          where s.Project_id == projectID
                                          select s;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public Sprint GetProjectBacklog(int projectID)
@@ -210,7 +212,7 @@ namespace UnitTests
                                          where s.Sprint_name == "Backlog"
                                          select s;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public Sprint GetSprintByID(int sprintID)
@@ -219,7 +221,7 @@ namespace UnitTests
                                          where s.Sprint_id == sprintID
                                          select s;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public IEnumerable<Story> GetStoriesForSprint(int sprintID)
@@ -228,7 +230,7 @@ namespace UnitTests
                                         where s.Sprint_id == sprintID
                                         select s;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public Story GetStoryByID(int storyID)
@@ -237,12 +239,12 @@ namespace UnitTests
                                         where s.Story_id == storyID
                                         select s;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public IEnumerable<Task> GetAllTasks()
         {
-            return _tasks;
+            return failureOn ? null : _tasks;
         }
 
         public IEnumerable<Task> GetTasksForStory(int storyID)
@@ -251,7 +253,7 @@ namespace UnitTests
                                        where t.Story_id == storyID
                                        select t;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public IEnumerable<Task> GetAllTasksForSprint(int sprintID)
@@ -261,7 +263,7 @@ namespace UnitTests
                                        where t.Story_id == s.Story_id && s.Sprint_id == sprintID
                                        select t;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public IEnumerable<Task> GetTasksForUser(int userID)
@@ -270,7 +272,7 @@ namespace UnitTests
                                        where t.Owner.HasValue && t.Owner.Value == userID
                                        select t;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public Task GetTaskByID(int taskID)
@@ -279,12 +281,12 @@ namespace UnitTests
                                        where t.Task_id == taskID
                                        select t;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public IEnumerable<Team> GetAllTeams()
         {
-            return _teams;
+            return failureOn ? null : _teams;
         }
 
         public Team GetTeamByID(int teamID)
@@ -293,7 +295,7 @@ namespace UnitTests
                                        where t.Team_id == teamID
                                        select t;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public User GetUserByID(int userID)
@@ -302,12 +304,12 @@ namespace UnitTests
                                        where u.User_id == userID
                                        select u;
 
-            return result.FirstOrDefault();
+            return failureOn ? null : result.FirstOrDefault();
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _users;
+            return failureOn ? null : _users;
         }
 
         public IEnumerable<User> GetTeamMembers(int teamID)
@@ -316,7 +318,7 @@ namespace UnitTests
                                        where u.Team_id == teamID
                                        select u;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public IEnumerable<User> GetUsersNotInTeam(int teamID)
@@ -325,62 +327,62 @@ namespace UnitTests
                                        where u.Team_id != teamID
                                        select u;
 
-            return result;
+            return failureOn ? null : result;
         }
 
         public User AuthenticateUser(int userID, string password)
         {
-            return _users.Where(u => u.User_id == userID && u.Password == password).FirstOrDefault();
+            return failureOn ? null : _users.Where(u => u.User_id == userID && u.Password == password).FirstOrDefault();
         }
 
         public bool CreateTeam(string name, int managerID, int leadID)
         {
-            return (name != "Invalid Team");
+            return !failureOn;
         }
 
         public bool CreateProject(string name, DateTime startDate, DateTime? endDate, int ownerID, int teamID)
         {
-            return (name != "Invalid Project");
+            return !failureOn;
         }
 
         public bool CreateSprint(string name, DateTime startDate, DateTime? endDate, int projectID)
         {
-            return (name != "Invalid Sprint");
+            return !failureOn;
         }
 
         public bool CreateStory(int priority, string text, int sprintID)
         {
-            return (text != "Fail creating");
+            return !failureOn;
         }
 
         public bool CreateTask(string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, int storyID)
         {
-            return (text != "Fail creating");
+            return !failureOn;
         }
 
         public bool MoveUserToTeam(int userID, int teamID)
         {
-            return (teamID > 0);
+            return !failureOn;
         }
 
         public bool ChangeProject(int projectID, string name, DateTime startDate, DateTime? endDate, int ownerID, int teamID)
         {
-            return (teamID > 0);
+            return !failureOn;
         }
 
         public bool ChangeSprint(int sprintID, string name, DateTime startDate, DateTime? endDate)
         {
-            return (name != "Invalid Sprint");
+            return !failureOn;
         }
 
         public bool ChangeStory(int storyID, int priority, string text, int sprintID)
         {
-            return (text != "Fail changing");
+            return !failureOn;
         }
 
         public bool ChangeTask(int taskID, string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, DateTime? completion)
         {
-            return (text != "Fail changing");
+            return !failureOn;
         }
     }
 }
