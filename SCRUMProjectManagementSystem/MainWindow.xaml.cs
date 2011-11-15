@@ -153,6 +153,10 @@ namespace SCRUMProjectManagementSystem
                         button_project.Visibility = Visibility.Visible;
                         leftList.ItemsSource = viewModel.SprintsForProject;
                         grid_projectInfo.Visibility = Visibility.Visible;
+
+                        UserView[] managerList = viewModel.AllManagers.ToArray();
+                        comboBox_project_owner.ItemsSource = managerList;
+                        comboBox_project_owner.SelectedItem = (from user in managerList where user.UserID == viewModel.CurrProject.OwnerID select user).Single();
                         break;
                     case selection.Sprint:
                         button_project.Visibility = Visibility.Visible;
@@ -166,6 +170,10 @@ namespace SCRUMProjectManagementSystem
                         button_story.Visibility = Visibility.Visible;
                         leftList.ItemsSource = viewModel.TasksForStory;
                         grid_storyInfo.Visibility = Visibility.Visible;
+                        
+                        SprintView[] sv = viewModel.SprintsForProject.ToArray();
+                        comboBox_story_sprint.ItemsSource = sv;
+                        comboBox_story_sprint.SelectedItem = (from sprint in sv where sprint.SprintID == viewModel.CurrSprint.SprintID select sprint).Single();
                         break;
                     case selection.Task:
                         button_project.Visibility = Visibility.Visible;
@@ -175,6 +183,24 @@ namespace SCRUMProjectManagementSystem
                         button_New.Visibility = Visibility.Hidden;
                         leftList.ItemsSource = new string[] { };
                         grid_taskInfo.Visibility = Visibility.Visible;
+
+                        UserView[] userList = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1.ToArray();
+                        comboBox_task_owner.ItemsSource = userList;
+                        comboBox_task_owner.SelectedItem = userList.Where(user => user.UserID == viewModel.CurrTask.OwnerID).FirstOrDefault();
+
+                        comboBox_task_type.ItemsSource = Enum.GetValues(typeof(TaskType)).Cast<TaskType>().Select(type => ttConverter.Convert(type, typeof(string), null, null));
+                        comboBox_task_type.SelectedItem = ttConverter.Convert(viewModel.CurrTask.Type, typeof(string), null, null);
+
+                        comboBox_task_complexity.ItemsSource = EnumValues.sizeComplexity;
+                        comboBox_task_complexity.SelectedItem = viewModel.CurrTask.SizeComplexity;
+
+                        comboBox_task_value.ItemsSource = EnumValues.businessValue;
+                        comboBox_task_value.SelectedItem = viewModel.CurrTask.BusinessValue;
+
+                        comboBox_task_state.ItemsSource = Enum.GetValues(typeof(TaskState)).Cast<TaskState>().Select(state => tsConverter.Convert(state, typeof(string), null, null));
+                        comboBox_task_state.SelectedItem = tsConverter.Convert(viewModel.CurrTask.State, typeof(string), null, null);
+
+                        datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
                         break;
                     default:
                         break;
@@ -512,7 +538,7 @@ namespace SCRUMProjectManagementSystem
           */
         }
 
-        void tb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        void PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             e.Handled = e.Text.IsNonNumeric();
         }
