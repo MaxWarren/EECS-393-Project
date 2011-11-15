@@ -529,7 +529,6 @@ namespace SCRUMProjectManagementSystem
                 currentSelection = selection.Task;
                 update();
             }
-          
         }
         */
         private void rightList_SelectionChanged(object sender, SelectionChangedEventArgs e)
