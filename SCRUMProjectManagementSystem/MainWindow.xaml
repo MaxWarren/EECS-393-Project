@@ -147,7 +147,7 @@
                 <Label Content="Sprint Name:" Grid.Row="1" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_story_sprint" ItemsSource="{Binding Path=SprintsForProject}" />
                 <Label Content="Priority:" Grid.Row="2" HorizontalContentAlignment="Right" />
-                <TextBox Grid.Row="2" Grid.Column="1" Name="textBox_story_priority" Text="{Binding Path=Priority}" PreviewTextInput="PreviewTextInput" />
+                <TextBox Grid.Row="2" Grid.Column="1" Name="textBox_story_priority" Text="{Binding Path=Priority}" PreviewTextInput="textBox_story_priority_PreviewTextInput" />
                 <Label Content="Text:" Grid.Row="3" HorizontalContentAlignment="Right" />
                 <TextBox Grid.Row="3" Grid.Column="1" Name="textBox_story_text" Text="{Binding Path=Text}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_story_Click" />

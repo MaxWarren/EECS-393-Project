@@ -514,7 +514,7 @@ namespace SCRUMProjectManagementSystem
             viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)ttConverter.ConvertBack(comboBox_task_type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(comboBox_task_state.SelectedItem, typeof(TaskState), null, null), datePicker_task_completionDate.SelectedDate);
         }
 
-        void PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        void textBox_story_priority_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             e.Handled = e.Text.IsNonNumeric();
         }
