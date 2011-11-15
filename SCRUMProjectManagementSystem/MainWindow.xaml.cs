@@ -537,6 +537,19 @@ namespace SCRUMProjectManagementSystem
                 viewModel.CurrTask = viewModel.TasksForUser[rightList.SelectedIndex];
                 viewModel.JumpToTask(viewModel.CurrTask);
                 currentSelection = selection.Task;
+                grid_projectInfo.DataContext = viewModel.CurrProject;
+                grid_sprintInfo.DataContext = viewModel.CurrSprint;
+                grid_storyInfo.DataContext = viewModel.CurrStory;
+                grid_taskInfo.DataContext = viewModel.CurrTask;
+                comboBox_project_owner.ItemsSource = viewModel.AllManagers;
+                comboBox_story_sprint.DataContext = viewModel;
+                label_story_project.DataContext = viewModel.CurrProject;
+                label_task_project.DataContext = viewModel.CurrProject;
+                comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
+                comboBox_task_complexity.ItemsSource = ViewModel.EnumValues.sizeComplexity;
+                comboBox_task_state.ItemsSource = ViewModel.EnumValues.taskState;
+                comboBox_task_value.ItemsSource = ViewModel.EnumValues.businessValue;
+                comboBox_task_type.ItemsSource = ViewModel.EnumValues.taskType;
                 update();
             }
             rightList.SelectedIndex = -1;
