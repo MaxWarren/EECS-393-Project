@@ -39,6 +39,13 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!viewModel.IsManager)
+            {
+                menu1.Visibility = Visibility.Hidden;
+                grid3.Margin = new Thickness(0, 0, 0, 0);
+                grid2.Margin = new Thickness(0, 35, 0, 0);
+                button_New.Visibility = Visibility.Hidden;
+            }
             this.DataContext = viewModel;
             currentSelection = selection.Home;
             isUpdating = false;
