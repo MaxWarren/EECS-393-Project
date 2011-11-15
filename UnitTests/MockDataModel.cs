@@ -172,7 +172,7 @@ namespace UnitTests
                     Owner = 2,
                     Text = "Task 2",
                     State = one,
-                    Type = one,
+                    Type = one
                 }
             };
         }
