@@ -7,13 +7,10 @@
     <Window.Resources>
         <local:TaskStateConverter x:Key="TaskState"/>
         <local:TaskTypeConverter x:Key="TaskType"/>
-        <Style  TargetType="{x:Type ListBoxItem}">
+        <Style TargetType="ListBoxItem">
             <Style.Triggers>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="White"></Setter>
-                </Trigger>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="Light Blue"></Setter>
+                    <Setter Property="Background" Value="LightBlue"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -82,7 +79,7 @@
             </Grid.ColumnDefinitions>
             <ListBox Name="leftList" SelectionChanged="leftList_SelectionChanged" AlternationCount="2"></ListBox>
             <GridSplitter HorizontalAlignment="Left" Name="gridSplitter1" Grid.Column="1" Width="2" ResizeDirection="Columns" />
-            <ListBox Name="rightList" Grid.Column="1" SelectionChanged="rightList_SelectionChanged" AlternationCount="2"></ListBox>
+            <ListBox Name="rightList" Grid.Column="1" SelectionChanged="rightList_SelectionChanged" AlternationCount="2" ></ListBox>
             <Grid Grid.Column="1" Name="grid_projectInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
