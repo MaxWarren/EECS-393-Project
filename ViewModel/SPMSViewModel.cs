@@ -180,6 +180,15 @@ namespace ViewModel
         {
             get { return getManagers(); }
         }
+
+        /// <summary>
+        /// A list of all members of the current team
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public ObservableCollection<UserView> CurrTeamMembers
+        {
+            get { return GetTeamMembers(CurrTeam).Item1; }
+        }
         #endregion
 
         #region Constructors
