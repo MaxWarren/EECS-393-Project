@@ -57,12 +57,16 @@ namespace SCRUMProjectManagementSystem
                 {
                     case selection.Home:
                         viewModel.CurrProject = viewModel.ProjectsForUser[leftList.SelectedIndex];
+                        comboBox_project_owner.ItemsSource = viewModel.GetManagers();
+                        grid_projectInfo.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Project:
                         viewModel.CurrSprint = viewModel.SprintsForProject[leftList.SelectedIndex];
+                        grid_sprintInfo.DataContext = viewModel.CurrSprint;
                         break;
                     case selection.Sprint:
                         viewModel.CurrStory = viewModel.StoriesForSprint[leftList.SelectedIndex];
+                        grid_storyInfo.DataContext = viewModel.CurrStory;
                         break;
                     case selection.Story:
                         viewModel.CurrTask = viewModel.TasksForStory[leftList.SelectedIndex];
@@ -109,10 +113,28 @@ namespace SCRUMProjectManagementSystem
 
         private void update()
         {
-            leftList.ItemsSource = viewModel.ProjectsForUser;
-            grid_projectInfo.Visibility = Visibility.Visible;
-            if (viewModel.CurrProject != null)
-                this.Title = viewModel.CurrProject.Name;
+            if (!isUpdating)
+            {
+                grid_projectInfo.Visibility = Visibility.Hidden;
+                grid_sprintInfo.Visibility = Visibility.Hidden;
+                grid_storyInfo.Visibility = Visibility.Hidden;
+                switch (currentSelection)
+                {
+                    case selection.Home:
+                        leftList.ItemsSource = viewModel.ProjectsForUser;
+                        break;
+                    case selection.Project:
+                        leftList.ItemsSource = viewModel.SprintsForProject;
+                        grid_projectInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Sprint:
+                        leftList.ItemsSource = viewModel.StoriesForSprint;
+                        grid_sprintInfo.Visibility = Visibility.Visible;
+                        break;
+                    default:
+                        break;
+                }
+            }
             /*
             if (!isUpdating)
             {

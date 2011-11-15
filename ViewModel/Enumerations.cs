@@ -4,13 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ViewModel
 {
-    public static class ComplexityValues
+    public static class EnumValues
     {
         public static IEnumerable<int> businessValue;
         public static IEnumerable<int> sizeComplexity;
+        public static IEnumerable<TaskState> taskState;
+        public static IEnumerable<TaskType> taskType;
 
         [ExcludeFromCodeCoverage]
-        static ComplexityValues()
+        static EnumValues()
         {
             businessValue = new List<int>
             {
@@ -40,6 +42,21 @@ namespace ViewModel
                 40,
                 80,
                 100
+            };
+
+            taskState = new List<TaskState>
+            {
+                TaskState.Blocked,
+                TaskState.Completed,
+                TaskState.In_Progress,
+                TaskState.Unassigned
+            };
+
+            taskType = new List<TaskType>
+            {
+                TaskType.Development,
+                TaskType.Documentation,
+                TaskType.QA
             };
         }
     }

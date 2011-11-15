@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:SCRUMProjectManagementSystem"
-        Title="SCRUM Project Management System" Height="400" Loaded="Window_Loaded" Width="800" Name="mainWindow" Icon="/SCRUMProjectManagementSystem;component/Images/Untitled.ico" Background="LightBlue" MinWidth="600" MinHeight="400">
+        Title="SCRUM Project Management System" Height="800" Loaded="Window_Loaded" Width="1600" Name="mainWindow" Icon="/SCRUMProjectManagementSystem;component/Images/Untitled.ico" Background="LightBlue" MinWidth="600" MinHeight="400">
     <Window.Resources>
         <local:TaskStateConverter x:Key="TaskState"/>
         <local:TaskTypeConverter x:Key="TaskType"/>
@@ -96,13 +96,13 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
-                <TextBox Grid.Column="1" Name="textBox_project_name" Text="{Binding Path=CurrProject}" />
+                <TextBox Grid.Column="1" Name="textBox_project_name" Text="{Binding Path=Name}" />
                 <Label Content="Team:" Grid.Row="1" HorizontalContentAlignment="Right" />
-                <Label Grid.Column="1" Grid.Row="1" Name="label_project_team" />
+                <Label Grid.Column="1" Grid.Row="1" Name="label_project_team" Content="{Binding Path=TeamName}" />
                 <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_project_start" />
+                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_project_start" SelectedDate="{Binding Path=StartDate}" />
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_project_end" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_project_end" SelectedDate="{Binding Path=EndDate}" />
                 <Label Content="Owner" Grid.Row="4" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_project_owner" />
             </Grid>
@@ -119,13 +119,34 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
-                <Label Grid.Column="1" Name="label_sprint_project" />
+                <Label Grid.Column="1" Name="label_sprint_project" Content="{Binding Path=ProjectName}" />
                 <Label Content="Sprint Name:" Grid.Row="1" HorizontalContentAlignment="Right" />
-                <TextBox Grid.Row="1" Grid.Column="1" Name="textBox_sprint_name" />
+                <TextBox Grid.Row="1" Grid.Column="1" Name="textBox_sprint_name" Text="{Binding Path=Name}" />
                 <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_sprint_start" />
+                <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_sprint_start" SelectedDate="{Binding Path=StartDate}" />
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" SelectedDate="{Binding Path=EndDate}" />
+            </Grid>
+            <Grid Grid.Column="1" Name="grid_storyInfo" Background="White" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Project Name:" HorizontalContentAlignment="Right" />
+                <Label Grid.Column="1" Name="label_story_project" Content="{Binding Path=ProjectName}" />
+                <Label Content="Sprint Name:" Grid.Row="1" HorizontalContentAlignment="Right" />
+                <TextBox Grid.Row="1" Grid.Column="1" Name="texastBox_sprint_name" />
+                <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="2" Name="dasatePicker_sprint_start" />
+                <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datasePicker_sprint_end" />
             </Grid>
         </Grid>
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />
