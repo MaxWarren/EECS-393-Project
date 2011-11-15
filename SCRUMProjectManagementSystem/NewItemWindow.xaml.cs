@@ -36,47 +36,7 @@ namespace SCRUMProjectManagementSystem
                 label3.Content = "End Date";
                 label4.Content = "Owner";
                 label5.Content = "Team";
-                comboBox_project1.ItemsSource = _viewModel.GetManagers();
-                comboBox_project2.ItemsSource = _viewModel.AllTeams;
-                stackPanel_project.Visibility = Visibility.Visible;
-            }
-            if (_type == MainWindow.selection.Sprint)
-            {
-                label1.Content = "Sprint Name";
-                label2.Content = "Start Date";
-                label3.Content = "End Date";
-                stackPanel_sprint.Visibility = Visibility.Visible;
-            }
-            if (_type == MainWindow.selection.Story)
-            {
-                label1.Content = "Priority Number";
-                label2.Content = "Text";
-                stackPanel_story.Visibility = Visibility.Visible;
-            }
-            if (_type == MainWindow.selection.Task)
-            {
-                label1.Content = "Text";
-                label2.Content = "Size Complexity";
-                label3.Content = "Business Value";
-                label4.Content = "Owner";
-                label5.Content = "Type";
-                label6.Content = "State";
-                comboBox_task1.ItemsSource = EnumValues.sizeComplexity;
-                comboBox_task2.ItemsSource = EnumValues.businessValue;
-                comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
-                comboBox_task4.ItemsSource = Enum.GetValues(typeof(TaskType));
-                comboBox_task5.ItemsSource = Enum.GetValues(typeof(TaskState));
-                comboBox_task5.SelectedIndex = 0;
-                comboBox_task5.IsEnabled = false;
-                stackPanel_task.Visibility = Visibility.Visible;
-            }
-            if (_type == MainWindow.selection.Team)
-            {
-                label1.Content = "Team Name";
-                label2.Content = "Manager";
-                label3.Content = "Team Lead";
-                comboBox_team1.ItemsSource = _viewModel.GetManagers();
-                comboBox_team2.ItemsSource = _viewModel.GetManagers();
+                comboBox_project1.ItemsSource = _viewModel.AllManagers;
                 stackPanel_team.Visibility = Visibility.Visible;
             }
         }
@@ -88,7 +48,7 @@ namespace SCRUMProjectManagementSystem
                 switch (_type)
                 {
                     case MainWindow.selection.Project:
-                        _viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.GetManagers()[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
+                        _viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.AllManagers[comboBox_project1.SelectedIndex], _viewModel.AllTeams[comboBox_project2.SelectedIndex]);
                         break;
                     case MainWindow.selection.Sprint:
                         _viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate);
@@ -100,7 +60,7 @@ namespace SCRUMProjectManagementSystem
                         _viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
                         break;
                     case MainWindow.selection.Team:
-                        _viewModel.CreateTeam(textBox_team1.Text, _viewModel.GetManagers()[comboBox_team1.SelectedIndex], _viewModel.GetManagers()[comboBox_team2.SelectedIndex]);
+                        _viewModel.CreateTeam(textBox_team1.Text, _viewModel.AllManagers[comboBox_team1.SelectedIndex], _viewModel.AllManagers[comboBox_team2.SelectedIndex]);
                         break;
                     default:
                         break;

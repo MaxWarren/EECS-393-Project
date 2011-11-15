@@ -64,7 +64,7 @@ namespace SCRUMProjectManagementSystem
                 {
                     case selection.Home:
                         viewModel.CurrProject = viewModel.ProjectsForUser[leftList.SelectedIndex];
-                        comboBox_project_owner.ItemsSource = viewModel.GetManagers();
+                        comboBox_project_owner.ItemsSource = viewModel.AllManagers;
                         grid_projectInfo.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Project:

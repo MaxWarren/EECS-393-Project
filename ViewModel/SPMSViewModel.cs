@@ -171,6 +171,15 @@ namespace ViewModel
             get { updateAllTeams(); return _allTeams; }
             private set { _allTeams = value; }
         }
+
+        /// <summary>
+        /// A list of all managers in the database
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        public ObservableCollection<UserView> AllManagers
+        {
+            get { return getManagers(); }
+        }
         #endregion
 
         #region Constructors
@@ -299,40 +308,6 @@ namespace ViewModel
         #endregion
 
         #region Get Lists of Users
-        /// <summary>
-        /// Get all managers in the database
-        /// </summary>
-        /// <returns>A list of all managers in the database</returns>
-        public ObservableCollection<UserView> GetManagers()
-        {
-            if (!_isLoggedIn)
-            {
-                throw new InvalidOperationException("User must be logged in");
-            }
-
-            IEnumerable<User> users = _dataModel.GetAllUsers();
-            ObservableCollection<UserView> result = new ObservableCollection<UserView>();
-
-            if (users == null)
-            {
-                return result;
-            }
-
-            IEnumerable<User> managers = from manager in users
-                                         where (UserRole)manager.Role.ConvertToInt() == UserRole.Manager
-                                         select manager;
-
-            if (managers != null)
-            {
-                foreach (User manager in managers)
-                {
-                    result.Add(new UserView(manager));
-                }
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Gets a list of users in a team and a list of users not in a team
         /// </summary>
@@ -1066,6 +1041,41 @@ namespace ViewModel
 
             return true;
         }
+
+        /// <summary>
+        /// Get all managers in the database
+        /// </summary>
+        /// <returns>A list of all managers in the database</returns>
+        private ObservableCollection<UserView> getManagers()
+        {
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+
+            IEnumerable<User> users = _dataModel.GetAllUsers();
+            ObservableCollection<UserView> result = new ObservableCollection<UserView>();
+
+            if (users == null)
+            {
+                return result;
+            }
+
+            IEnumerable<User> managers = from manager in users
+                                         where (UserRole)manager.Role.ConvertToInt() == UserRole.Manager
+                                         select manager;
+
+            if (managers != null)
+            {
+                foreach (User manager in managers)
+                {
+                    result.Add(new UserView(manager));
+                }
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

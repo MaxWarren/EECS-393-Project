@@ -653,7 +653,7 @@ namespace UnitTests
             target._isLoggedIn = false;
             try
             {
-                actual = target.GetManagers();
+                actual = target.getManagers();
                 Assert.Fail("Exception not thrown");
             }
             catch (InvalidOperationException)
@@ -662,13 +662,13 @@ namespace UnitTests
             }
 
             target._isLoggedIn = true;
-            actual = target.GetManagers();
+            actual = target.getManagers();
             Assert.AreEqual(actual.Count, 2);
             Assert.AreEqual(actual[0], userOne);
             Assert.AreEqual(actual[1], userTwo);
 
             (target._dataModel as MockDataModel).failureOn = true;
-            actual = target.GetManagers();
+            actual = target.getManagers();
             Assert.AreEqual(actual.Count, 0);
         }
 
