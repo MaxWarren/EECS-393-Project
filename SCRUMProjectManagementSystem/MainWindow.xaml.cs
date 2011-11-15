@@ -495,47 +495,23 @@ namespace SCRUMProjectManagementSystem
         }
 
         void save_project_Click(object sender, RoutedEventArgs e)
-        {/*
-            TextBox name = (TextBox)stackPanel2.Children[0];
-            Label team = (Label)stackPanel2.Children[1];
-            DatePicker start = (DatePicker)stackPanel2.Children[2];
-            DatePicker end = (DatePicker)stackPanel2.Children[3];
-            ComboBox owner = (ComboBox)stackPanel2.Children[4];
-            viewModel.ChangeCurrProject(name.Text, start.SelectedDate, end.SelectedDate, viewModel.GetManagers()[owner.SelectedIndex], viewModel.CurrTeam);
-          */
+        {
+            viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, viewModel.AllManagers[comboBox_project_owner.SelectedIndex], viewModel.CurrTeam);
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
-        {/*
-            TextBox name = (TextBox)stackPanel2.Children[1];
-            DatePicker start = (DatePicker)stackPanel2.Children[2];
-            DatePicker end = (DatePicker)stackPanel2.Children[3];
-            viewModel.ChangeCurrSprint(name.Text, start.SelectedDate, end.SelectedDate);
-          */
+        {
+            viewModel.ChangeCurrSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)
-        {/*
-            ComboBox sprint = (ComboBox)stackPanel2.Children[1];
-            TextBox priority = (TextBox)stackPanel2.Children[2];
-            TextBox text = (TextBox)stackPanel2.Children[3];
-            viewModel.ChangeCurrStory(priority.Text, text.Text, viewModel.SprintsForProject[sprint.SelectedIndex]);
-          */
+        {
+            viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, viewModel.SprintsForProject[comboBox_story_sprint.SelectedIndex]);
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
-        {/*
-            ComboBox owner = (ComboBox)stackPanel2.Children[1];
-            ComboBox complexity = (ComboBox)stackPanel2.Children[2];
-            ComboBox value = (ComboBox)stackPanel2.Children[3];
-            ComboBox type = (ComboBox)stackPanel2.Children[4];
-            ComboBox state = (ComboBox)stackPanel2.Children[5];
-            DatePicker completion = (DatePicker)stackPanel2.Children[6];
-            TextBox text = (TextBox)stackPanel2.Children[7];
-            TaskStateConverter converter = new TaskStateConverter();
-
-            viewModel.ChangeCurrTask(text.Text, (int)complexity.SelectedItem, (int)value.SelectedItem, (UserView)owner.SelectedItem, (TaskType)ttConverter.ConvertBack(type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(state.SelectedItem, typeof(TaskState), null, null), completion.SelectedDate);
-          */
+        {
+            viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)ttConverter.ConvertBack(comboBox_task_type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(comboBox_task_state.SelectedItem, typeof(TaskState), null, null), datePicker_task_completionDate.SelectedDate);
         }
 
         void PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
