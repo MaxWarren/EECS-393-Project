@@ -67,12 +67,18 @@ namespace SCRUMProjectManagementSystem
                     case selection.Sprint:
                         viewModel.CurrStory = viewModel.StoriesForSprint[leftList.SelectedIndex];
                         grid_storyInfo.DataContext = viewModel.CurrStory;
-                        //comboBox_story_sprint.ItemsSource = viewModel.SprintsForProject;
                         comboBox_story_sprint.DataContext = viewModel;
                         label_story_project.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Story:
                         viewModel.CurrTask = viewModel.TasksForStory[leftList.SelectedIndex];
+                        grid_taskInfo.DataContext = viewModel.CurrTask;
+                        label_task_project.DataContext = viewModel.CurrProject;
+                        comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
+                        comboBox_task_complexity.ItemsSource = ViewModel.EnumValues.sizeComplexity;
+                        comboBox_task_state.ItemsSource = ViewModel.EnumValues.taskState;
+                        comboBox_task_value.ItemsSource = ViewModel.EnumValues.businessValue;
+                        comboBox_task_type.ItemsSource = ViewModel.EnumValues.taskType;
                         break;
                     case selection.Task:
                         break;
@@ -121,6 +127,7 @@ namespace SCRUMProjectManagementSystem
                 grid_projectInfo.Visibility = Visibility.Hidden;
                 grid_sprintInfo.Visibility = Visibility.Hidden;
                 grid_storyInfo.Visibility = Visibility.Hidden;
+                grid_taskInfo.Visibility = Visibility.Hidden;
                 switch (currentSelection)
                 {
                     case selection.Home:
@@ -137,6 +144,10 @@ namespace SCRUMProjectManagementSystem
                     case selection.Story:
                         leftList.ItemsSource = viewModel.TasksForStory;
                         grid_storyInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Task:
+                        leftList.ItemsSource = new string[] { };
+                        grid_taskInfo.Visibility = Visibility.Visible;
                         break;
                     default:
                         break;
