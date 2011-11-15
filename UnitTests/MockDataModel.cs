@@ -63,6 +63,10 @@ namespace UnitTests
             };
             _users.ElementAt(0).Team_ = _teams.ElementAt(0);
             _users.ElementAt(1).Team_ = _teams.ElementAt(1);
+            _teams.ElementAt(0).User = _users.ElementAt(0);
+            _teams.ElementAt(1).User = _users.ElementAt(1);
+            _teams.ElementAt(0).ManagerUser = _users.ElementAt(0);
+            _teams.ElementAt(1).ManagerUser = _users.ElementAt(1);
 
             _projects = new List<Project>()
             {
@@ -73,7 +77,9 @@ namespace UnitTests
                     Team_id = 1,
                     Project_name = "Project 1",
                     Start_date = new DateTime(2011, 10, 29),
-                    End_date = null
+                    End_date = null,
+                    Team = _teams.ElementAt(0),
+                    User = _users.ElementAt(0)
                 },
                 new Project()
                 {
@@ -83,6 +89,8 @@ namespace UnitTests
                     Project_name = "Project 2",
                     Start_date = new DateTime(2012, 10, 29),
                     End_date = new DateTime(2012, 12, 20),
+                    Team = _teams.ElementAt(1),
+                    User = _users.ElementAt(1)
                 }
             };
 
@@ -95,6 +103,7 @@ namespace UnitTests
                     Sprint_name = "Backlog",
                     Start_date = new DateTime(2011, 10, 29),
                     End_date = new DateTime(2011, 12, 20),
+                    Project = _projects.ElementAt(0),
                 },
                 new Sprint()
                 {
@@ -102,7 +111,8 @@ namespace UnitTests
                     Project_id = 2,
                     Sprint_name = "Backlog",
                     Start_date = new DateTime(2012, 10, 29),
-                    End_date = null
+                    End_date = null,
+                    Project = _projects.ElementAt(1),
                 }
             };
 
@@ -114,6 +124,7 @@ namespace UnitTests
                     Sprint_id = 1,
                     Priority_num = 100,
                     Text = "User Story 1",
+                    Sprint = _sprints.ElementAt(0),
                 },
                 new Story()
                 {
@@ -121,6 +132,7 @@ namespace UnitTests
                     Sprint_id = 2,
                     Priority_num = 30,
                     Text = "User Story 2",
+                    Sprint = _sprints.ElementAt(1),
                 }
             };
 
