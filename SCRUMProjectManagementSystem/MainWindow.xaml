@@ -82,6 +82,7 @@
             </Grid.ColumnDefinitions>
             <ListBox Name="leftList" SelectionChanged="leftList_SelectionChanged" AlternationCount="2"></ListBox>
             <GridSplitter HorizontalAlignment="Left" Name="gridSplitter1" Grid.Column="1" Width="2" ResizeDirection="Columns" />
+            <ListBox Name="rightList" Grid.Column="1" SelectionChanged="rightList_SelectionChanged" AlternationCount="2"></ListBox>
             <Grid Grid.Column="1" Name="grid_projectInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
