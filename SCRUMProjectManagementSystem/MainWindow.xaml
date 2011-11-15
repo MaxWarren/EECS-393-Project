@@ -132,7 +132,7 @@
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
+                    <RowDefinition Height="130" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -140,13 +140,13 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
-                <Label Grid.Column="1" Name="label_story_project" Content="{Binding Path=ProjectName}" />
+                <Label Grid.Column="1" Name="label_story_project" Content="{Binding Path=Name}" />
                 <Label Content="Sprint Name:" Grid.Row="1" HorizontalContentAlignment="Right" />
-                <TextBox Grid.Row="1" Grid.Column="1" Name="texastBox_sprint_name" />
-                <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="2" Name="dasatePicker_sprint_start" />
-                <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="3" Name="datasePicker_sprint_end" />
+                <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_story_sprint" ItemsSource="{Binding Path=SprintsForProject}" />
+                <Label Content="Priority:" Grid.Row="2" HorizontalContentAlignment="Right" />
+                <TextBox Grid.Row="2" Grid.Column="1" Name="textBox_story_priority" Text="{Binding Path=Priority}" />
+                <Label Content="Text:" Grid.Row="3" HorizontalContentAlignment="Right" />
+                <TextBox Grid.Row="3" Grid.Column="1" Name="textBox_story_text" Text="{Binding Path=Text}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
             </Grid>
         </Grid>
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />

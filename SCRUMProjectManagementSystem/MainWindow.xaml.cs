@@ -67,6 +67,9 @@ namespace SCRUMProjectManagementSystem
                     case selection.Sprint:
                         viewModel.CurrStory = viewModel.StoriesForSprint[leftList.SelectedIndex];
                         grid_storyInfo.DataContext = viewModel.CurrStory;
+                        //comboBox_story_sprint.ItemsSource = viewModel.SprintsForProject;
+                        comboBox_story_sprint.DataContext = viewModel;
+                        label_story_project.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Story:
                         viewModel.CurrTask = viewModel.TasksForStory[leftList.SelectedIndex];
@@ -130,6 +133,10 @@ namespace SCRUMProjectManagementSystem
                     case selection.Sprint:
                         leftList.ItemsSource = viewModel.StoriesForSprint;
                         grid_sprintInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Story:
+                        leftList.ItemsSource = viewModel.TasksForStory;
+                        grid_storyInfo.Visibility = Visibility.Visible;
                         break;
                     default:
                         break;
