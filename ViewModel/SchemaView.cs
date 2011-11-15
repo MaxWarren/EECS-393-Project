@@ -12,6 +12,7 @@ namespace ViewModel
         public int UserID { get; set; }
         public string PasswordHash { get; set; }
         public int TeamId { get; set; }
+        public string TeamName { get; set; }
         public UserRole Role { get; set; }
         public string Name { get; set; }
 
@@ -20,6 +21,7 @@ namespace ViewModel
             UserID = u.User_id;
             PasswordHash = u.Password.Trim();
             TeamId = u.Team_id;
+            TeamName = u.Team_.Team_name;
             Role = (UserRole)u.Role.ConvertToInt();
             Name = u.Name.Trim();
         }
@@ -49,14 +51,18 @@ namespace ViewModel
     {
         public int TeamID { get; set; }
         public int TeamLeadID { get; set; }
+        public string TeamLeadName { get; set; }
         public int ManagerID { get; set; }
+        public string ManagerName { get; set; }
         public string Name { get; set; }
 
         public TeamView(Team t)
         {
             TeamID = t.Team_id;
             TeamLeadID = t.Team_lead;
+            TeamLeadName = t.User.Name;
             ManagerID = t.Manager;
+            ManagerName = t.ManagerUser.Name;
             Name = t.Team_name.Trim();
         }
 
@@ -88,7 +94,9 @@ namespace ViewModel
         public DateTime StartDate { get; set; }
         public Nullable<DateTime> EndDate { get; set; }
         public int OwnerID { get; set; }
+        public string OwnerName { get; set; }
         public int TeamID { get; set; }
+        public string TeamName { get; set; }
 
         public ProjectView(Project p)
         {
@@ -97,7 +105,9 @@ namespace ViewModel
             StartDate = p.Start_date;
             EndDate = p.End_date;
             OwnerID = p.Owner;
+            OwnerName = p.User.Name;
             TeamID = p.Team_id;
+            TeamName = p.Team.Team_name;
         }
 
         public override bool Equals(object obj)
@@ -128,6 +138,7 @@ namespace ViewModel
         public DateTime StartDate { get; set; }
         public Nullable<DateTime> EndDate { get; set; }
         public int ProjectID { get; set; }
+        public string ProjectName { get; set; }
 
         public SprintView(Sprint s)
         {
@@ -136,6 +147,7 @@ namespace ViewModel
             StartDate = s.Start_date;
             EndDate = s.End_date;
             ProjectID = s.Project_id;
+            ProjectName = s.Project.Project_name;
         }
 
         public override bool Equals(object obj)
@@ -164,6 +176,7 @@ namespace ViewModel
         public int StoryID { get; set; }
         public int Priority { get; set; }
         public int SprintID { get; set; }
+        public string SprintName { get; set; }
         public string Text { get; set; }
 
         public StoryView(Story s)
@@ -171,6 +184,7 @@ namespace ViewModel
             StoryID = s.Story_id;
             Priority = s.Priority_num;
             SprintID = s.Sprint_id;
+            SprintName = s.Sprint.Sprint_name;
             Text = s.Text;
         }
 

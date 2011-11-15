@@ -39,6 +39,13 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!viewModel.IsManager)
+            {
+                menu1.Visibility = Visibility.Hidden;
+                grid3.Margin = new Thickness(0, 0, 0, 0);
+                grid2.Margin = new Thickness(0, 35, 0, 0);
+                button_New.Visibility = Visibility.Hidden;
+            }
             this.DataContext = viewModel;
             currentSelection = selection.Home;
             isUpdating = false;
@@ -57,15 +64,28 @@ namespace SCRUMProjectManagementSystem
                 {
                     case selection.Home:
                         viewModel.CurrProject = viewModel.ProjectsForUser[leftList.SelectedIndex];
+                        comboBox_project_owner.ItemsSource = viewModel.GetManagers();
+                        grid_projectInfo.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Project:
                         viewModel.CurrSprint = viewModel.SprintsForProject[leftList.SelectedIndex];
+                        grid_sprintInfo.DataContext = viewModel.CurrSprint;
                         break;
                     case selection.Sprint:
                         viewModel.CurrStory = viewModel.StoriesForSprint[leftList.SelectedIndex];
+                        grid_storyInfo.DataContext = viewModel.CurrStory;
+                        comboBox_story_sprint.DataContext = viewModel;
+                        label_story_project.DataContext = viewModel.CurrProject;
                         break;
                     case selection.Story:
                         viewModel.CurrTask = viewModel.TasksForStory[leftList.SelectedIndex];
+                        grid_taskInfo.DataContext = viewModel.CurrTask;
+                        label_task_project.DataContext = viewModel.CurrProject;
+                        comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
+                        comboBox_task_complexity.ItemsSource = ViewModel.EnumValues.sizeComplexity;
+                        comboBox_task_state.ItemsSource = ViewModel.EnumValues.taskState;
+                        comboBox_task_value.ItemsSource = ViewModel.EnumValues.businessValue;
+                        comboBox_task_type.ItemsSource = ViewModel.EnumValues.taskType;
                         break;
                     case selection.Task:
                         break;
@@ -109,10 +129,59 @@ namespace SCRUMProjectManagementSystem
 
         private void update()
         {
-            leftList.ItemsSource = viewModel.ProjectsForUser;
-            grid_projectInfo.Visibility = Visibility.Visible;
-            if (viewModel.CurrProject != null)
-                this.Title = viewModel.CurrProject.Name;
+            if (!isUpdating)
+            {
+                isUpdating = true;
+                leftList.SelectedIndex = -1;
+                grid_projectInfo.Visibility = Visibility.Hidden;
+                grid_sprintInfo.Visibility = Visibility.Hidden;
+                grid_storyInfo.Visibility = Visibility.Hidden;
+                grid_taskInfo.Visibility = Visibility.Hidden;
+                rightList.Visibility = Visibility.Hidden;
+                if (viewModel.IsManager)
+                {
+                    button_New.Visibility = Visibility.Visible;
+                }
+                switch (currentSelection)
+                {
+                    case selection.Home:
+                        leftList.ItemsSource = viewModel.ProjectsForUser;
+                        rightList.Visibility = Visibility.Visible;
+                        rightList.ItemsSource = viewModel.TasksForUser;
+                        break;
+                    case selection.Project:
+                        button_project.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = viewModel.SprintsForProject;
+                        grid_projectInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Sprint:
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = viewModel.StoriesForSprint;
+                        grid_sprintInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Story:
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        button_story.Visibility = Visibility.Visible;
+                        leftList.ItemsSource = viewModel.TasksForStory;
+                        grid_storyInfo.Visibility = Visibility.Visible;
+                        break;
+                    case selection.Task:
+                        button_project.Visibility = Visibility.Visible;
+                        button_sprint.Visibility = Visibility.Visible;
+                        button_story.Visibility = Visibility.Visible;
+                        button_task.Visibility = Visibility.Visible;
+                        button_New.Visibility = Visibility.Hidden;
+                        leftList.ItemsSource = new string[] { };
+                        grid_taskInfo.Visibility = Visibility.Visible;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            isUpdating = false;
+        }
             /*
             if (!isUpdating)
             {
@@ -367,39 +436,36 @@ namespace SCRUMProjectManagementSystem
                 }
             }
             isUpdating = false;
-          */
         }
+        */
+        
 
         void taskOwnerChanged(object sender, SelectionChangedEventArgs e)
-        {/*
-            ComboBox owner = (ComboBox)stackPanel2.Children[1];
-            ComboBox state = (ComboBox)stackPanel2.Children[5];
-            if (owner.SelectedIndex == -1)
+        {
+            if (comboBox_task_owner.SelectedIndex == -1)
             {
-                state.SelectedIndex = 0;
-                state.IsEnabled = false;
+                comboBox_task_state.SelectedIndex = 0;
+                comboBox_task_state.IsEnabled = false;
             }
             else
             {
-                if (state.SelectedIndex == 0)
+                if (comboBox_task_state.SelectedIndex == 0)
                 {
-                    state.SelectedIndex = 1;
+                    comboBox_task_state.SelectedIndex = 1;
                 }
-                state.IsEnabled = true;
+                comboBox_task_state.IsEnabled = true;
             }
-          */
+          
         }
 
         void taskStateChanged(object sender, SelectionChangedEventArgs e)
-        {/*
-            ComboBox owner = (ComboBox)stackPanel2.Children[1];
-            ComboBox state = (ComboBox)stackPanel2.Children[5];
-            if (state.SelectedIndex == 0)
+        {
+            if (comboBox_task_state.SelectedIndex == 0)
             {
-                owner.SelectedIndex = -1;
-                state.IsEnabled = false;
+                comboBox_task_owner.SelectedIndex = -1;
+                comboBox_task_state.IsEnabled = false;
             }
-          */
+          
         }
 
         void save_project_Click(object sender, RoutedEventArgs e)
@@ -450,7 +516,7 @@ namespace SCRUMProjectManagementSystem
         {
             e.Handled = e.Text.IsNonNumeric();
         }
-
+        /*
         void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = (ListBox)sender;
@@ -462,6 +528,18 @@ namespace SCRUMProjectManagementSystem
                 update();
             }
           
+        }
+        */
+        private void rightList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (rightList.SelectedIndex >= 0)
+            {
+                viewModel.CurrTask = viewModel.TasksForUser[rightList.SelectedIndex];
+                viewModel.JumpToTask(viewModel.CurrTask);
+                currentSelection = selection.Task;
+                update();
+            }
+            rightList.SelectedIndex = -1;
         }
 
         private void button_New_Click(object sender, RoutedEventArgs e)
@@ -502,5 +580,6 @@ namespace SCRUMProjectManagementSystem
                 }
             }
         }
+
     }
 }

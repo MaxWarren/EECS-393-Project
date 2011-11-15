@@ -61,8 +61,8 @@ namespace SCRUMProjectManagementSystem
                 label4.Content = "Owner";
                 label5.Content = "Type";
                 label6.Content = "State";
-                comboBox_task1.ItemsSource = ComplexityValues.sizeComplexity;
-                comboBox_task2.ItemsSource = ComplexityValues.businessValue;
+                comboBox_task1.ItemsSource = EnumValues.sizeComplexity;
+                comboBox_task2.ItemsSource = EnumValues.businessValue;
                 comboBox_task3.ItemsSource = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
                 comboBox_task4.ItemsSource = Enum.GetValues(typeof(TaskType));
                 comboBox_task5.ItemsSource = Enum.GetValues(typeof(TaskState));

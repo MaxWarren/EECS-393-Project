@@ -603,7 +603,7 @@ namespace ViewModel
             {
                 throw new InvalidOperationException("A task without an owner must be marked Unassigned");
             }
-            else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
+            else if (!EnumValues.businessValue.Contains(value) || !EnumValues.sizeComplexity.Contains(size))
             {
                 throw new ArgumentOutOfRangeException("Invalid complexity value");
             }
@@ -747,7 +747,7 @@ namespace ViewModel
             {
                 throw new InvalidOperationException("A task without an owner must be marked Unassigned");
             }
-            else if (!ComplexityValues.businessValue.Contains(value) || !ComplexityValues.sizeComplexity.Contains(size))
+            else if (!EnumValues.businessValue.Contains(value) || !EnumValues.sizeComplexity.Contains(size))
             {
                 throw new ArgumentOutOfRangeException("Invalid complexity value");
             }
@@ -864,8 +864,8 @@ namespace ViewModel
 
             result &= (text != null && text.Length > 0); // Text is required
             result &= (type.HasValue); // Type is required
-            result &= (size.HasValue && ComplexityValues.sizeComplexity.Contains(size.Value)); // Size complexity is required to be one of a set of values
-            result &= (value.HasValue && ComplexityValues.businessValue.Contains(value.Value)); // Business value is required to be one of a set of values
+            result &= (size.HasValue && EnumValues.sizeComplexity.Contains(size.Value)); // Size complexity is required to be one of a set of values
+            result &= (value.HasValue && EnumValues.businessValue.Contains(value.Value)); // Business value is required to be one of a set of values
             // If the owner is null, the state must be Unassigned.  Otherwise the state cannot be Unassigned
             result &= (state.HasValue && ((owner == null && state.Value == TaskState.Unassigned) || (owner != null && state.Value != TaskState.Unassigned)));
             result &= (state.HasValue && (state.Value != TaskState.Completed || completion.HasValue)); // A completed task must have a completed date
