@@ -67,8 +67,8 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task1.ItemsSource = EnumValues.sizeComplexity;
                 comboBox_task2.ItemsSource = EnumValues.businessValue;
                 comboBox_task3.ItemsSource = _viewModel.CurrTeamMembers;
-                //comboBox_task4.ItemsSource = TaskTypeConverter.
-                //comboBox_task5.ItemsSource = TaskStateConverter.
+                comboBox_task4.ItemsSource = EnumValues.taskType;
+                comboBox_task5.ItemsSource = EnumValues.taskState;
                 comboBox_task5.SelectedIndex = 0;
                 comboBox_task5.IsEnabled = false;
                 stackPanel_task.Visibility = Visibility.Visible;
