@@ -26,6 +26,9 @@ namespace SCRUMProjectManagementSystem
             ttConverter = tt;
         }
 
+
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
@@ -37,6 +40,46 @@ namespace SCRUMProjectManagementSystem
                 label4.Content = "Owner";
                 label5.Content = "Team";
                 comboBox_project1.ItemsSource = _viewModel.AllManagers;
+                comboBox_project2.ItemsSource = _viewModel.AllTeams;
+                stackPanel_project.Visibility = Visibility.Visible;
+            }
+            if (_type == MainWindow.selection.Sprint)
+            {
+                label1.Content = "Sprint Name";
+                label2.Content = "Start Date";
+                label3.Content = "End Date";
+                stackPanel_sprint.Visibility = Visibility.Visible;
+            }
+            if (_type == MainWindow.selection.Story)
+            {
+                label1.Content = "Priority Number";
+                label2.Content = "Text";
+                stackPanel_story.Visibility = Visibility.Visible;
+            }
+            if (_type == MainWindow.selection.Task)
+            {
+                label1.Content = "Text";
+                label2.Content = "Size Complexity";
+                label3.Content = "Business Value";
+                label4.Content = "Owner";
+                label5.Content = "Type";
+                label6.Content = "State";
+                comboBox_task1.ItemsSource = EnumValues.sizeComplexity;
+                comboBox_task2.ItemsSource = EnumValues.businessValue;
+                comboBox_task3.ItemsSource = _viewModel.CurrTeamMembers;
+                //comboBox_task4.ItemsSource = TaskTypeConverter.
+                //comboBox_task5.ItemsSource = TaskStateConverter.
+                comboBox_task5.SelectedIndex = 0;
+                comboBox_task5.IsEnabled = false;
+                stackPanel_task.Visibility = Visibility.Visible;
+            }
+            if (_type == MainWindow.selection.Team)
+            {
+                label1.Content = "Team Name";
+                label2.Content = "Manager";
+                label2.Content = "Team Lead";
+                comboBox_team1.ItemsSource = _viewModel.AllManagers;
+                comboBox_team2.ItemsSource = _viewModel.AllManagers;
                 stackPanel_team.Visibility = Visibility.Visible;
             }
         }
