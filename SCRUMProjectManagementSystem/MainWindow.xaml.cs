@@ -41,9 +41,9 @@ namespace SCRUMProjectManagementSystem
         {
             if (!viewModel.IsManager)
             {
-                menu1.Visibility = Visibility.Hidden;
-                grid3.Margin = new Thickness(0, 0, 0, 0);
-                grid2.Margin = new Thickness(0, 35, 0, 0);
+                menu_main.Visibility = Visibility.Hidden;
+                //grid3.Margin = new Thickness(0, 0, 0, 0);
+                //grid2.Margin = new Thickness(0, 35, 0, 0);
                 button_New.Visibility = Visibility.Hidden;
             }
             this.DataContext = viewModel;
@@ -592,6 +592,22 @@ namespace SCRUMProjectManagementSystem
                     tw.Visibility = Visibility.Visible;
                     break;
                 }
+            }
+        }
+
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
+        {
+            if (viewModel.HistoricMode == false)
+            {
+                viewModel.ToggleHistoricMode();
+            }
+        }
+
+        private void MenuItem_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (viewModel.HistoricMode == true)
+            {
+                viewModel.ToggleHistoricMode();
             }
         }
 
