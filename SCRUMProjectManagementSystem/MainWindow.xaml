@@ -75,12 +75,13 @@
         <Grid Name="grid2" Margin="0,58,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <GridSplitter HorizontalAlignment="Center" Name="gridSplitter1" Grid.Column="1" Width="5" ResizeDirection="Columns" VerticalContentAlignment="Stretch" /> 
             <ListBox Name="leftList" SelectionChanged="leftList_SelectionChanged" AlternationCount="2"></ListBox>
-            <GridSplitter HorizontalAlignment="Left" Name="gridSplitter1" Grid.Column="1" Width="2" ResizeDirection="Columns" />
-            <ListBox Name="rightList" Grid.Column="1" SelectionChanged="rightList_SelectionChanged" AlternationCount="2" ></ListBox>
-            <Grid Grid.Column="1" Name="grid_projectInfo" Background="White" Visibility="Hidden">
+            <ListBox Name="rightList" Grid.Column="2" SelectionChanged="rightList_SelectionChanged" AlternationCount="2" ></ListBox>
+            <Grid Grid.Column="2" Name="grid_projectInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
@@ -106,7 +107,7 @@
                 <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_project_owner" />
                 <Button Grid.Column="1" Grid.Row="5" Content="Save" Click="save_project_Click" />
             </Grid>
-            <Grid Grid.Column="1" Name="grid_sprintInfo" Background="White" Visibility="Hidden">
+            <Grid Grid.Column="2" Name="grid_sprintInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
@@ -129,7 +130,7 @@
                 <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" SelectedDate="{Binding Path=EndDate}" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_sprint_Click" />
             </Grid>
-            <Grid Grid.Column="1" Name="grid_storyInfo" Background="White" Visibility="Hidden">
+            <Grid Grid.Column="2" Name="grid_storyInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
@@ -152,7 +153,7 @@
                 <TextBox Grid.Row="3" Grid.Column="1" Name="textBox_story_text" Text="{Binding Path=Text}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_story_Click" />
             </Grid>
-            <Grid Grid.Column="1" Name="grid_taskInfo" Background="White" Visibility="Hidden">
+            <Grid Grid.Column="2" Name="grid_taskInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
@@ -172,7 +173,7 @@
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
                 <Label Grid.Column="1" Name="label_task_project" Content="{Binding Path=Name}" />
                 <Label Content="Owner:" Grid.Row="1" HorizontalContentAlignment="Right" />
-                <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_task_owner" ItemsSource="{Binding Path=Item1}" />
+                <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_task_owner" ItemsSource="{Binding Path=Item1}" SelectionChanged="taskOwnerChanged" />
                 <Label Content="Type:" Grid.Row="2" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="2" Name="comboBox_task_type" />
                 <Label Content="Complexity:" Grid.Row="3" HorizontalContentAlignment="Right" />
@@ -180,7 +181,7 @@
                 <Label Content="Business Value:" Grid.Row="4" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_task_value" />
                 <Label Content="State:" Grid.Row="5" HorizontalContentAlignment="Right" />
-                <ComboBox Grid.Column="1" Grid.Row="5" Name="comboBox_task_state" />
+                <ComboBox Grid.Column="1" Grid.Row="5" Name="comboBox_task_state" SelectionChanged="taskStateChanged" />
                 <Label Content="Completion Date:" Grid.Row="6" HorizontalContentAlignment="Right" />
                 <DatePicker Grid.Column="1" Grid.Row="6" Name="datePicker_task_completionDate" SelectedDate="{Binding Path=CompletionDate}" />
                 <Label Content="Text:" Grid.Row="7" HorizontalContentAlignment="Right" />

@@ -46,10 +46,10 @@ namespace ViewModel
 
             taskState = new List<TaskState>
             {
-                TaskState.Blocked,
-                TaskState.Completed,
+                TaskState.Unassigned,
                 TaskState.In_Progress,
-                TaskState.Unassigned
+                TaskState.Completed,
+                TaskState.Blocked
             };
 
             taskType = new List<TaskType>
