@@ -114,6 +114,7 @@
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -129,6 +130,7 @@
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
                 <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" SelectedDate="{Binding Path=EndDate}" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_sprint_Click" />
+                <Button Grid.Column="1" Grid.Row="5" Content="Burndown" Click="Burndown_Click" />
             </Grid>
             <Grid Grid.Column="2" Name="grid_storyInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
@@ -191,6 +193,7 @@
         </Grid>
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />
         <Menu Height="23" Name="menu1" VerticalAlignment="Top">
+            <MenuItem Header="Historic Mode" Checked="MenuItem_Checked" Unchecked="MenuItem_Unchecked" IsCheckable="True" />
             <MenuItem Header="Manager Tools" Name="menu_main" SubmenuOpened="menu_main_SubmenuOpened">
                 <MenuItem Header="Add Team" Name="menu_addTeam" Click="menu_addTeam_Click" />
                 <MenuItem Header="Add To Team" Name="menu_addToTeam" />
