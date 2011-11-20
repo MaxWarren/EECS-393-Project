@@ -611,5 +611,10 @@ namespace SCRUMProjectManagementSystem
             }
         }
 
+        private void Burndown_Click(object sender, RoutedEventArgs e)
+        {
+            new BurndownWindow(viewModel.GetCurrSprintBurndown().Item1.Keys.ToArray(), viewModel.GetCurrSprintBurndown().Item2.Values.ToArray()).Visibility = Visibility.Visible;
+        }
+
     }
 }
