@@ -54,7 +54,7 @@ namespace SCRUMProjectManagementSystem
 
         private void leftList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (leftList.SelectedIndex >= 0)
+            if (leftList.SelectedIndex >= 0 && !isUpdating)
             {
                 button_project.Visibility = Visibility.Hidden;
                 button_sprint.Visibility = Visibility.Hidden;
@@ -600,6 +600,16 @@ namespace SCRUMProjectManagementSystem
             if (viewModel.HistoricMode == false)
             {
                 viewModel.ToggleHistoricMode();
+                currentSelection = selection.Home;
+                grid_projectInfo.IsEnabled = false;
+                foreach (UIElement child in grid_sprintInfo.Children)
+                {
+                    child.IsEnabled = false;
+                }
+                button_burndown.IsEnabled = true;
+                grid_storyInfo.IsEnabled = false;
+                grid_taskInfo.IsEnabled = false;
+                update();
             }
         }
 
@@ -608,6 +618,15 @@ namespace SCRUMProjectManagementSystem
             if (viewModel.HistoricMode == true)
             {
                 viewModel.ToggleHistoricMode();
+                currentSelection = selection.Home;
+                grid_projectInfo.IsEnabled = true;
+                foreach (UIElement child in grid_sprintInfo.Children)
+                {
+                    child.IsEnabled = true;
+                }
+                grid_storyInfo.IsEnabled = true;
+                grid_taskInfo.IsEnabled = true;
+                update();
             }
         }
 

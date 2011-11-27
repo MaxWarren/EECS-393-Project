@@ -114,6 +114,7 @@
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
+                    <RowDefinition Height="52" />
                     <RowDefinition Height="26" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -130,7 +131,7 @@
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
                 <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" SelectedDate="{Binding Path=EndDate}" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_sprint_Click" />
-                <Button Grid.Column="1" Grid.Row="5" Content="Burndown" Click="Burndown_Click" />
+                <Button Grid.Column="1" Grid.Row="6" Content="Burndown" Click="Burndown_Click" Name="button_burndown" />
             </Grid>
             <Grid Grid.Column="2" Name="grid_storyInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
