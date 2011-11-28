@@ -54,7 +54,7 @@ namespace SCRUMProjectManagementSystem
 
         private void leftList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (leftList.SelectedIndex >= 0)
+            if (leftList.SelectedIndex >= 0 && !isUpdating)
             {
                 button_project.Visibility = Visibility.Hidden;
                 button_sprint.Visibility = Visibility.Hidden;
@@ -132,6 +132,7 @@ namespace SCRUMProjectManagementSystem
             if (!isUpdating)
             {
                 isUpdating = true;
+                button_New.Content = "Add " + System.Enum.GetName(currentSelection.GetType(), currentSelection + 1);
                 leftList.SelectedIndex = -1;
                 grid_projectInfo.Visibility = Visibility.Hidden;
                 grid_sprintInfo.Visibility = Visibility.Hidden;
@@ -600,6 +601,16 @@ namespace SCRUMProjectManagementSystem
             if (viewModel.HistoricMode == false)
             {
                 viewModel.ToggleHistoricMode();
+                currentSelection = selection.Home;
+                grid_projectInfo.IsEnabled = false;
+                foreach (UIElement child in grid_sprintInfo.Children)
+                {
+                    child.IsEnabled = false;
+                }
+                button_burndown.IsEnabled = true;
+                grid_storyInfo.IsEnabled = false;
+                grid_taskInfo.IsEnabled = false;
+                update();
             }
         }
 
@@ -608,12 +619,21 @@ namespace SCRUMProjectManagementSystem
             if (viewModel.HistoricMode == true)
             {
                 viewModel.ToggleHistoricMode();
+                currentSelection = selection.Home;
+                grid_projectInfo.IsEnabled = true;
+                foreach (UIElement child in grid_sprintInfo.Children)
+                {
+                    child.IsEnabled = true;
+                }
+                grid_storyInfo.IsEnabled = true;
+                grid_taskInfo.IsEnabled = true;
+                update();
             }
         }
 
         private void Burndown_Click(object sender, RoutedEventArgs e)
         {
-            new BurndownWindow(viewModel.GetCurrSprintBurndown().Item1.Keys.ToArray(), viewModel.GetCurrSprintBurndown().Item2.Values.ToArray()).Visibility = Visibility.Visible;
+            new BurndownWindow(viewModel).Visibility = Visibility.Visible;
         }
 
     }

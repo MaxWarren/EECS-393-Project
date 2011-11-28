@@ -20,15 +20,15 @@ namespace SCRUMProjectManagementSystem
     {
         private double[] goal;
         private int[] actual;
+        private DateTime[] datesGoal;
+        private DateTime[] datesActual;
 
-        public BurndownWindow(DateTime[] newGoal, int[] newActual)
+        public BurndownWindow(ViewModel.SPMSViewModel vm)
         {
-            actual = newActual;
-            goal = new double[actual.Count()];
-            for (int i = 0; i < goal.Count(); i++)
-            {
-                goal[i] = newGoal[i].Ticks - newGoal[0].Ticks;
-            }
+            actual = vm.GetCurrSprintBurndown().Item2.Values.ToArray();
+            goal = vm.GetCurrSprintBurndown().Item1.Values.ToArray();
+            datesGoal = vm.GetCurrSprintBurndown().Item1.Keys.ToArray();
+            datesActual = vm.GetCurrSprintBurndown().Item2.Keys.ToArray();
 
             InitializeComponent();
         }
@@ -36,51 +36,67 @@ namespace SCRUMProjectManagementSystem
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             double diameter = 8;
-            for (int i = 0; i < goal.Length; i++)
+            ColumnDefinition cdtemp = new ColumnDefinition();
+            cdtemp.Width = new GridLength(60, GridUnitType.Pixel);
+            grid1.ColumnDefinitions.Add(cdtemp);
+            for (int i = 0; i < datesGoal.Length; i++)
             {
                 ColumnDefinition cd = new ColumnDefinition();
-                cd.Width = new GridLength(goal[i], GridUnitType.Star);
+                cd.Width = new GridLength(1, GridUnitType.Star);
                 grid1.ColumnDefinitions.Add(cd);
             }
-            for (int i = 0; i < goal.Length; i++)
+            cdtemp = new ColumnDefinition();
+            cdtemp.Width = new GridLength(60, GridUnitType.Pixel);
+            grid2.ColumnDefinitions.Add(cdtemp);
+            for (int i = 0; i < datesActual.Length; i++)
             {
                 ColumnDefinition cd = new ColumnDefinition();
-                cd.Width = new GridLength(goal[i], GridUnitType.Star);
+                cd.Width = new GridLength(1, GridUnitType.Star);
                 grid2.ColumnDefinitions.Add(cd);
             }
 
-            for (int i = 0; i < goal.Count(); i++)
+            RowDefinition rdtemp = new RowDefinition();
+            rdtemp.Height = new GridLength(diameter, GridUnitType.Pixel);
+            grid1.RowDefinitions.Add(rdtemp);
+            for (int i = 0; i < goal.Length; i++)
             {
                 RowDefinition rd = new RowDefinition();
-                if (i > 0)
-                {
-                    rd.Height = new GridLength(goal[i] - goal[i - 1], GridUnitType.Star);
-                }
-                else
-                {
-                    rd.Height = new GridLength(goal[i], GridUnitType.Star);
-                }
+
+                rd.Height = new GridLength(1, GridUnitType.Star);
+
                 grid1.RowDefinitions.Add(rd);
             }
-            for (int i = 0; i < actual.Count(); i++)
+            rdtemp = new RowDefinition();
+            rdtemp.Height = new GridLength(30, GridUnitType.Pixel);
+            grid1.RowDefinitions.Add(rdtemp);
+            rdtemp = new RowDefinition();
+            rdtemp.Height = new GridLength(diameter, GridUnitType.Pixel);
+            grid2.RowDefinitions.Add(rdtemp);
+            for (int i = 0; i < actual.Length; i++)
             {
                 RowDefinition rd = new RowDefinition();
-                if (i > 0)
+                int height = 0;
+                if (i < actual.Length - 1)
                 {
-                    rd.Height = new GridLength(actual[i] - actual[i - 1], GridUnitType.Star);
+                    height = actual[i + 1] - actual[i];
                 }
                 else
                 {
-                    rd.Height = new GridLength(actual[i], GridUnitType.Star);
+                    height = actual[i];
                 }
+                rd.Height = new GridLength(height, GridUnitType.Star);
                 grid2.RowDefinitions.Add(rd);
             }
-            for (int i = 0; i < goal.Count(); i++)
+            rdtemp = new RowDefinition();
+            rdtemp.Height = new GridLength(30, GridUnitType.Pixel);
+            grid2.RowDefinitions.Add(rdtemp);
+
+            for (int i = 0; i < goal.Length; i++)
             {
                 Ellipse el = new Ellipse();
                 el.Height = diameter;
                 el.Width = diameter;
-                el.Fill = System.Windows.Media.Brushes.Blue;
+                el.Fill = System.Windows.Media.Brushes.Black;
                 el.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 el.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 Grid.SetRow(el, i + 1);
@@ -90,12 +106,16 @@ namespace SCRUMProjectManagementSystem
                 el.Margin = new Thickness(-1 * diameter / 2);
                 grid1.Children.Add(el);
             }
-            for (int i = 0; i < actual.Count(); i++)
+            for (int i = 0; i < actual.Length; i++)
             {
                 Ellipse el = new Ellipse();
                 el.Height = diameter;
                 el.Width = diameter;
-                el.Fill = System.Windows.Media.Brushes.Red;
+                el.Fill = System.Windows.Media.Brushes.Green;
+                if (actual[i] > goal[i])
+                {
+                    el.Fill = System.Windows.Media.Brushes.Red;
+                }
                 el.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 el.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 Grid.SetRow(el, i + 1);
@@ -104,6 +124,26 @@ namespace SCRUMProjectManagementSystem
                 Grid.SetColumnSpan(el, 500);
                 el.Margin = new Thickness(-1 * diameter / 2);
                 grid2.Children.Add(el);
+            }
+            for (int i = 0; i < goal.Length; i+=2)
+            {
+                Label label = new Label();
+                label.Content = datesGoal.ElementAt(i).Date.ToString("MM/dd");
+                label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                Grid.SetRow(label, goal.Length + 1);
+                Grid.SetColumn(label, i + 1);
+                label.Margin = new Thickness(-1 * diameter, 0, 0, 0);
+                grid1.Children.Add(label);
+
+                label = new Label();
+                label.Content = Math.Round(goal.ElementAt(i), 2);
+                label.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                label.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                Grid.SetRow(label, i + 1);
+                Grid.SetColumn(label, 0);
+                label.Margin = new Thickness(0, -1 * diameter / 2, 0, 0);
+                grid1.Children.Add(label);
             }
         }
     }
