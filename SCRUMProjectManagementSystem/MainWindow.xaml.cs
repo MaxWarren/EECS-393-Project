@@ -132,6 +132,7 @@ namespace SCRUMProjectManagementSystem
             if (!isUpdating)
             {
                 isUpdating = true;
+                button_New.Content = "Add " + System.Enum.GetName(currentSelection.GetType(), currentSelection + 1);
                 leftList.SelectedIndex = -1;
                 grid_projectInfo.Visibility = Visibility.Hidden;
                 grid_sprintInfo.Visibility = Visibility.Hidden;
