@@ -36,7 +36,7 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertTypeToBinaryTest()
         {
-            TaskType type = TaskType.Development; // TODO: Initialize to an appropriate value
+            TaskType type = TaskType.Development;
             Binary expected = new Binary(new byte[] { 0, 0, 1 });
             Binary actual;
             actual = Extensions.ConvertToBinary(type);

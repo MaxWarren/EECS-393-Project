@@ -72,7 +72,7 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertBackTest()
         {
-            TaskTypeConverter target = new TaskTypeConverter(); // TODO: Initialize to an appropriate value
+            TaskTypeConverter target = new TaskTypeConverter();
             string value = "Development";
             Type targetType = typeof(TaskType);
             object paramter = null;

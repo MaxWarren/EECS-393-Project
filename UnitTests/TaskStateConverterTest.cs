@@ -37,7 +37,7 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertTest()
         {
-            TaskStateConverter target = new TaskStateConverter(); // TODO: Initialize to an appropriate value
+            TaskStateConverter target = new TaskStateConverter();
             TaskState value = TaskState.Unassigned;
             Type targetType = typeof(string);
             object paramter = null;
@@ -77,7 +77,7 @@ namespace UnitTests
         [TestMethod()]
         public void ConvertBackTest()
         {
-            TaskStateConverter target = new TaskStateConverter(); // TODO: Initialize to an appropriate value
+            TaskStateConverter target = new TaskStateConverter();
             string value = "Unassigned";
             Type targetType = typeof(TaskState);
             object paramter = null;

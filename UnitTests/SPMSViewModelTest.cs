@@ -277,7 +277,7 @@ namespace UnitTests
             Nullable<DateTime> completion = new Nullable<DateTime>();
             Nullable<TaskState> state = new Nullable<TaskState>();
 
-            bool expected = false; // TODO: Initialize to an appropriate value
+            bool expected = false;
             bool actual;
             actual = target.ValidateTask(text, owner, type, size, value, completion, state);
             Assert.AreEqual(expected, actual);
@@ -449,7 +449,7 @@ namespace UnitTests
         [TestMethod()]
         public void JumpToTaskTest()
         {
-            TaskView task = null; // TODO: Initialize to an appropriate value
+            TaskView task = null;
 
             target._isLoggedIn = false;
             try
@@ -1029,7 +1029,7 @@ namespace UnitTests
         {
             string priority = "abc";
             string text = "text";
-            SprintView sprint = null; // TODO: Initialize to an appropriate value
+            SprintView sprint = null;
             bool expected = true;
             bool actual;
             try
