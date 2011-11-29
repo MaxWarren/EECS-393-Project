@@ -31,20 +31,31 @@ namespace SCRUMProjectManagementSystem
 
         private void login()
         {
-            SPMSViewModel viewModel = new SPMSViewModel();
-
-            // Attempt to extract the user id
-            int userId;
-            if (!int.TryParse(textBox1.Text, out userId))
+            try
             {
-                userId = 0; // Not a number
+                SPMSViewModel viewModel = new SPMSViewModel();
+
+                // Attempt to extract the user id
+                int userId;
+                if (!int.TryParse(textBox1.Text, out userId))
+                {
+                    userId = 0; // Not a number
+                }
+                string password = passwordBox1.Password;
+
+                if (viewModel.AuthenticateUser(userId, password))
+                {
+                    new MainWindow(viewModel).Visibility = Visibility.Visible;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Username / Password", "Login Failed", MessageBoxButton.OK);
+                }
             }
-            string password = passwordBox1.Password;
-
-            if (viewModel.AuthenticateUser(userId, password))
+            catch
             {
-                new MainWindow(viewModel).Visibility = Visibility.Visible;
-                this.Close();
+                MessageBox.Show("Database Error.  Could Not Log In.", "Login Failed", MessageBoxButton.OK);
             }
         }
 

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace SCRUMProjectManagementSystem
 {
     /// <summary>
@@ -125,7 +126,7 @@ namespace SCRUMProjectManagementSystem
                 el.Margin = new Thickness(-1 * diameter / 2);
                 grid2.Children.Add(el);
             }
-            for (int i = 0; i < goal.Length; i+=2)
+            for (int i = 0; i < goal.Length; i+=goal.Length / 5)
             {
                 Label label = new Label();
                 label.Content = datesGoal.ElementAt(i).Date.ToString("MM/dd");
@@ -133,16 +134,17 @@ namespace SCRUMProjectManagementSystem
                 label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 Grid.SetRow(label, goal.Length + 1);
                 Grid.SetColumn(label, i + 1);
+                Grid.SetColumnSpan(label, 5);
                 label.Margin = new Thickness(-1 * diameter, 0, 0, 0);
                 grid1.Children.Add(label);
 
                 label = new Label();
-                label.Content = Math.Round(goal.ElementAt(i), 2);
+                label.Content = Math.Round(goal.ElementAt(i), 1);
                 label.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 label.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 Grid.SetRow(label, i + 1);
                 Grid.SetColumn(label, 0);
-                label.Margin = new Thickness(0, -1 * diameter / 2, 0, 0);
+                Grid.SetRowSpan(label, 5);
                 grid1.Children.Add(label);
             }
         }
