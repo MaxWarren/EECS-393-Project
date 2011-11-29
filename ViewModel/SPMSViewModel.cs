@@ -782,6 +782,10 @@ namespace ViewModel
 
             result &= (name != null && name.Length > 0 && name.Length <= 50); // Name between 1 and 50 characters
             result &= startDate.HasValue; // Start date is required
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                result &= (startDate.Value < endDate.Value); // Sprint must start before it ends
+            }
             result &= (owner != null); // Owner is required
             result &= (team != null); // Team is required
 
