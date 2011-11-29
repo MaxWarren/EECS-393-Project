@@ -673,12 +673,14 @@ namespace SCRUMProjectManagementSystem
         {
             if (taskReady)
             {
-                var user = (UserView)comboBox_task_owner.SelectedItem;
-                //var type = (TaskType?)comboBox_task_type.SelectedItem;
-                var comp = (int?)comboBox_task_complexity.SelectedItem;
-                var value = (int?)comboBox_task_value.SelectedItem;
-                var state = (TaskState?)comboBox_task_state.SelectedItem;
-                button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
+                try
+                {
+                    button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
+                }
+                catch
+                {
+                    button_saveTask.IsEnabled = false;
+                }
             }
         }
     }
