@@ -162,6 +162,7 @@ namespace SCRUMProjectManagementSystem
                         button_sprint.Visibility = Visibility.Visible;
                         leftList.ItemsSource = viewModel.StoriesForSprint;
                         grid_sprintInfo.Visibility = Visibility.Visible;
+                        button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
                         break;
                     case selection.Story:
                         button_project.Visibility = Visibility.Visible;
