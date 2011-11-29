@@ -162,7 +162,7 @@ namespace SCRUMProjectManagementSystem
                 }
                 comboBox_task5.IsEnabled = true;
             }
-            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, null, (TaskState?)comboBox_task5.SelectedItem);
+            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, (DateTime?)datePicker_task1.SelectedDate, (TaskState?)comboBox_task5.SelectedItem);
         }
 
         private void teamChanged(object sender, EventArgs e)

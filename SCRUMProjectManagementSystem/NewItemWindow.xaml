@@ -66,6 +66,7 @@
             <ComboBox Height="23" Name="comboBox_task3" Width="120" SelectionChanged="taskChanged2" />
             <ComboBox Height="23" Name="comboBox_task4" Width="120" SelectionChanged="taskChanged"  />
             <ComboBox Height="23" Name="comboBox_task5" Width="120" SelectionChanged="taskChanged" />
+            <DatePicker Height="23" Name="datePicker_task1" Width="120" SelectedDateChanged="taskChanged" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_team" Margin="0,0,0,29" Visibility="Hidden">
             <TextBox Height="23" Name="textBox_team1" Width="120" TextChanged="teamChanged" />
