@@ -858,6 +858,16 @@ namespace ViewModel
             result &= (state.HasValue && ((owner == null && state.Value == TaskState.Unassigned) || (owner != null && state.Value != TaskState.Unassigned)));
             result &= (state.HasValue && (state.Value != TaskState.Completed || completion.HasValue)); // A completed task must have a completed date
 
+            if (CurrSprint != null && completion.HasValue)
+            {
+                result &= (completion.Value >= CurrSprint.StartDate); // Tasks must be completed within their sprint
+
+                if (CurrSprint.EndDate.HasValue)
+                {
+                    result &= (completion.Value <= CurrSprint.EndDate.Value); // Tasks must be completed within their sprint
+                }
+            }
+
             return result;
         }
         #endregion
