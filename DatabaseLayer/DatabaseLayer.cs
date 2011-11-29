@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
+using System.Data.SqlClient;
 
 namespace DatabaseLayer
 {
@@ -866,7 +867,14 @@ namespace DatabaseLayer
         /// <returns></returns>
         private bool commitChanges()
         {
-            dbConnection.SubmitChanges(ConflictMode.ContinueOnConflict);
+            try
+            {
+                dbConnection.SubmitChanges(ConflictMode.ContinueOnConflict);
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
 
             if (dbConnection.ChangeConflicts.Count == 0)
             {
