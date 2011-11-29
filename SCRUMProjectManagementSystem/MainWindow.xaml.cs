@@ -191,8 +191,8 @@ namespace SCRUMProjectManagementSystem
                         comboBox_task_owner.ItemsSource = userList;
                         comboBox_task_owner.SelectedItem = userList.Where(user => user.UserID == viewModel.CurrTask.OwnerID).FirstOrDefault();
 
-                        comboBox_task_type.ItemsSource = Enum.GetValues(typeof(TaskType)).Cast<TaskType>().Select(type => ttConverter.Convert(type, typeof(string), null, null));
-                        comboBox_task_type.SelectedItem = ttConverter.Convert(viewModel.CurrTask.Type, typeof(string), null, null);
+                        comboBox_task_type.ItemsSource = EnumValues.taskType;
+                        comboBox_task_type.SelectedItem = viewModel.CurrTask.Type;
 
                         comboBox_task_complexity.ItemsSource = EnumValues.sizeComplexity;
                         comboBox_task_complexity.SelectedItem = viewModel.CurrTask.SizeComplexity;
@@ -200,8 +200,8 @@ namespace SCRUMProjectManagementSystem
                         comboBox_task_value.ItemsSource = EnumValues.businessValue;
                         comboBox_task_value.SelectedItem = viewModel.CurrTask.BusinessValue;
 
-                        comboBox_task_state.ItemsSource = Enum.GetValues(typeof(TaskState)).Cast<TaskState>().Select(state => tsConverter.Convert(state, typeof(string), null, null));
-                        comboBox_task_state.SelectedItem = tsConverter.Convert(viewModel.CurrTask.State, typeof(string), null, null);
+                        comboBox_task_state.ItemsSource = EnumValues.taskState;
+                        comboBox_task_state.SelectedItem = viewModel.CurrTask.State;
 
                         datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
                         taskReady = true;
@@ -673,7 +673,12 @@ namespace SCRUMProjectManagementSystem
         {
             if (taskReady)
             {
-                //button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
+                var user = (UserView)comboBox_task_owner.SelectedItem;
+                //var type = (TaskType?)comboBox_task_type.SelectedItem;
+                var comp = (int?)comboBox_task_complexity.SelectedItem;
+                var value = (int?)comboBox_task_value.SelectedItem;
+                var state = (TaskState?)comboBox_task_state.SelectedItem;
+                button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
             }
         }
     }
