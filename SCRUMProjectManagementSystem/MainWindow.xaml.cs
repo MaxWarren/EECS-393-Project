@@ -610,6 +610,10 @@ namespace SCRUMProjectManagementSystem
                 button_burndown.IsEnabled = true;
                 grid_storyInfo.IsEnabled = false;
                 grid_taskInfo.IsEnabled = false;
+                button_project.Visibility = Visibility.Hidden;
+                button_sprint.Visibility = Visibility.Hidden;
+                button_story.Visibility = Visibility.Hidden;
+                button_task.Visibility = Visibility.Hidden;
                 update();
             }
         }
@@ -627,6 +631,10 @@ namespace SCRUMProjectManagementSystem
                 }
                 grid_storyInfo.IsEnabled = true;
                 grid_taskInfo.IsEnabled = true;
+                button_project.Visibility = Visibility.Hidden;
+                button_sprint.Visibility = Visibility.Hidden;
+                button_story.Visibility = Visibility.Hidden;
+                button_task.Visibility = Visibility.Hidden;
                 update();
             }
         }
