@@ -197,7 +197,7 @@
             <MenuItem Header="Historic Mode" Checked="MenuItem_Checked" Unchecked="MenuItem_Unchecked" IsCheckable="True" />
             <MenuItem Header="Manager Tools" Name="menu_main" SubmenuOpened="menu_main_SubmenuOpened">
                 <MenuItem Header="Add Team" Name="menu_addTeam" Click="menu_addTeam_Click" />
-                <MenuItem Header="Add To Team" Name="menu_addToTeam" />
+                <MenuItem Header="Move To Team" Name="menu_addToTeam" />
             </MenuItem>
         </Menu>
     </Grid>

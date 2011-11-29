@@ -42,8 +42,6 @@ namespace SCRUMProjectManagementSystem
             if (!viewModel.IsManager)
             {
                 menu_main.Visibility = Visibility.Hidden;
-                //grid3.Margin = new Thickness(0, 0, 0, 0);
-                //grid2.Margin = new Thickness(0, 35, 0, 0);
                 button_New.Visibility = Visibility.Hidden;
             }
             this.DataContext = viewModel;
@@ -139,7 +137,7 @@ namespace SCRUMProjectManagementSystem
                 grid_storyInfo.Visibility = Visibility.Hidden;
                 grid_taskInfo.Visibility = Visibility.Hidden;
                 rightList.Visibility = Visibility.Hidden;
-                if (viewModel.IsManager)
+                if (viewModel.IsManager && viewModel.HistoricMode == false)
                 {
                     button_New.Visibility = Visibility.Visible;
                 }
@@ -614,6 +612,8 @@ namespace SCRUMProjectManagementSystem
                 button_sprint.Visibility = Visibility.Hidden;
                 button_story.Visibility = Visibility.Hidden;
                 button_task.Visibility = Visibility.Hidden;
+                menu_main.Visibility = Visibility.Hidden;
+                button_New.Visibility = Visibility.Hidden;
                 update();
             }
         }
@@ -635,6 +635,11 @@ namespace SCRUMProjectManagementSystem
                 button_sprint.Visibility = Visibility.Hidden;
                 button_story.Visibility = Visibility.Hidden;
                 button_task.Visibility = Visibility.Hidden;
+                if (viewModel.IsManager)
+                {
+                    menu_main.Visibility = Visibility.Visible;
+                    button_New.Visibility = Visibility.Visible;
+                }
                 update();
             }
         }
