@@ -79,7 +79,7 @@ namespace SCRUMProjectManagementSystem
                 int height = 0;
                 if (i < actual.Length - 1)
                 {
-                    height = actual[i + 1] - actual[i];
+                    height = Math.Abs(actual[i + 1] - actual[i]);
                 }
                 else
                 {
