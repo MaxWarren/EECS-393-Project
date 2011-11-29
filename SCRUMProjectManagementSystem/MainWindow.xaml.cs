@@ -515,7 +515,7 @@ namespace SCRUMProjectManagementSystem
 
         void save_task_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)ttConverter.ConvertBack(comboBox_task_type.SelectedItem, typeof(TaskType), null, null), (TaskState)tsConverter.ConvertBack(comboBox_task_state.SelectedItem, typeof(TaskState), null, null), datePicker_task_completionDate.SelectedDate);
+            viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate);
         }
 
         void textBox_story_priority_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
