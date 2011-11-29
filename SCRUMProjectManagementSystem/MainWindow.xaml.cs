@@ -16,6 +16,7 @@ namespace SCRUMProjectManagementSystem
         private selection currentSelection;
         private SPMSViewModel viewModel;
         private bool isUpdating;
+        private bool taskReady;
         private TaskStateConverter tsConverter;
         private TaskTypeConverter ttConverter;
 
@@ -47,6 +48,7 @@ namespace SCRUMProjectManagementSystem
             this.DataContext = viewModel;
             currentSelection = selection.Home;
             isUpdating = false;
+            taskReady = false;
             update();
         }
 
@@ -130,6 +132,7 @@ namespace SCRUMProjectManagementSystem
             if (!isUpdating)
             {
                 isUpdating = true;
+                taskReady = false;
                 button_New.Content = "Add " + System.Enum.GetName(currentSelection.GetType(), currentSelection + 1);
                 leftList.SelectedIndex = -1;
                 grid_projectInfo.Visibility = Visibility.Hidden;
@@ -201,6 +204,7 @@ namespace SCRUMProjectManagementSystem
                         comboBox_task_state.SelectedItem = tsConverter.Convert(viewModel.CurrTask.State, typeof(string), null, null);
 
                         datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
+                        taskReady = true;
                         break;
                     default:
                         break;
@@ -481,7 +485,7 @@ namespace SCRUMProjectManagementSystem
                 }
                 comboBox_task_state.IsEnabled = true;
             }
-          
+            TaskInfoChanged(sender, e);
         }
 
         void taskStateChanged(object sender, SelectionChangedEventArgs e)
@@ -491,7 +495,7 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task_owner.SelectedIndex = -1;
                 comboBox_task_state.IsEnabled = false;
             }
-          
+            TaskInfoChanged(sender, e);
         }
 
         void save_project_Click(object sender, RoutedEventArgs e)
@@ -650,5 +654,27 @@ namespace SCRUMProjectManagementSystem
             new BurndownWindow(viewModel).Visibility = Visibility.Visible;
         }
 
+        private void ProjectInfoChanged(object sender, EventArgs e)
+        {
+            button_saveProject.IsEnabled = viewModel.ValidateProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam);
+        }
+
+        private void SprintInfoChanged(object sender, EventArgs e)
+        {
+            button_saveSprint.IsEnabled = viewModel.ValidateSprint( textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
+        }
+
+        private void StoryInfoChanged(object sender, EventArgs e)
+        {
+            button_saveStory.IsEnabled = viewModel.ValidateStory(textBox_story_priority.Text, textBox_story_text.Text);
+        }
+
+        private void TaskInfoChanged(object sender, EventArgs e)
+        {
+            if (taskReady)
+            {
+                //button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
+            }
+        }
     }
 }
