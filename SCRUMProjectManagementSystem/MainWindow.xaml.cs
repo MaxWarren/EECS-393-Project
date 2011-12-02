@@ -140,6 +140,11 @@ namespace SCRUMProjectManagementSystem
                 grid_storyInfo.Visibility = Visibility.Hidden;
                 grid_taskInfo.Visibility = Visibility.Hidden;
                 rightList.Visibility = Visibility.Hidden;
+                button_home.FontWeight = FontWeights.Normal;
+                button_project.FontWeight = FontWeights.Normal;
+                button_sprint.FontWeight = FontWeights.Normal;
+                button_story.FontWeight = FontWeights.Normal;
+                button_task.FontWeight = FontWeights.Normal;
                 if (viewModel.IsManager && viewModel.HistoricMode == false)
                 {
                     button_New.Visibility = Visibility.Visible;
@@ -147,11 +152,13 @@ namespace SCRUMProjectManagementSystem
                 switch (currentSelection)
                 {
                     case selection.Home:
+                        button_home.FontWeight = FontWeights.Bold;
                         leftList.ItemsSource = viewModel.ProjectsForUser;
                         rightList.Visibility = Visibility.Visible;
                         rightList.ItemsSource = viewModel.TasksForUser;
                         break;
                     case selection.Project:
+                        button_project.FontWeight = FontWeights.Bold;
                         button_project.Visibility = Visibility.Visible;
                         leftList.ItemsSource = viewModel.SprintsForProject;
                         grid_projectInfo.Visibility = Visibility.Visible;
@@ -161,6 +168,7 @@ namespace SCRUMProjectManagementSystem
                         comboBox_project_owner.SelectedItem = (from user in managerList where user.UserID == viewModel.CurrProject.OwnerID select user).Single();
                         break;
                     case selection.Sprint:
+                        button_sprint.FontWeight = FontWeights.Bold;
                         button_project.Visibility = Visibility.Visible;
                         button_sprint.Visibility = Visibility.Visible;
                         leftList.ItemsSource = viewModel.StoriesForSprint;
@@ -168,6 +176,7 @@ namespace SCRUMProjectManagementSystem
                         button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
                         break;
                     case selection.Story:
+                        button_story.FontWeight = FontWeights.Bold;
                         button_project.Visibility = Visibility.Visible;
                         button_sprint.Visibility = Visibility.Visible;
                         button_story.Visibility = Visibility.Visible;
@@ -179,6 +188,7 @@ namespace SCRUMProjectManagementSystem
                         comboBox_story_sprint.SelectedItem = (from sprint in sv where sprint.SprintID == viewModel.CurrSprint.SprintID select sprint).Single();
                         break;
                     case selection.Task:
+                        button_task.FontWeight = FontWeights.Bold;
                         button_project.Visibility = Visibility.Visible;
                         button_sprint.Visibility = Visibility.Visible;
                         button_story.Visibility = Visibility.Visible;
