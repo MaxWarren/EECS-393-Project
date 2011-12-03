@@ -10,7 +10,7 @@
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="LightBlue" />
+                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow},Path=BackgroundColor}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -194,7 +194,7 @@
         </Grid>
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Name="button_New" VerticalAlignment="Bottom" Width="75" Click="button_New_Click" />
         <Menu Height="23" Name="menu1" VerticalAlignment="Top">
-            <MenuItem Header="Historic Mode" Checked="MenuItem_Checked" Unchecked="MenuItem_Unchecked" IsCheckable="True" />
+            <MenuItem Header="Historic Mode" Checked="MenuItem_Checked" Unchecked="MenuItem_Unchecked" IsCheckable="True" Click="MenuItem_Click" Name="HistoricMode" />
             <MenuItem Header="Manager Tools" Name="menu_main" SubmenuOpened="menu_main_SubmenuOpened">
                 <MenuItem Header="Add Team" Name="menu_addTeam" Click="menu_addTeam_Click" />
                 <MenuItem Header="Move To Team" Name="menu_addToTeam" />

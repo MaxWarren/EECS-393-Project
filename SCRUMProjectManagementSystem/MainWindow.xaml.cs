@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ViewModel;
+using System.Windows.Media;
+using System.Windows.Data;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -19,6 +21,7 @@ namespace SCRUMProjectManagementSystem
         private bool taskReady;
         private TaskStateConverter tsConverter;
         private TaskTypeConverter ttConverter;
+        private Brush _color;
 
         public enum selection
         {
@@ -30,12 +33,19 @@ namespace SCRUMProjectManagementSystem
             Team
         };
 
+        public Brush BackgroundColor
+        {
+            get { return _color; }
+            set { _color = value; this.Background = value; }
+        }
+
         public MainWindow(SPMSViewModel vm)
         {
             viewModel = vm;
             InitializeComponent();
             tsConverter = new TaskStateConverter();
             ttConverter = new TaskTypeConverter();
+            BackgroundColor = Brushes.LightBlue;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -764,6 +774,7 @@ namespace SCRUMProjectManagementSystem
         {
             if (viewModel.HistoricMode == false)
             {
+                BackgroundColor = Brushes.Lavender;
                 viewModel.ToggleHistoricMode();
                 currentSelection = selection.Home;
                 grid_projectInfo.IsEnabled = false;
@@ -788,6 +799,7 @@ namespace SCRUMProjectManagementSystem
         {
             if (viewModel.HistoricMode == true)
             {
+                BackgroundColor = Brushes.LightBlue;
                 viewModel.ToggleHistoricMode();
                 currentSelection = selection.Home;
                 grid_projectInfo.IsEnabled = true;
@@ -843,6 +855,11 @@ namespace SCRUMProjectManagementSystem
                     button_saveTask.IsEnabled = false;
                 }
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
