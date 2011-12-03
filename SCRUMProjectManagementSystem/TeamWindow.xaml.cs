@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 namespace SCRUMProjectManagementSystem
@@ -24,7 +25,22 @@ namespace SCRUMProjectManagementSystem
         {
             if (listBox1.SelectedIndex >= 0)
             {
-                _viewModel.MoveUserToTeam(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex], _team);
+                try
+                {
+                    string originalTeamName = _viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].TeamName;
+                    if (_viewModel.MoveUserToTeam(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex], _team))
+                    {
+                        MessageBox.Show(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].Name + "was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your changes were not saved.", "Move Failed", MessageBoxButton.OK);
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                }
                 listBox1.ItemsSource = _viewModel.GetTeamMembers(_team).Item2;
                 listBox2.ItemsSource = _viewModel.GetTeamMembers(_team).Item1;
             }

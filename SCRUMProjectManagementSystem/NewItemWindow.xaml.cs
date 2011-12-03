@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using ViewModel;
+using System.Windows.Controls;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -25,9 +26,6 @@ namespace SCRUMProjectManagementSystem
             tsConverter = ts;
             ttConverter = tt;
         }
-
-
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -56,6 +54,28 @@ namespace SCRUMProjectManagementSystem
                 label1.Content = "Sprint Name";
                 label2.Content = "Start Date";
                 label3.Content = "End Date";
+                datePicker_sprint1.BlackoutDates.Clear();
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint1.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint1.BlackoutDates.Add(cdr);
+                }
+                datePicker_sprint2.BlackoutDates.Clear();
+                cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint2.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint2.BlackoutDates.Add(cdr);
+                }
                 stackPanel_sprint.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Story)
@@ -83,6 +103,18 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task5.ItemsSource = EnumValues.taskState;
                 comboBox_task5.SelectedIndex = 0;
                 comboBox_task5.IsEnabled = false;
+                datePicker_task1.BlackoutDates.Clear();
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrSprint.StartDate.AddDays(-1);
+                datePicker_task1.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrSprint.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrSprint.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_task1.BlackoutDates.Add(cdr);
+                }
+
                 stackPanel_task.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Team)
@@ -113,37 +145,121 @@ namespace SCRUMProjectManagementSystem
                     case MainWindow.selection.Project:
                         try
                         {
-                            _viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.AllManagers[comboBox_project1.SelectedIndex], (TeamView)comboBox_project2.SelectedItem);
+                            if (_viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.AllManagers[comboBox_project1.SelectedIndex], (TeamView)comboBox_project2.SelectedItem))
+                            {
+                                MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                            }
                         }
-                        catch { }
+                        catch (InvalidOperationException ex)
+                        {
+                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                        }
                         break;
                     case MainWindow.selection.Sprint:
                         try
                         {
-                            _viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate);
+                            if (_viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate))
+                            {
+                                MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                            }
                         }
-                        catch { }
+                        catch (InvalidOperationException ex)
+                        {
+                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                        }
                         break;
                     case MainWindow.selection.Story:
                         try
                         {
-                            _viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text);
+                            if (_viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text))
+                            {
+                                MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                            }
+
                         }
-                        catch { }
+                        catch (InvalidOperationException ex)
+                        {
+                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentOutOfRangeException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentException", MessageBoxButton.OK);
+                        }
                         break;
                     case MainWindow.selection.Task:
                         try
                         {
-                            _viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem);
+                            if (_viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem))
+                            {
+                                MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                            }
+
                         }
-                        catch { }
+                        catch (InvalidOperationException ex)
+                        {
+                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentOutOfRangeException", MessageBoxButton.OK);
+                        }
                         break;
                     case MainWindow.selection.Team:
                         try
                         {
-                            _viewModel.CreateTeam(textBox_team1.Text, _viewModel.AllManagers[comboBox_team1.SelectedIndex], _viewModel.AllManagers[comboBox_team2.SelectedIndex]);
+                            if (_viewModel.CreateTeam(textBox_team1.Text, _viewModel.AllManagers[comboBox_team1.SelectedIndex], _viewModel.AllManagers[comboBox_team2.SelectedIndex]))
+                            {
+                                MessageBox.Show("Your changes have been saved.", "Team Saved", MessageBoxButton.OK);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                            }
                         }
-                        catch { }
+                        catch (InvalidOperationException ex)
+                        {
+                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
+                        }
+                        catch (ArgumentNullException ex)
+                        {
+                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                        }
                         break;
                     default:
                         break;
