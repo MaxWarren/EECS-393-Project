@@ -621,7 +621,7 @@ namespace SCRUMProjectManagementSystem
         {
             try
             {
-                if (viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, viewModel.AllManagers[comboBox_project_owner.SelectedIndex], viewModel.CurrTeam))
+                if (viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam))
                 {
                     MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
                 }

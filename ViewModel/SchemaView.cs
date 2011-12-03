@@ -21,7 +21,7 @@ namespace ViewModel
             UserID = u.User_id;
             PasswordHash = u.Password.Trim();
             TeamId = u.Team_id;
-            TeamName = u.Team_.Team_name;
+            TeamName = u.Team_.Team_name.Trim();
             Role = (UserRole)u.Role.ConvertToInt();
             Name = u.Name.Trim();
         }

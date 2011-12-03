@@ -30,7 +30,7 @@ namespace SCRUMProjectManagementSystem
                     string originalTeamName = _viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].TeamName;
                     if (_viewModel.MoveUserToTeam(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex], _team))
                     {
-                        MessageBox.Show(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].Name + "was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
+                        MessageBox.Show(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].Name + " was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
                     }
                     else
                     {
