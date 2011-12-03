@@ -242,6 +242,7 @@ namespace SCRUMProjectManagementSystem
 
                             comboBox_task_state.ItemsSource = EnumValues.taskState;
                             comboBox_task_state.SelectedItem = viewModel.CurrTask.State;
+                            //TODO: disable completed combobox item
 
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
                             taskReady = true;
@@ -516,7 +517,7 @@ namespace SCRUMProjectManagementSystem
         */
         
 
-        void taskOwnerChanged(object sender, SelectionChangedEventArgs e)
+        void TaskOwnerChanged(object sender, SelectionChangedEventArgs e)
         {
             if (comboBox_task_owner.SelectedIndex == -1)
             {
@@ -534,12 +535,38 @@ namespace SCRUMProjectManagementSystem
             TaskInfoChanged(sender, e);
         }
 
-        void taskStateChanged(object sender, SelectionChangedEventArgs e)
+        void TaskStateChanged(object sender, SelectionChangedEventArgs e)
         {
             if (comboBox_task_state.SelectedIndex == 0)
             {
                 comboBox_task_owner.SelectedIndex = -1;
                 comboBox_task_state.IsEnabled = false;
+            }
+            TaskInfoChanged(sender, e);
+        }
+
+        private void TaskDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (datePicker_task_completionDate.SelectedDate.HasValue)
+            {
+                comboBox_task_state.SelectedIndex = 2;
+                comboBox_task_state.IsEnabled = false;
+            }
+            else
+            {
+                if (comboBox_task_owner.SelectedIndex == -1)
+                {
+                    comboBox_task_state.SelectedIndex = 0;
+                    comboBox_task_state.IsEnabled = false;
+                }
+                else
+                {
+                    if (comboBox_task_state.SelectedIndex == 0)
+                    {
+                        comboBox_task_state.SelectedIndex = 1;
+                    }
+                    comboBox_task_state.IsEnabled = true;
+                }
             }
             TaskInfoChanged(sender, e);
         }

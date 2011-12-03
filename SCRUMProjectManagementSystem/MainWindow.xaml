@@ -10,7 +10,7 @@
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="Background" Value="LightBlue" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -176,7 +176,7 @@
                 <Label Content="Project Name:" HorizontalContentAlignment="Right" />
                 <Label Grid.Column="1" Name="label_task_project" Content="{Binding Path=Name}" />
                 <Label Content="Owner:" Grid.Row="1" HorizontalContentAlignment="Right" />
-                <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_task_owner" ItemsSource="{Binding Path=Item1}" SelectionChanged="taskOwnerChanged" />
+                <ComboBox Grid.Column="1" Grid.Row="1" Name="comboBox_task_owner" ItemsSource="{Binding Path=Item1}" SelectionChanged="TaskOwnerChanged" />
                 <Label Content="Type:" Grid.Row="2" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="2" Name="comboBox_task_type" SelectionChanged="TaskInfoChanged" />
                 <Label Content="Complexity:" Grid.Row="3" HorizontalContentAlignment="Right" />
@@ -184,9 +184,9 @@
                 <Label Content="Business Value:" Grid.Row="4" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_task_value" SelectionChanged="TaskInfoChanged" />
                 <Label Content="State:" Grid.Row="5" HorizontalContentAlignment="Right" />
-                <ComboBox Grid.Column="1" Grid.Row="5" Name="comboBox_task_state" SelectionChanged="taskStateChanged" />
+                <ComboBox Grid.Column="1" Grid.Row="5" Name="comboBox_task_state" SelectionChanged="TaskStateChanged" />
                 <Label Content="Completion Date:" Grid.Row="6" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="6" Name="datePicker_task_completionDate" SelectedDate="{Binding Path=CompletionDate}" SelectedDateChanged="TaskInfoChanged" />
+                <DatePicker Grid.Column="1" Grid.Row="6" Name="datePicker_task_completionDate" SelectedDate="{Binding Path=CompletionDate}" SelectedDateChanged="TaskDateChanged" />
                 <Label Content="Text:" Grid.Row="7" HorizontalContentAlignment="Right" />
                 <TextBox Grid.Row="7" Grid.Column="1" Name="textBox_task_text" Text="{Binding Path=Text}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="TaskInfoChanged" />
                 <Button Grid.Column="1" Grid.Row="8" Content="Save" Click="save_task_Click" Name="button_saveTask" />
