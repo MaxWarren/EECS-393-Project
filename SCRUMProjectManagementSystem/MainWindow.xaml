@@ -102,7 +102,7 @@
                 <Label Content="Start Date:" Grid.Row="2" HorizontalContentAlignment="Right" />
                 <DatePicker Grid.Column="1" Grid.Row="2" Name="datePicker_project_start" SelectedDate="{Binding Path=StartDate}" SelectedDateChanged="ProjectInfoChanged" />
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
-                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_project_end" SelectedDate="{Binding Path=EndDate}" SelectedDateChanged="ProjectInfoChanged" />
+                <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_project_end" SelectedDate="{Binding Path=EndDate}" SelectedDateChanged="ProjectInfoChanged"/>
                 <Label Content="Owner" Grid.Row="4" HorizontalContentAlignment="Right" />
                 <ComboBox Grid.Column="1" Grid.Row="4" Name="comboBox_project_owner" SelectionChanged="ProjectInfoChanged" />
                 <Button Grid.Column="1" Grid.Row="5" Content="Save" Click="save_project_Click" Name="button_saveProject" />

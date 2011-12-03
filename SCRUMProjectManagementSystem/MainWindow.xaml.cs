@@ -214,6 +214,28 @@ namespace SCRUMProjectManagementSystem
                             leftList.ItemsSource = viewModel.StoriesForSprint;
                             grid_sprintInfo.Visibility = Visibility.Visible;
                             button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
+                            datePicker_sprint_start.BlackoutDates.Clear();
+                            CalendarDateRange cdr = new CalendarDateRange();
+                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
+                            datePicker_sprint_start.BlackoutDates.Add(cdr);
+                            if (viewModel.CurrProject.EndDate.HasValue)
+                            {
+                                cdr = new CalendarDateRange();
+                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
+                                cdr.Start = cdr.Start.AddDays(1);
+                                datePicker_sprint_start.BlackoutDates.Add(cdr);
+                            }
+                            datePicker_sprint_end.BlackoutDates.Clear();
+                            cdr = new CalendarDateRange();
+                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
+                            datePicker_sprint_end.BlackoutDates.Add(cdr);
+                            if (viewModel.CurrProject.EndDate.HasValue)
+                            {
+                                cdr = new CalendarDateRange();
+                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
+                                cdr.Start = cdr.Start.AddDays(1);
+                                datePicker_sprint_end.BlackoutDates.Add(cdr);
+                            }
                             break;
                         case selection.Story:
                             button_story.FontWeight = FontWeights.Bold;
@@ -255,6 +277,20 @@ namespace SCRUMProjectManagementSystem
                             //TODO: disable completed combobox item
 
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
+
+                            datePicker_task_completionDate.BlackoutDates.Clear();
+                            cdr = new CalendarDateRange();
+                            cdr.End = viewModel.CurrSprint.StartDate.AddDays(-1);
+                            datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                            if (viewModel.CurrSprint.EndDate.HasValue)
+                            {
+                                cdr = new CalendarDateRange();
+                                cdr.Start = (DateTime)viewModel.CurrSprint.EndDate;
+                                cdr.Start = cdr.Start.AddDays(1);
+                                datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                            }
+
+
                             taskReady = true;
                             break;
                         default:

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using ViewModel;
+using System.Windows.Controls;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -53,6 +54,28 @@ namespace SCRUMProjectManagementSystem
                 label1.Content = "Sprint Name";
                 label2.Content = "Start Date";
                 label3.Content = "End Date";
+                datePicker_sprint1.BlackoutDates.Clear();
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint1.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint1.BlackoutDates.Add(cdr);
+                }
+                datePicker_sprint2.BlackoutDates.Clear();
+                cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint2.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint2.BlackoutDates.Add(cdr);
+                }
                 stackPanel_sprint.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Story)
@@ -80,6 +103,18 @@ namespace SCRUMProjectManagementSystem
                 comboBox_task5.ItemsSource = EnumValues.taskState;
                 comboBox_task5.SelectedIndex = 0;
                 comboBox_task5.IsEnabled = false;
+                datePicker_task1.BlackoutDates.Clear();
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrSprint.StartDate.AddDays(-1);
+                datePicker_task1.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrSprint.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrSprint.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_task1.BlackoutDates.Add(cdr);
+                }
+
                 stackPanel_task.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Team)
