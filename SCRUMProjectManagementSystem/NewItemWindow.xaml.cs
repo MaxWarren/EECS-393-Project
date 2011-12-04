@@ -145,7 +145,7 @@ namespace SCRUMProjectManagementSystem
                     case MainWindow.selection.Project:
                         try
                         {
-                            if (_viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, _viewModel.AllManagers[comboBox_project1.SelectedIndex], (TeamView)comboBox_project2.SelectedItem))
+                            if (_viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, (UserView)comboBox_project1.SelectedItem, (TeamView)comboBox_project2.SelectedItem))
                             {
                                 MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
                             }
@@ -243,7 +243,7 @@ namespace SCRUMProjectManagementSystem
                     case MainWindow.selection.Team:
                         try
                         {
-                            if (_viewModel.CreateTeam(textBox_team1.Text, _viewModel.AllManagers[comboBox_team1.SelectedIndex], _viewModel.AllManagers[comboBox_team2.SelectedIndex]))
+                            if (_viewModel.CreateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem))
                             {
                                 MessageBox.Show("Your changes have been saved.", "Team Saved", MessageBoxButton.OK);
                             }

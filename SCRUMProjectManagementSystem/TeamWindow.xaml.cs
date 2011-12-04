@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using ViewModel;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -27,10 +28,10 @@ namespace SCRUMProjectManagementSystem
             {
                 try
                 {
-                    string originalTeamName = _viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].TeamName;
-                    if (_viewModel.MoveUserToTeam(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex], _team))
+                    string originalTeamName = ((UserView)listBox1.SelectedItem).TeamName;
+                    if (_viewModel.MoveUserToTeam((UserView)listBox1.SelectedItem, _team))
                     {
-                        MessageBox.Show(_viewModel.GetTeamMembers(_team).Item2[listBox1.SelectedIndex].Name + " was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
+                        MessageBox.Show(((UserView)listBox1.SelectedItem).Name + " was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
                     }
                     else
                     {

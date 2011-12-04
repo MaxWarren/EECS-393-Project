@@ -75,7 +75,7 @@ namespace SCRUMProjectManagementSystem
                     case selection.Home:
                         try
                         {
-                            viewModel.CurrProject = viewModel.ProjectsForUser[leftList.SelectedIndex];
+                            viewModel.CurrProject = (ProjectView)leftList.SelectedItem;
                             comboBox_project_owner.ItemsSource = viewModel.AllManagers;
                             grid_projectInfo.DataContext = viewModel.CurrProject;
                         }
@@ -87,7 +87,7 @@ namespace SCRUMProjectManagementSystem
                     case selection.Project:
                         try
                         {
-                            viewModel.CurrSprint = viewModel.SprintsForProject[leftList.SelectedIndex];
+                            viewModel.CurrSprint = (SprintView)leftList.SelectedItem;
                             grid_sprintInfo.DataContext = viewModel.CurrSprint;
                         }
                         catch
@@ -98,7 +98,7 @@ namespace SCRUMProjectManagementSystem
                     case selection.Sprint:
                         try
                         {
-                            viewModel.CurrStory = viewModel.StoriesForSprint[leftList.SelectedIndex];
+                            viewModel.CurrStory = (StoryView)leftList.SelectedItem;
                             grid_storyInfo.DataContext = viewModel.CurrStory;
                             comboBox_story_sprint.DataContext = viewModel;
                             label_story_project.DataContext = viewModel.CurrProject;
@@ -111,7 +111,7 @@ namespace SCRUMProjectManagementSystem
                     case selection.Story:
                         try
                         {
-                            viewModel.CurrTask = viewModel.TasksForStory[leftList.SelectedIndex];
+                            viewModel.CurrTask = (TaskView)leftList.SelectedItem;
                             grid_taskInfo.DataContext = viewModel.CurrTask;
                             label_task_project.DataContext = viewModel.CurrProject;
                             comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
@@ -669,7 +669,7 @@ namespace SCRUMProjectManagementSystem
         {
             try
             {
-                if (viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, viewModel.SprintsForProject[comboBox_story_sprint.SelectedIndex]))
+                if (viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, (SprintView)comboBox_story_sprint.SelectedItem))
                 {
                     MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
                 }
@@ -746,7 +746,7 @@ namespace SCRUMProjectManagementSystem
         {
             if (rightList.SelectedIndex >= 0)
             {
-                viewModel.CurrTask = viewModel.TasksForUser[rightList.SelectedIndex];
+                viewModel.CurrTask = (TaskView)rightList.SelectedItem;
                 viewModel.JumpToTask(viewModel.CurrTask);
                 currentSelection = selection.Task;
                 grid_projectInfo.DataContext = viewModel.CurrProject;
