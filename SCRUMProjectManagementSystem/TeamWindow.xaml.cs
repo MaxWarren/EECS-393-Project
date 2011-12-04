@@ -13,13 +13,14 @@ namespace SCRUMProjectManagementSystem
     {
         private ViewModel.TeamView _team;
         private ViewModel.SPMSViewModel _viewModel;
+        private Window _parent;
 
-
-        public TeamWindow(ViewModel.TeamView team, ViewModel.SPMSViewModel viewModel)
+        public TeamWindow(Window parent, ViewModel.TeamView team, ViewModel.SPMSViewModel viewModel)
         {
             InitializeComponent();
             _team = team;
             _viewModel = viewModel;
+            _parent = parent;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -49,8 +50,14 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            _parent.IsEnabled = false;
             listBox1.ItemsSource = _viewModel.GetTeamMembers(_team).Item2;
             listBox2.ItemsSource = _viewModel.GetTeamMembers(_team).Item1;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _parent.IsEnabled = true;
         }
     }
 }

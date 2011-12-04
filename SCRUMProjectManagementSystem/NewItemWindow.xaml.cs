@@ -17,18 +17,21 @@ namespace SCRUMProjectManagementSystem
         private ViewModel.SPMSViewModel _viewModel;
         private TaskStateConverter tsConverter;
         private TaskTypeConverter ttConverter;
+        private Window _parent;
 
-        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
+        public NewItemWindow(Window parent, MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
         {
             InitializeComponent();
             _type = type;
             _viewModel = vm;
             tsConverter = ts;
             ttConverter = tt;
+            _parent = parent;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            _parent.IsEnabled = false;
             this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
             if (_type == MainWindow.selection.Project)
             {
@@ -329,6 +332,11 @@ namespace SCRUMProjectManagementSystem
         private void teamChanged(object sender, EventArgs e)
         {
             button1.IsEnabled = _viewModel.ValidateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _parent.IsEnabled = true;
         }
     }
 }
