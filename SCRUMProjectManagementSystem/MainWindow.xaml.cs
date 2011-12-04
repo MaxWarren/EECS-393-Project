@@ -214,6 +214,24 @@ namespace SCRUMProjectManagementSystem
                             leftList.ItemsSource = viewModel.StoriesForSprint;
                             grid_sprintInfo.Visibility = Visibility.Visible;
                             button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
+                            if (DateTime.Compare(viewModel.CurrSprint.StartDate, viewModel.CurrProject.StartDate) < 0 || (viewModel.CurrProject.EndDate.HasValue && DateTime.Compare(viewModel.CurrSprint.StartDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                            {
+                                datePicker_sprint_start.SelectedDate = null;
+                                if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                                {
+                                    datePicker_sprint_end.SelectedDate = null;
+                                    MessageBox.Show("The sprint start date and end date are invalid.", "Invalid Date", MessageBoxButton.OK);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The sprint start date is invalid.", "Invalid Dates", MessageBoxButton.OK);
+                                }
+                            }
+                            else if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                            {
+                                datePicker_sprint_end.SelectedDate = null;
+                                MessageBox.Show("The sprint end date is invalid.", "Invalid Date", MessageBoxButton.OK);
+                            }
                             datePicker_sprint_start.BlackoutDates.Clear();
                             CalendarDateRange cdr = new CalendarDateRange();
                             cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
@@ -277,6 +295,12 @@ namespace SCRUMProjectManagementSystem
                             //TODO: disable completed combobox item
 
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
+
+                            if ((viewModel.CurrTask.CompletionDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, viewModel.CurrSprint.StartDate) < 0) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, (DateTime)viewModel.CurrSprint.EndDate) > 0))
+                            {
+                                datePicker_task_completionDate.SelectedDate = null;
+                                MessageBox.Show("The task completion date is invalid.", "Invalid Date", MessageBoxButton.OK);
+                            }
 
                             datePicker_task_completionDate.BlackoutDates.Clear();
                             cdr = new CalendarDateRange();
