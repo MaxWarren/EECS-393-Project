@@ -794,13 +794,13 @@ namespace SCRUMProjectManagementSystem
         private void button_New_Click(object sender, RoutedEventArgs e)
         {
             NewItemWindow niw = new NewItemWindow(this, currentSelection + 1, viewModel, tsConverter, ttConverter);
-            niw.Visibility = Visibility.Visible;
+            niw.ShowDialog();
         }
 
         private void menu_addTeam_Click(object sender, RoutedEventArgs e)
         {
             NewItemWindow niw = new NewItemWindow(this, selection.Team, viewModel, tsConverter, ttConverter);
-            niw.Visibility = Visibility.Visible;
+            niw.ShowDialog();
         }
 
         private void menu_main_SubmenuOpened(object sender, RoutedEventArgs e)
@@ -810,7 +810,7 @@ namespace SCRUMProjectManagementSystem
             for (int i = 0; i < teams.Length; i++)
             {
                 teams[i] = new MenuItem();
-                teams[i].Header = viewModel.AllTeams[i].Name;
+                teams[i].Header = viewModel.AllTeams[i];
                 teams[i].Click += new RoutedEventHandler(i_Click);
             }
             menu_addToTeam.ItemsSource = teams;
@@ -819,15 +819,8 @@ namespace SCRUMProjectManagementSystem
         void i_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mi = (MenuItem)sender;
-            foreach (TeamView tv in viewModel.AllTeams)
-            {
-                if (tv.Name.Equals(mi.Header))
-                {
-                    TeamWindow tw = new TeamWindow(this, tv, viewModel);
-                    tw.Visibility = Visibility.Visible;
-                    break;
-                }
-            }
+            TeamWindow tw = new TeamWindow(this, (TeamView)mi.Header, viewModel);
+            tw.ShowDialog();
         }
 
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
