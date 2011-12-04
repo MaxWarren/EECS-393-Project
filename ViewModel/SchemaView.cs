@@ -60,9 +60,9 @@ namespace ViewModel
         {
             TeamID = t.Team_id;
             TeamLeadID = t.Team_lead;
-            TeamLeadName = t.User.Name;
+            TeamLeadName = t.User.Name.Trim();
             ManagerID = t.Manager;
-            ManagerName = t.ManagerUser.Name;
+            ManagerName = t.ManagerUser.Name.Trim();
             Name = t.Team_name.Trim();
         }
 
@@ -107,7 +107,7 @@ namespace ViewModel
             OwnerID = p.Owner;
             OwnerName = p.User.Name;
             TeamID = p.Team_id;
-            TeamName = p.Team.Team_name;
+            TeamName = p.Team.Team_name.Trim();
         }
 
         public override bool Equals(object obj)
@@ -147,7 +147,7 @@ namespace ViewModel
             StartDate = s.Start_date;
             EndDate = s.End_date;
             ProjectID = s.Project_id;
-            ProjectName = s.Project.Project_name;
+            ProjectName = s.Project.Project_name.Trim();
         }
 
         public override bool Equals(object obj)
@@ -184,7 +184,7 @@ namespace ViewModel
             StoryID = s.Story_id;
             Priority = s.Priority_num;
             SprintID = s.Sprint_id;
-            SprintName = s.Sprint.Sprint_name;
+            SprintName = s.Sprint.Sprint_name.Trim();
             Text = s.Text;
         }
 
