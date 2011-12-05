@@ -217,7 +217,7 @@ namespace SCRUMProjectManagementSystem
                     case MainWindow.selection.Task:
                         try
                         {
-                            if (_viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem, null))
+                            if (_viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem, datePicker_task1.SelectedDate))
                             {
                                 MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
                             }

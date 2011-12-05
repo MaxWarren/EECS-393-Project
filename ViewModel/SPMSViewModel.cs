@@ -600,6 +600,7 @@ namespace ViewModel
             if (result)
             {
                 updateTasksForStory();
+                updateTasksForUser();
                 CurrTask = new TaskView(_dataModel.GetTaskByID(CurrTask.TaskID));
             }
 
