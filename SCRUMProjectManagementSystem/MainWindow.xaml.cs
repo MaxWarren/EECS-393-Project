@@ -185,6 +185,10 @@ namespace SCRUMProjectManagementSystem
                     button_sprint.FontWeight = FontWeights.Normal;
                     button_story.FontWeight = FontWeights.Normal;
                     button_task.FontWeight = FontWeights.Normal;
+                    button_saveProject.Content = "Save";
+                    button_saveSprint.Content = "Save";
+                    button_saveStory.Content = "Save";
+                    button_saveTask.Content = "Save";
                     if (viewModel.IsManager && viewModel.HistoricMode == false)
                     {
                         button_New.Visibility = Visibility.Visible;
@@ -214,45 +218,50 @@ namespace SCRUMProjectManagementSystem
                             leftList.ItemsSource = viewModel.StoriesForSprint;
                             grid_sprintInfo.Visibility = Visibility.Visible;
                             button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
-                            if (DateTime.Compare(viewModel.CurrSprint.StartDate, viewModel.CurrProject.StartDate) < 0 || (viewModel.CurrProject.EndDate.HasValue && DateTime.Compare(viewModel.CurrSprint.StartDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                            if (viewModel.HistoricMode == false)
                             {
-                                datePicker_sprint_start.SelectedDate = null;
-                                if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                                if (DateTime.Compare(viewModel.CurrSprint.StartDate, viewModel.CurrProject.StartDate) < 0 || (viewModel.CurrProject.EndDate.HasValue && DateTime.Compare(viewModel.CurrSprint.StartDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                                {
+                                    datePicker_sprint_start.SelectedDate = null;
+                                    button_saveSprint.Content = "Save*";
+                                    if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                                    {
+                                        datePicker_sprint_end.SelectedDate = null;
+                                        MessageBox.Show("The sprint start date and end date are invalid.", "Invalid Date", MessageBoxButton.OK);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("The sprint start date is invalid.", "Invalid Dates", MessageBoxButton.OK);
+                                    }
+                                }
+                                else if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
                                 {
                                     datePicker_sprint_end.SelectedDate = null;
-                                    MessageBox.Show("The sprint start date and end date are invalid.", "Invalid Date", MessageBoxButton.OK);
+                                    button_saveSprint.Content = "Save*";
+                                    MessageBox.Show("The sprint end date is invalid.", "Invalid Date", MessageBoxButton.OK);
                                 }
-                                else
-                                {
-                                    MessageBox.Show("The sprint start date is invalid.", "Invalid Dates", MessageBoxButton.OK);
-                                }
-                            }
-                            else if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
-                            {
-                                datePicker_sprint_end.SelectedDate = null;
-                                MessageBox.Show("The sprint end date is invalid.", "Invalid Date", MessageBoxButton.OK);
-                            }
-                            datePicker_sprint_start.BlackoutDates.Clear();
-                            CalendarDateRange cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
-                            datePicker_sprint_start.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrProject.EndDate.HasValue)
-                            {
-                                cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
+                                datePicker_sprint_start.BlackoutDates.Clear();
+                                CalendarDateRange cdr = new CalendarDateRange();
+                                cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
                                 datePicker_sprint_start.BlackoutDates.Add(cdr);
-                            }
-                            datePicker_sprint_end.BlackoutDates.Clear();
-                            cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
-                            datePicker_sprint_end.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrProject.EndDate.HasValue)
-                            {
+                                if (viewModel.CurrProject.EndDate.HasValue)
+                                {
+                                    cdr = new CalendarDateRange();
+                                    cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
+                                    cdr.Start = cdr.Start.AddDays(1);
+                                    datePicker_sprint_start.BlackoutDates.Add(cdr);
+                                }
+                                datePicker_sprint_end.BlackoutDates.Clear();
                                 cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
+                                cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
                                 datePicker_sprint_end.BlackoutDates.Add(cdr);
+                                if (viewModel.CurrProject.EndDate.HasValue)
+                                {
+                                    cdr = new CalendarDateRange();
+                                    cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
+                                    cdr.Start = cdr.Start.AddDays(1);
+                                    datePicker_sprint_end.BlackoutDates.Add(cdr);
+                                }
                             }
                             break;
                         case selection.Story:
@@ -295,23 +304,26 @@ namespace SCRUMProjectManagementSystem
                             //TODO: disable completed combobox item
 
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
-
-                            if ((viewModel.CurrTask.CompletionDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, viewModel.CurrSprint.StartDate) < 0) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, (DateTime)viewModel.CurrSprint.EndDate) > 0))
+                            if (viewModel.HistoricMode == false)
                             {
-                                datePicker_task_completionDate.SelectedDate = null;
-                                MessageBox.Show("The task completion date is invalid.", "Invalid Date", MessageBoxButton.OK);
-                            }
+                                if ((viewModel.CurrTask.CompletionDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, viewModel.CurrSprint.StartDate) < 0) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, (DateTime)viewModel.CurrSprint.EndDate) > 0))
+                                {
+                                    datePicker_task_completionDate.SelectedDate = null;
+                                    button_saveTask.Content = "Save*";
+                                    MessageBox.Show("The task completion date is invalid.", "Invalid Date", MessageBoxButton.OK);
+                                }
 
-                            datePicker_task_completionDate.BlackoutDates.Clear();
-                            cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrSprint.StartDate.AddDays(-1);
-                            datePicker_task_completionDate.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrSprint.EndDate.HasValue)
-                            {
-                                cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrSprint.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
+                                datePicker_task_completionDate.BlackoutDates.Clear();
+                                CalendarDateRange cdr = new CalendarDateRange();
+                                cdr.End = viewModel.CurrSprint.StartDate.AddDays(-1);
                                 datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                                if (viewModel.CurrSprint.EndDate.HasValue)
+                                {
+                                    cdr = new CalendarDateRange();
+                                    cdr.Start = (DateTime)viewModel.CurrSprint.EndDate;
+                                    cdr.Start = cdr.Start.AddDays(1);
+                                    datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                                }
                             }
 
 
@@ -649,7 +661,8 @@ namespace SCRUMProjectManagementSystem
             {
                 if (viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam))
                 {
-                    MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
+                    //MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
+                    button_saveProject.Content = "Save";
                 }
                 else
                 {
@@ -673,7 +686,8 @@ namespace SCRUMProjectManagementSystem
             {
                 if (viewModel.ChangeCurrSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate))
                 {
-                    MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
+                    //MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
+                    button_saveSprint.Content = "Save";
                 }
                 else
                 {
@@ -697,7 +711,8 @@ namespace SCRUMProjectManagementSystem
             {
                 if (viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, (SprintView)comboBox_story_sprint.SelectedItem))
                 {
-                    MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
+                    //MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
+                    button_saveStory.Content = "Save";
                 }
                 else
                 {
@@ -729,7 +744,8 @@ namespace SCRUMProjectManagementSystem
             {
             if (viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate))
             {
-                MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
+                //MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
+                button_saveTask.Content = "Save";
             }
             else
             {
@@ -884,16 +900,19 @@ namespace SCRUMProjectManagementSystem
 
         private void ProjectInfoChanged(object sender, EventArgs e)
         {
+            button_saveProject.Content = "Save*";
             button_saveProject.IsEnabled = viewModel.ValidateProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam);
         }
 
         private void SprintInfoChanged(object sender, EventArgs e)
         {
+            button_saveSprint.Content = "Save*";
             button_saveSprint.IsEnabled = viewModel.ValidateSprint( textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
         }
 
         private void StoryInfoChanged(object sender, EventArgs e)
         {
+            button_saveStory.Content = "Save*";
             button_saveStory.IsEnabled = viewModel.ValidateStory(textBox_story_priority.Text, textBox_story_text.Text);
         }
 
@@ -901,6 +920,7 @@ namespace SCRUMProjectManagementSystem
         {
             if (taskReady)
             {
+                button_saveTask.Content = "Save*";
                 try
                 {
                     button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);

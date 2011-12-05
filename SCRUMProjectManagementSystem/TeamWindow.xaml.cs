@@ -30,15 +30,17 @@ namespace SCRUMProjectManagementSystem
                     string originalTeamName = ((UserView)listBox1.SelectedItem).TeamName;
                     if (_viewModel.MoveUserToTeam((UserView)listBox1.SelectedItem, _team))
                     {
-                        MessageBox.Show(((UserView)listBox1.SelectedItem).Name + " was moved from " + originalTeamName + " to " + _team.Name + ".", "User Moved", MessageBoxButton.OK);
+                        label1.Content = ((UserView)listBox1.SelectedItem).Name + " was moved from " + originalTeamName + " to " + _team.Name + ".";
                     }
                     else
                     {
+                        label1.Content = "";
                         MessageBox.Show("Your changes were not saved.", "Move Failed", MessageBoxButton.OK);
                     }
                 }
                 catch (ArgumentNullException ex)
                 {
+                    label1.Content = "";
                     MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
                 }
                 listBox1.ItemsSource = _viewModel.GetTeamMembers(_team).Item2;
