@@ -17,21 +17,18 @@ namespace SCRUMProjectManagementSystem
         private ViewModel.SPMSViewModel _viewModel;
         private TaskStateConverter tsConverter;
         private TaskTypeConverter ttConverter;
-        private Window _parent;
 
-        public NewItemWindow(Window parent, MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
+        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
         {
             InitializeComponent();
             _type = type;
             _viewModel = vm;
             tsConverter = ts;
             ttConverter = tt;
-            _parent = parent;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _parent.IsEnabled = false;
             this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
             if (_type == MainWindow.selection.Project)
             {
@@ -171,7 +168,7 @@ namespace SCRUMProjectManagementSystem
                         {
                             if (_viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate))
                             {
-                                MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
+                                //MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
                             }
                             else
                             {
@@ -192,7 +189,7 @@ namespace SCRUMProjectManagementSystem
                         {
                             if (_viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text))
                             {
-                                MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
+                                //MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
                             }
                             else
                             {
@@ -332,11 +329,6 @@ namespace SCRUMProjectManagementSystem
         private void teamChanged(object sender, EventArgs e)
         {
             button1.IsEnabled = _viewModel.ValidateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem);
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            _parent.IsEnabled = true;
         }
     }
 }
