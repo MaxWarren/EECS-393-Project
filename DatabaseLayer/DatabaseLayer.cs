@@ -659,7 +659,7 @@ namespace DatabaseLayer
         /// <param name="state">The state of this task</param>
         /// <param name="storyID">The ID of the story to which to add this task</param>
         /// <returns>True if creating the task succeeds, false otherwise</returns>
-        public bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID)
+        public bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID, Nullable<DateTime> completionDate)
         {
             Story curr = GetStoryByID(storyID);
             User ownerUser = null;
@@ -679,7 +679,7 @@ namespace DatabaseLayer
                 Text = text,
                 Business_value = value,
                 Size_complexity = size,
-                Completion_date = null,
+                Completion_date = completionDate,
                 Owner = ownerID,
                 State = state,
                 Type = type,

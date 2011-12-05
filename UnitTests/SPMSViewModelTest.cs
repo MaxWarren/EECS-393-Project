@@ -308,6 +308,12 @@ namespace UnitTests
             state = TaskState.Completed;
             actual = target.ValidateTask(text, owner, type, size, value, completion, state);
             Assert.AreEqual(expected, actual);
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            completion = new DateTime(2011, 10, 29);
+            expected = true;
+            actual = target.ValidateTask(text, owner, type, size, value, completion, state);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -382,6 +388,11 @@ namespace UnitTests
             owner = target.GetUserByID(1);
             team = target.GetTeamByID(1);
             expected = true;
+            actual = target.ValidateProject(name, startDate, endDate, owner, team);
+            Assert.AreEqual(expected, actual);
+
+            endDate = DateTime.Today;
+            expected = false;
             actual = target.ValidateProject(name, startDate, endDate, owner, team);
             Assert.AreEqual(expected, actual);
         }
@@ -763,11 +774,12 @@ namespace UnitTests
             UserView owner = null;
             TaskType type = TaskType.Development;
             TaskState state = TaskState.Unassigned;
+            Nullable<DateTime> completion = null;
             bool expected = true;
             bool actual;
             try
             {
-                actual = target.CreateTask(text, size, value, owner, type, state);
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
                 Assert.Fail("Exception not thrown");
             }
             catch (InvalidOperationException)
@@ -778,7 +790,7 @@ namespace UnitTests
             target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
             try
             {
-                actual = target.CreateTask(text, size, value, owner, type, state);
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
                 Assert.Fail("Exception not thrown");
             }
             catch (ArgumentOutOfRangeException)
@@ -789,7 +801,7 @@ namespace UnitTests
             size = 1;
             try
             {
-                actual = target.CreateTask(text, size, value, owner, type, state);
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
                 Assert.Fail("Exception not thrown");
             }
             catch (ArgumentNullException)
@@ -801,7 +813,7 @@ namespace UnitTests
             state = TaskState.In_Progress;
             try
             {
-                actual = target.CreateTask(text, size, value, owner, type, state);
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
                 Assert.Fail("Exception not thrown");
             }
             catch (InvalidOperationException)
@@ -809,13 +821,38 @@ namespace UnitTests
                 ;
             }
 
+            owner = target.GetUserByID(1);
+            completion = DateTime.Today;
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            state = TaskState.Completed;
+            completion = null;
+            try
+            {
+                actual = target.CreateTask(text, size, value, owner, type, state, completion);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            owner = null;
             state = TaskState.Unassigned;
-            actual = target.CreateTask(text, size, value, owner, type, state);
+            actual = target.CreateTask(text, size, value, owner, type, state, completion);
             Assert.AreEqual(expected, actual);
 
             state = TaskState.In_Progress;
             owner = target.GetUserByID(1);
-            actual = target.CreateTask(text, size, value, owner, type, state);
+            actual = target.CreateTask(text, size, value, owner, type, state, completion);
             Assert.AreEqual(expected, actual);
         }
 

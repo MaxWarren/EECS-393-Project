@@ -367,7 +367,7 @@ namespace UnitTests
             return !failureOn;
         }
 
-        public bool CreateTask(string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, int storyID)
+        public bool CreateTask(string text, int size, int value, int? ownerID, System.Data.Linq.Binary type, System.Data.Linq.Binary state, int storyID, Nullable<DateTime> completionDate)
         {
             return !failureOn;
         }

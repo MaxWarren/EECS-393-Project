@@ -213,7 +213,7 @@ namespace DatabaseLayer
         /// <param name="state">The state of this task</param>
         /// <param name="storyID">The ID of the story to which to add this task</param>
         /// <returns>True if creating the task succeeds, false otherwise</returns>
-        bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID);
+        bool CreateTask(string text, int size, int value, int? ownerID, Binary type, Binary state, int storyID, Nullable<DateTime> completionDate);
         #endregion
 
         #region Change Existing Entities

@@ -721,7 +721,7 @@ namespace ViewModel
         /// <param name="type">The type of this task</param>
         /// <param name="state">The state of this task</param>
         /// <returns>True if creating the task succeeds, false otherwise</returns>
-        public bool CreateTask(string text, int size, int value, UserView owner, TaskType type, TaskState state)
+        public bool CreateTask(string text, int size, int value, UserView owner, TaskType type, TaskState state, Nullable<DateTime> completionDate)
         {
             if (!_isLoggedIn || CurrStory == null)
             {
@@ -735,12 +735,16 @@ namespace ViewModel
             {
                 throw new ArgumentOutOfRangeException("Invalid complexity value");
             }
+            else if ((state == TaskState.Completed && !completionDate.HasValue) || (state != TaskState.Completed && completionDate.HasValue))
+            {
+                throw new InvalidOperationException("A task has a completion date iff it is completed");
+            }
             else if (text == null)
             {
                 throw new ArgumentNullException("Arguments to AddTask must not be null");
             }
 
-            bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), type.ConvertToBinary(), state.ConvertToBinary(), CurrStory.StoryID);
+            bool result = _dataModel.CreateTask(text, size, value, owner == null ? null : new int?(owner.UserID), type.ConvertToBinary(), state.ConvertToBinary(), CurrStory.StoryID, completionDate);
             updateTasksForStory();
             updateTasksForUser();
 
