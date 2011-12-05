@@ -147,7 +147,7 @@ namespace DatabaseLayer
             {
                 IEnumerable<Sprint> sprints = from s in dbConnection.Sprint
                                               where s.Project_id == projectID
-                                              orderby s.Start_date descending
+                                              orderby s.Start_date descending, s.Sprint_name descending
                                               select s;
 
                 return sprints;
