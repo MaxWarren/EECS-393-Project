@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
-        Title="Team Members" Height="300" Width="300" Loaded="Window_Loaded" Icon="/SCRUMProjectManagementSystem;component/Images/Untitled.ico" Closed="Window_Closed">
+        Title="Team Members" Height="300" Width="300" Loaded="Window_Loaded" Icon="/SCRUMProjectManagementSystem;component/Images/Untitled.ico" MinWidth="300" MinHeight="300">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:UserView}">
             <StackPanel>

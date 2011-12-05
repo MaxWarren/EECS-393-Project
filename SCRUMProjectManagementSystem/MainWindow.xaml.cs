@@ -793,13 +793,13 @@ namespace SCRUMProjectManagementSystem
 
         private void button_New_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(this, currentSelection + 1, viewModel, tsConverter, ttConverter);
+            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel, tsConverter, ttConverter);
             niw.ShowDialog();
         }
 
         private void menu_addTeam_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(this, selection.Team, viewModel, tsConverter, ttConverter);
+            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel, tsConverter, ttConverter);
             niw.ShowDialog();
         }
 
@@ -819,7 +819,7 @@ namespace SCRUMProjectManagementSystem
         void i_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mi = (MenuItem)sender;
-            TeamWindow tw = new TeamWindow(this, (TeamView)mi.Header, viewModel);
+            TeamWindow tw = new TeamWindow((TeamView)mi.Header, viewModel);
             tw.ShowDialog();
         }
 
