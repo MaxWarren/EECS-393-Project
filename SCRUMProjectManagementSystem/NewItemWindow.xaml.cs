@@ -168,7 +168,7 @@ namespace SCRUMProjectManagementSystem
                         {
                             if (_viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate))
                             {
-                                MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
+                                //MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
                             }
                             else
                             {
@@ -189,7 +189,7 @@ namespace SCRUMProjectManagementSystem
                         {
                             if (_viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text))
                             {
-                                MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
+                                //MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
                             }
                             else
                             {

@@ -678,6 +678,7 @@ namespace SCRUMProjectManagementSystem
             {
                 MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
             }
+            update();
         }
 
         void save_sprint_Click(object sender, RoutedEventArgs e)
@@ -703,6 +704,7 @@ namespace SCRUMProjectManagementSystem
             {
                 MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
             }
+            update();
         }
 
         void save_story_Click(object sender, RoutedEventArgs e)
@@ -736,6 +738,7 @@ namespace SCRUMProjectManagementSystem
             {
                 MessageBox.Show(ex.Message, "ArgumentException", MessageBoxButton.OK);
             }
+            update();
         }
 
         void save_task_Click(object sender, RoutedEventArgs e)
@@ -765,6 +768,7 @@ namespace SCRUMProjectManagementSystem
             {
                 MessageBox.Show(ex.Message, "ArgumentOutOfRangeException", MessageBoxButton.OK);
             }
+            update();
         }
 
         void textBox_story_priority_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
