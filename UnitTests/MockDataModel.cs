@@ -145,7 +145,7 @@ namespace UnitTests
                     Business_value = 1,
                     Size_complexity = 1,
                     Completion_date = null,
-                    Owner = null,
+                    Owner = 1,
                     Text = "Task 1",
                     State = one,
                     Type = one,

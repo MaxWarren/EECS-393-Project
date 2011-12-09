@@ -41,19 +41,16 @@ namespace ViewModel
         /// <summary>
         /// Indicates if the current user is a manager
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public bool IsManager { get; set; }
 
         /// <summary>
         /// Indicates whether or not the client is in "historic view"
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public bool HistoricMode { get; set; }
 
         /// <summary>
         /// The currently logged in user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public UserView CurrUser
         {
             get { return _currUser; }
@@ -63,7 +60,6 @@ namespace ViewModel
         /// <summary>
         /// The team to which the current user belongs
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public TeamView CurrTeam
         {
             get { return _currTeam; }
@@ -73,7 +69,6 @@ namespace ViewModel
         /// <summary>
         /// The project most recently selected by the user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ProjectView CurrProject
         {
             get { return _currProject; }
@@ -83,7 +78,6 @@ namespace ViewModel
         /// <summary>
         /// The sprint most recently selected by the user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public SprintView CurrSprint
         {
             get { return _currSprint; }
@@ -93,7 +87,6 @@ namespace ViewModel
         /// <summary>
         /// The user story most recently selected by the user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public StoryView CurrStory
         {
             get { return _currStory; }
@@ -103,7 +96,6 @@ namespace ViewModel
         /// <summary>
         /// The task most recently selected by the user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public TaskView CurrTask
         {
             get { return _currTask; }
@@ -115,7 +107,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all projects that belong to the team to which the current user belongs
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<ProjectView> ProjectsForUser
         {
             get { return _projectsForUser; }
@@ -125,7 +116,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all tasks assigned to the current user
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<TaskView> TasksForUser
         {
             get { return _tasksForUser; }
@@ -135,7 +125,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all sprints that make up the current project
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<SprintView> SprintsForProject
         {
             get { return _sprintsForProject; }
@@ -145,7 +134,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all user stories belonging to the current sprint
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<StoryView> StoriesForSprint
         {
             get { return _storiesForSprint; }
@@ -155,7 +143,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all tasks belonging to the current user story
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<TaskView> TasksForStory
         {
             get { return _tasksForStory; }
@@ -165,7 +152,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all teams in the database
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<TeamView> AllTeams
         {
             get { updateAllTeams(); return _allTeams; }
@@ -175,7 +161,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all managers in the database
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<UserView> AllManagers
         {
             get { return getManagers(); }
@@ -184,7 +169,6 @@ namespace ViewModel
         /// <summary>
         /// A list of all members of the current team
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public ObservableCollection<UserView> CurrTeamMembers
         {
             get { return GetTeamMembers(CurrTeam).Item1; }
@@ -195,14 +179,12 @@ namespace ViewModel
         /// <summary>
         /// Initializes the view model with default DataModel
         /// </summary>
-        [ExcludeFromCodeCoverage]
         public SPMSViewModel() : this(DataModel.Instance) { }
 
         /// <summary>
         /// Initializes the view model
         /// </summary>
         /// <param name="dataModel">The IDataModel to use in the view model</param>
-        [ExcludeFromCodeCoverage]
         public SPMSViewModel(IDataModel dataModel)
         {
             _dataModel = dataModel;
@@ -313,6 +295,39 @@ namespace ViewModel
             }
 
             return result;
+        }
+
+        public Dictionary<UserView, int[]> GetCurrSprintUserStatus()
+        {
+            if (!_isLoggedIn || CurrSprint == null)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
+            else if (CurrSprint.StartDate > DateTime.Today)
+            {
+                throw new InvalidOperationException("The sprint must have started to view its task status");
+            }
+
+            IEnumerable<User> users = _dataModel.GetTeamMembers(_dataModel.GetProjectByID(CurrSprint.ProjectID).Team_id);
+            
+            Dictionary<UserView, int[]> results = new Dictionary<UserView, int[]>();
+            
+            foreach (User u in users)
+            {
+                IEnumerable<TaskView> tasks = _dataModel.GetTasksForUser(u.User_id).Select(t => new TaskView(t));
+
+                UserView user = new UserView(u);
+                int[] vals = 
+                {
+                    tasks.Count(t => t.State == TaskState.Completed),
+                    tasks.Count(t => t.State == TaskState.In_Progress),
+                    tasks.Count(t => t.State == TaskState.Blocked),
+                };
+
+                results.Add(user, vals);
+            }
+
+            return results;
         }
         #endregion
 

@@ -723,6 +723,42 @@ namespace UnitTests
         }
 
         /// <summary>
+        ///A test for GetCurrSprintUserStatus
+        ///</summary>
+        [TestMethod()]
+        public void GetCurrSprintUserStatusTest()
+        {
+            Dictionary<UserView, int[]> actual;
+            try
+            {
+                actual = target.GetCurrSprintUserStatus();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(2)));
+            try
+            {
+                actual = target.GetCurrSprintUserStatus();
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target.JumpToTask(new TaskView(target._dataModel.GetTaskByID(1)));
+            actual = target.GetCurrSprintUserStatus();
+            UserView user = target.GetUserByID(1);
+            Assert.AreEqual(actual[user][0], 0);
+            Assert.AreEqual(actual[user][1], 1);
+            Assert.AreEqual(actual[user][2], 0);
+        }
+
+        /// <summary>
         ///A test for CreateTeam
         ///</summary>
         [TestMethod()]
