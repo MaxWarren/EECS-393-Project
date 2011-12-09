@@ -8,14 +8,14 @@
     <Setting Name="password" Type="System.String" Scope="Application">
       <Value Profile="(Default)">password</Value>
     </Setting>
-    <Setting Name="server" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ajsquareddesk</Value>
-    </Setting>
     <Setting Name="database" Type="System.String" Scope="Application">
       <Value Profile="(Default)">eecs393_project</Value>
     </Setting>
     <Setting Name="timeout" Type="System.String" Scope="Application">
       <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="server" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ajsquareddesk.student.cwru.edu</Value>
     </Setting>
   </Settings>
 </SettingsFile>
