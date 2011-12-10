@@ -470,6 +470,10 @@ namespace ViewModel
         /// <returns>True if moving the user succeeds, false otherwise</returns>
         public bool MoveUserToTeam(UserView user, TeamView team)
         {
+            if (!_isLoggedIn)
+            {
+                throw new InvalidOperationException("User must be logged in");
+            }
             if (user == null || team == null)
             {
                 throw new ArgumentNullException("Arguments to ChangeTeam must not be null");

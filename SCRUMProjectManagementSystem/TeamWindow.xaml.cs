@@ -21,6 +21,35 @@ namespace SCRUMProjectManagementSystem
             _viewModel = viewModel;
         }
 
+        private void saveFailure()
+        {
+            MessageBox.Show(
+                "Your changes could not be saved. Please review the data you entered and try again. If this problem persists, please contact your administrator.",
+                "Save Failed",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+
+        private void showCriticalError()
+        {
+            MessageBox.Show(
+                    "A serious error has occured. The client must shut down.",
+                    "Critical Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+            Environment.Exit(1);
+        }
+
+        private void showValueError()
+        {
+            MessageBox.Show(
+                "The values you have entered are not valid. Please review the data you have entered.",
+                "Data Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             if (listBox1.SelectedIndex >= 0)
@@ -35,13 +64,17 @@ namespace SCRUMProjectManagementSystem
                     else
                     {
                         label1.Content = "";
-                        MessageBox.Show("Your changes were not saved.", "Move Failed", MessageBoxButton.OK);
+                        saveFailure();
                     }
                 }
-                catch (ArgumentNullException ex)
+                catch (InvalidOperationException)
+                {
+                    showCriticalError();
+                }
+                catch (ArgumentNullException)
                 {
                     label1.Content = "";
-                    MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                    showValueError();
                 }
                 listBox1.ItemsSource = _viewModel.GetTeamMembers(_team).Item2;
                 listBox2.ItemsSource = _viewModel.GetTeamMembers(_team).Item1;

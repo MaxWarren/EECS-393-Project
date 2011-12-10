@@ -427,6 +427,19 @@ namespace UnitTests
             TeamView team = null;
             bool expected = false;
             bool actual;
+
+            target._isLoggedIn = false;
+            try
+            {
+                target.MoveUserToTeam(user, team);
+                Assert.Fail("Exception not thrown");
+            }
+            catch (InvalidOperationException)
+            {
+                ;
+            }
+
+            target._isLoggedIn = true;
             try
             {
                 actual = target.MoveUserToTeam(user, team);
