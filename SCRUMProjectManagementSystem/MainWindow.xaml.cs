@@ -17,7 +17,6 @@ namespace SCRUMProjectManagementSystem
     {
         private selection currentSelection;
         private SPMSViewModel viewModel;
-        private bool taskReady;
         private Brush _color;
 
         public enum selection
@@ -52,7 +51,6 @@ namespace SCRUMProjectManagementSystem
             }
             this.DataContext = viewModel;
             currentSelection = selection.Home;
-            taskReady = false;
             update();
         }
 
@@ -141,7 +139,6 @@ namespace SCRUMProjectManagementSystem
         {
             try
             {
-                taskReady = false;
                 button_New.Content = "Add " + System.Enum.GetName(currentSelection.GetType(), currentSelection + 1);
                 leftList.SelectedIndex = -1;
                 grid_projectInfo.Visibility = Visibility.Hidden;
@@ -295,8 +292,6 @@ namespace SCRUMProjectManagementSystem
                                 datePicker_task_completionDate.BlackoutDates.Add(cdr);
                             }
                         }
-
-                        taskReady = true;
                         break;
                     default:
                         break;
@@ -611,11 +606,8 @@ namespace SCRUMProjectManagementSystem
 
         private void TaskInfoChanged(object sender, EventArgs e)
         {
-            if (taskReady)
-            {
-                button_saveTask.Content = "Save*";
-                button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
-            }
+            button_saveTask.Content = "Save*";
+            button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
         }
 
         private void showCriticalError()
