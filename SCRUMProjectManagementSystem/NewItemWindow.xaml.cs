@@ -34,7 +34,7 @@ namespace SCRUMProjectManagementSystem
             Environment.Exit(1);
         }
 
-        private void showValueError()
+        private void showArgumentError()
         {
             MessageBox.Show(
                 "The values you have entered are not valid. Please review the data you have entered and try again.",
@@ -240,15 +240,15 @@ namespace SCRUMProjectManagementSystem
             }
             catch (ArgumentNullException)
             {
-                showValueError();
+                showArgumentError();
             }
             catch (ArgumentOutOfRangeException)
             {
-                showValueError();
+                showArgumentError();
             }
             catch (ArgumentException)
             {
-                showValueError();
+                showArgumentError();
             }
         }
 
