@@ -522,12 +522,12 @@ namespace SCRUMProjectManagementSystem
             {
                 teams[i] = new MenuItem();
                 teams[i].Header = viewModel.AllTeams[i];
-                teams[i].Click += new RoutedEventHandler(i_Click);
+                teams[i].Click += new RoutedEventHandler(menu_teamName_Click);
             }
             menu_addToTeam.ItemsSource = teams;
         }
 
-        void i_Click(object sender, RoutedEventArgs e)
+        void menu_teamName_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mi = (MenuItem)sender;
             TeamWindow tw = new TeamWindow((TeamView)mi.Header, viewModel);
