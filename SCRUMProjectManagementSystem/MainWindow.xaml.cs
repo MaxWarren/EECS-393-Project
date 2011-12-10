@@ -3,9 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModel;
 using System.Windows.Media;
-using System.Windows.Data;
+using ViewModel;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -19,8 +18,6 @@ namespace SCRUMProjectManagementSystem
         private SPMSViewModel viewModel;
         private bool isUpdating;
         private bool taskReady;
-        private TaskStateConverter tsConverter;
-        private TaskTypeConverter ttConverter;
         private Brush _color;
 
         public enum selection
@@ -43,8 +40,6 @@ namespace SCRUMProjectManagementSystem
         {
             viewModel = vm;
             InitializeComponent();
-            tsConverter = new TaskStateConverter();
-            ttConverter = new TaskTypeConverter();
             BackgroundColor = Brushes.LightBlue;
         }
 
@@ -547,13 +542,13 @@ namespace SCRUMProjectManagementSystem
 
         private void button_New_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel, tsConverter, ttConverter);
+            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel);
             niw.ShowDialog();
         }
 
         private void menu_addTeam_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel, tsConverter, ttConverter);
+            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel);
             niw.ShowDialog();
         }
 

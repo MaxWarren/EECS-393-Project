@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModel;
-using System.Windows.Controls;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -15,21 +15,18 @@ namespace SCRUMProjectManagementSystem
     {
         private MainWindow.selection _type;
         private ViewModel.SPMSViewModel _viewModel;
-        private TaskStateConverter tsConverter;
-        private TaskTypeConverter ttConverter;
 
-        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm, TaskStateConverter ts, TaskTypeConverter tt)
+        public NewItemWindow(MainWindow.selection type, ViewModel.SPMSViewModel vm)
         {
             InitializeComponent();
             _type = type;
             _viewModel = vm;
-            tsConverter = ts;
-            ttConverter = tt;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
+            // Maybe use a switch statement???
             if (_type == MainWindow.selection.Project)
             {
                 label1.Content = "Project Name";
@@ -41,7 +38,16 @@ namespace SCRUMProjectManagementSystem
                 {
                     comboBox_project1.ItemsSource = _viewModel.AllManagers;
                 }
-                catch { }
+                catch (InvalidOperationException)
+                {
+                    MessageBox.Show(
+                    "A serious error has occured. The client must shut down.", 
+                    "Critical Error", 
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                    Environment.Exit(1);
+                }
                 try
                 {
                     comboBox_project2.ItemsSource = _viewModel.AllTeams;

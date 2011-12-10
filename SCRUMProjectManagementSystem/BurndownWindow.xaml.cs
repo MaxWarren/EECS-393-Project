@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-
 namespace SCRUMProjectManagementSystem
 {
     /// <summary>
