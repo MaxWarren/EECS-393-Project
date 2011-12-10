@@ -185,10 +185,7 @@ namespace SCRUMProjectManagementSystem
                     button_sprint.FontWeight = FontWeights.Normal;
                     button_story.FontWeight = FontWeights.Normal;
                     button_task.FontWeight = FontWeights.Normal;
-                    button_saveProject.Content = "Save";
-                    button_saveSprint.Content = "Save";
-                    button_saveStory.Content = "Save";
-                    button_saveTask.Content = "Save";
+                    
                     if (viewModel.IsManager && viewModel.HistoricMode == false)
                     {
                         button_New.Visibility = Visibility.Visible;
@@ -210,6 +207,7 @@ namespace SCRUMProjectManagementSystem
                             UserView[] managerList = viewModel.AllManagers.ToArray();
                             comboBox_project_owner.ItemsSource = managerList;
                             comboBox_project_owner.SelectedItem = (from user in managerList where user.UserID == viewModel.CurrProject.OwnerID select user).Single();
+                            button_saveProject.Content = "Save";
                             break;
                         case selection.Sprint:
                             button_sprint.FontWeight = FontWeights.Bold;
@@ -218,6 +216,7 @@ namespace SCRUMProjectManagementSystem
                             leftList.ItemsSource = viewModel.StoriesForSprint;
                             grid_sprintInfo.Visibility = Visibility.Visible;
                             button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
+                            button_saveSprint.Content = "Save";
                             if (viewModel.HistoricMode == false)
                             {
                                 if (DateTime.Compare(viewModel.CurrSprint.StartDate, viewModel.CurrProject.StartDate) < 0 || (viewModel.CurrProject.EndDate.HasValue && DateTime.Compare(viewModel.CurrSprint.StartDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
@@ -275,6 +274,7 @@ namespace SCRUMProjectManagementSystem
                             SprintView[] sv = viewModel.SprintsForProject.ToArray();
                             comboBox_story_sprint.ItemsSource = sv;
                             comboBox_story_sprint.SelectedItem = (from sprint in sv where sprint.SprintID == viewModel.CurrSprint.SprintID select sprint).Single();
+                            button_saveStory.Content = "Save";
                             break;
                         case selection.Task:
                             button_task.FontWeight = FontWeights.Bold;
@@ -304,6 +304,7 @@ namespace SCRUMProjectManagementSystem
                             //TODO: disable completed combobox item
 
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
+                            button_saveTask.Content = "Save";
                             if (viewModel.HistoricMode == false)
                             {
                                 if ((viewModel.CurrTask.CompletionDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, viewModel.CurrSprint.StartDate) < 0) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, (DateTime)viewModel.CurrSprint.EndDate) > 0))
@@ -341,263 +342,6 @@ namespace SCRUMProjectManagementSystem
             }
             isUpdating = false;
         }
-            /*
-            if (!isUpdating)
-            {
-                isUpdating = true;
-                leftList.SelectedIndex = -1;
-                column1.Width = new GridLength(1, GridUnitType.Star);
-                column2.Width = new GridLength(1, GridUnitType.Star);
-                button_New.Visibility = Visibility.Visible;
-                switch (currentSelection)
-                {
-                    case selection.Home:
-                        column1.Width = new GridLength(2, GridUnitType.Star);
-                        column2.Width = new GridLength(0, GridUnitType.Star);
-                        //left panel
-                        //viewModel.UpdateProjectsForUser();
-                        leftList.ItemsSource = viewModel.ProjectsForUser;
-                        //right panel
-                        stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
-                        stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
-                        ListBox lb = new ListBox();
-                        lb.AlternationCount = 2;
-                        lb.ItemsSource = viewModel.TasksForUser;
-                        lb.SelectionChanged += new SelectionChangedEventHandler(lb_SelectionChanged);
-                        stackPanel1.Children.Add(lb);
-                        break;
-                    case selection.Project:
-                        //left panel
-                        button_project.Visibility = Visibility.Visible;
-                        //viewModel.UpdateSprintsForProject();
-                        leftList.ItemsSource = viewModel.SprintsForProject;
-                        //right panel
-                        stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
-                        stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
-                        Label label = new Label();
-                        label.Content = "Project Name:";
-                        TextBox tb = new TextBox();
-                        tb.Margin = new Thickness(0, 0, 0, 4);
-                        tb.Text = viewModel.CurrProject.Name;
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(tb);
-                        label = new Label();
-                        label.Content = "Team:";
-                        stackPanel1.Children.Add(label);
-                        label = new Label();
-                        label.Content = viewModel.CurrTeam.Name;
-                        stackPanel2.Children.Add(label);
-                        label = new Label();
-                        label.Content = "Start Date:";
-                        stackPanel1.Children.Add(label);
-                        DatePicker dp = new DatePicker();
-                        dp.SelectedDate = viewModel.CurrProject.StartDate;
-                        stackPanel2.Children.Add(dp);
-                        label = new Label();
-                        label.Content = "End Date:";
-                        stackPanel1.Children.Add(label);
-                        dp = new DatePicker();
-                        dp.SelectedDate = viewModel.CurrProject.EndDate;
-                        stackPanel2.Children.Add(dp);
-                        label = new Label();
-                        label.Content = "Owner:";
-                        ComboBox cb = new ComboBox();
-                        UserView[] managerList = viewModel.GetManagers().ToArray();
-                        cb.ItemsSource = managerList;
-                        UserView tempOwner = (from user in managerList where user.UserID == viewModel.CurrProject.OwnerID select user).Single();
-                        cb.SelectedItem = tempOwner;
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        Button save = new Button();
-                        save.Content = "Save";
-                        save.Click += new RoutedEventHandler(save_project_Click);
-                        stackPanel2.Children.Add(save);
-                        break;
-                    case selection.Sprint:
-                        //left panel
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        //viewModel.UpdateStoriesForSprint();
-                        leftList.ItemsSource = viewModel.StoriesForSprint;
-                        //right panel
-                        stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
-                        stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
-                        label = new Label();
-                        label.Content = "Project Name:";
-                        stackPanel1.Children.Add(label);
-                        label = new Label();
-                        label.Content = viewModel.CurrProject.Name;
-                        stackPanel2.Children.Add(label);
-                        label = new Label();
-                        label.Content = "Sprint Name:";
-                        tb = new TextBox();
-                        tb.Margin = new Thickness(0, 0, 0, 4);
-                        tb.Text = viewModel.CurrSprint.Name;
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(tb);
-                        label = new Label();
-                        label.Content = "Start Date:";
-                        stackPanel1.Children.Add(label);
-                        dp = new DatePicker();
-                        dp.SelectedDate = viewModel.CurrSprint.StartDate;
-                        stackPanel2.Children.Add(dp);
-                        label = new Label();
-                        label.Content = "End Date:";
-                        stackPanel1.Children.Add(label);
-                        dp = new DatePicker();
-                        dp.SelectedDate = viewModel.CurrSprint.EndDate;
-                        stackPanel2.Children.Add(dp);
-                        save = new Button();
-                        save.Content = "Save";
-                        save.Click += new RoutedEventHandler(save_sprint_Click);
-                        stackPanel2.Children.Add(save);
-                        break;
-                    case selection.Story:
-                        //left panel
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        button_story.Visibility = Visibility.Visible;
-                        //viewModel.UpdateTasksForStory();
-                        leftList.ItemsSource = viewModel.TasksForStory;
-                        //right panel
-                        stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
-                        stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
-                        label = new Label();
-                        label.Content = "Project Name:";
-                        stackPanel1.Children.Add(label);
-                        label = new Label();
-                        label.Content = viewModel.CurrProject.Name;
-                        stackPanel2.Children.Add(label);
-                        label = new Label();
-                        label.Content = "Sprint:";
-                        stackPanel1.Children.Add(label);
-                        cb = new ComboBox();
-                        SprintView[] sv = viewModel.SprintsForProject.ToArray();
-                        cb.ItemsSource = sv;
-                        SprintView tempSprint = (from sprint in sv where sprint.SprintID == viewModel.CurrSprint.SprintID select sprint).Single();
-                        cb.SelectedValue = tempSprint;
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel2.Children.Add(cb);
-                        label = new Label();
-                        label.Content = "Priority:";
-                        stackPanel1.Children.Add(label);
-                        tb = new TextBox();
-                        tb.Margin = new Thickness(0, 0, 0, 4);
-                        tb.Text = viewModel.CurrStory.Priority.ToString();
-                        tb.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(tb_PreviewTextInput);
-                        stackPanel2.Children.Add(tb);
-                        label = new Label();
-                        label.Content = "Text:";
-                        tb = new TextBox();
-                        tb.Margin = new Thickness(0, 0, 0, 4);
-                        tb.TextWrapping = TextWrapping.Wrap;
-                        tb.Text = viewModel.CurrStory.Text;
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(tb);
-                        save = new Button();
-                        save.Content = "Save";
-                        save.Click += new RoutedEventHandler(save_story_Click);
-                        stackPanel2.Children.Add(save);
-                        break;
-                    case selection.Task:
-                        //left panel
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        button_story.Visibility = Visibility.Visible;
-                        button_task.Visibility = Visibility.Visible;
-                        leftList.ItemsSource = new string[] { };
-                        button_New.Visibility = Visibility.Hidden;
-                        //right panel
-                        stackPanel1.Children.RemoveRange(0, stackPanel1.Children.Count);
-                        stackPanel2.Children.RemoveRange(0, stackPanel2.Children.Count);
-                        label = new Label();
-                        label.Content = "Project Name:";
-                        stackPanel1.Children.Add(label);
-                        label = new Label();
-                        label.Content = viewModel.CurrProject.Name;
-                        stackPanel2.Children.Add(label);
-                        label = new Label();
-                        label.Content = "Owner:";
-                        cb = new ComboBox();
-                        UserView[] userList = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1.ToArray();
-                        cb.ItemsSource = userList;
-                        try
-                        {
-                            UserView tempUser = userList.Where(user => user.UserID == viewModel.CurrTask.OwnerID).FirstOrDefault();
-                            cb.SelectedItem = tempUser;
-                        }
-                        catch (Exception)
-                        {
-                            //assume no owner.  will fix this later to be more specific
-                        }
-                        bool hasOwner = cb.SelectedIndex >= 0;
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        cb.SelectionChanged += new SelectionChangedEventHandler(taskOwnerChanged);
-                        label = new Label();
-                        label.Content = "Complexity:";
-                        cb = new ComboBox();
-                        cb.ItemsSource = ComplexityValues.sizeComplexity;
-                        cb.SelectedItem = viewModel.CurrTask.SizeComplexity;
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        label = new Label();
-                        label.Content = "Business Value:";
-                        cb = new ComboBox();
-                        cb.ItemsSource = ComplexityValues.businessValue;
-                        cb.SelectedItem = viewModel.CurrTask.BusinessValue;
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        label = new Label();
-                        label.Content = "Type:";
-                        cb = new ComboBox();
-                        cb.ItemsSource = Enum.GetValues(typeof(TaskType)).Cast<TaskType>().Select(type => ttConverter.Convert(type, typeof(string), null, null));
-                        cb.SelectedItem = ttConverter.Convert(viewModel.CurrTask.Type, typeof(string), null, null);
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        label = new Label();
-                        label.Content = "State:";
-                        cb = new ComboBox();
-                        // Max - this conversion and others like it can be done entirely in XAML
-                        cb.ItemsSource = Enum.GetValues(typeof(TaskState)).Cast<TaskState>().Select(state => tsConverter.Convert(state, typeof(string), null, null));
-                        cb.SelectedItem = tsConverter.Convert(viewModel.CurrTask.State, typeof(string), null, null);
-                        cb.Margin = new Thickness(0, 0, 0, 4);
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(cb);
-                        cb.SelectionChanged += new SelectionChangedEventHandler(taskStateChanged);
-                        cb.IsEnabled = hasOwner;
-                        label = new Label();
-                        label.Content = "Completion Date:";
-                        dp = new DatePicker();
-                        dp.SelectedDate = viewModel.CurrTask.CompletionDate;
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(dp);
-                        label = new Label();
-                        label.Content = "Text:";
-                        tb = new TextBox();
-                        tb.Margin = new Thickness(0, 0, 0, 4);
-                        tb.TextWrapping = TextWrapping.Wrap;
-                        tb.Text = viewModel.CurrTask.Text;
-                        stackPanel1.Children.Add(label);
-                        stackPanel2.Children.Add(tb);
-                        save = new Button();
-                        save.Content = "Save";
-                        save.Click += new RoutedEventHandler(save_task_Click);
-                        stackPanel2.Children.Add(save);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            isUpdating = false;
-        }
-        */
-        
 
         void TaskOwnerChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -745,15 +489,15 @@ namespace SCRUMProjectManagementSystem
         {
             try
             {
-            if (viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate))
-            {
-                //MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
-                button_saveTask.Content = "Save";
-            }
-            else
-            {
-                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-            }
+                if (viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate))
+                {
+                    //MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
+                    button_saveTask.Content = "Save";
+                }
+                else
+                {
+                    MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
+                }
 
             }
             catch (InvalidOperationException ex)
@@ -775,19 +519,7 @@ namespace SCRUMProjectManagementSystem
         {
             e.Handled = e.Text.IsNonNumeric();
         }
-        /*
-        void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListBox lb = (ListBox)sender;
-            if (lb.SelectedIndex >= 0)
-            {
-                viewModel.CurrTask = viewModel.TasksForUser[lb.SelectedIndex];
-                viewModel.JumpToTask(viewModel.CurrTask);
-                currentSelection = selection.Task;
-                update();
-            }
-        }
-        */
+
         private void rightList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (rightList.SelectedIndex >= 0)
@@ -911,7 +643,7 @@ namespace SCRUMProjectManagementSystem
         private void SprintInfoChanged(object sender, EventArgs e)
         {
             button_saveSprint.Content = "Save*";
-            button_saveSprint.IsEnabled = viewModel.ValidateSprint( textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
+            button_saveSprint.IsEnabled = viewModel.ValidateSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
         }
 
         private void StoryInfoChanged(object sender, EventArgs e)
