@@ -37,7 +37,7 @@ namespace SCRUMProjectManagementSystem
         private void showValueError()
         {
             MessageBox.Show(
-                "The values you have entered are not valid. Please review the data you have entered.",
+                "The values you have entered are not valid. Please review the data you have entered and try again.",
                 "Data Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
