@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SCRUMProjectManagementSystem.Login"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SCRUM Project Management System" Height="200" Width="300" Name="window_login" MinWidth="300" MinHeight="200" KeyDown="login_KeyDown" Icon="/SCRUMProjectManagementSystem;component/Images/Untitled.ico">
+        Title="SCRUM Project Management System" Height="200" Width="300" Name="window_login" MinWidth="300" MinHeight="200" KeyDown="login_KeyDown" Icon="file:///C:/Users/ajsquared/Dropbox/EECS393/Project/SCRUMProjectManagementSystem/icon.ico">
     <Grid>
         <TextBox Height="23" Margin="71,31,12,0" Name="textBox1" VerticalAlignment="Top" Text="1" PreviewTextInput="textBox1_PreviewTextInput" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,74,0,0" Name="textBlock1" Text="Password:" VerticalAlignment="Top" />
