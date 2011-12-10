@@ -301,9 +301,9 @@ namespace SCRUMProjectManagementSystem
 
                             comboBox_task_state.ItemsSource = EnumValues.taskState;
                             comboBox_task_state.SelectedItem = viewModel.CurrTask.State;
-                            //TODO: disable completed combobox item
-
+                            
                             datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
+                            TaskDateChanged(null, null);
                             button_saveTask.Content = "Save";
                             if (viewModel.HistoricMode == false)
                             {
