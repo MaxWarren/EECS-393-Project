@@ -188,11 +188,11 @@ namespace SCRUMProjectManagementSystem
                         button_saveSprint.Content = "Save";
                         if (viewModel.HistoricMode == false)
                         {
-                            if (DateTime.Compare(viewModel.CurrSprint.StartDate, viewModel.CurrProject.StartDate) < 0 || (viewModel.CurrProject.EndDate.HasValue && DateTime.Compare(viewModel.CurrSprint.StartDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                            if (viewModel.CurrSprint.StartDate < viewModel.CurrProject.StartDate || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.StartDate > viewModel.CurrProject.EndDate.Value))
                             {
                                 datePicker_sprint_start.SelectedDate = null;
                                 button_saveSprint.Content = "Save*";
-                                if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                                if ((viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value < viewModel.CurrProject.StartDate) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value > viewModel.CurrProject.EndDate.Value))
                                 {
                                     datePicker_sprint_end.SelectedDate = null;
                                     showInvalidDateWarning();
@@ -202,7 +202,7 @@ namespace SCRUMProjectManagementSystem
                                     showInvalidDateWarning();
                                 }
                             }
-                            else if ((viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, viewModel.CurrProject.StartDate) < 0) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrSprint.EndDate, (DateTime)viewModel.CurrProject.EndDate) > 0))
+                            else if ((viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value < viewModel.CurrProject.StartDate) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value > viewModel.CurrProject.EndDate.Value))
                             {
                                 datePicker_sprint_end.SelectedDate = null;
                                 button_saveSprint.Content = "Save*";
@@ -276,7 +276,7 @@ namespace SCRUMProjectManagementSystem
                         button_saveTask.Content = "Save";
                         if (viewModel.HistoricMode == false)
                         {
-                            if ((viewModel.CurrTask.CompletionDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, viewModel.CurrSprint.StartDate) < 0) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && DateTime.Compare((DateTime)viewModel.CurrTask.CompletionDate, (DateTime)viewModel.CurrSprint.EndDate) > 0))
+                            if ((viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrTask.CompletionDate.Value < viewModel.CurrSprint.StartDate) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrTask.CompletionDate.Value > viewModel.CurrSprint.EndDate.Value))
                             {
                                 datePicker_task_completionDate.SelectedDate = null;
                                 button_saveTask.Content = "Save*";
