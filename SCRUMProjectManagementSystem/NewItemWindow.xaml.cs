@@ -23,6 +23,44 @@ namespace SCRUMProjectManagementSystem
             _viewModel = vm;
         }
 
+        private void showCriticalError()
+        {
+            MessageBox.Show(
+                    "A serious error has occured. The client must shut down.",
+                    "Critical Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+            Environment.Exit(1);
+        }
+
+        private void showValueError()
+        {
+            MessageBox.Show(
+                "The values you have entered are not valid. Please review the data you have entered.",
+                "Data Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+
+        private void saveSuccess()
+        {
+            MessageBox.Show(
+                "Your changes have been saved.",
+                "Save Successful",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private void saveFailure()
+        {
+            MessageBox.Show(
+                "Your changes could not be saved. Please review the data you entered and try again. If this problem persists, please contact your administrator.",
+                "Save Failed",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Title = "New " + System.Enum.GetName(_type.GetType(), _type);
@@ -37,22 +75,12 @@ namespace SCRUMProjectManagementSystem
                 try
                 {
                     comboBox_project1.ItemsSource = _viewModel.AllManagers;
+                    comboBox_project2.ItemsSource = _viewModel.AllTeams;
                 }
                 catch (InvalidOperationException)
                 {
-                    MessageBox.Show(
-                    "A serious error has occured. The client must shut down.", 
-                    "Critical Error", 
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                    Environment.Exit(1);
+                    showCriticalError();
                 }
-                try
-                {
-                    comboBox_project2.ItemsSource = _viewModel.AllTeams;
-                }
-                catch { }
                 stackPanel_project.Visibility = Visibility.Visible;
             }
             if (_type == MainWindow.selection.Sprint)
@@ -104,7 +132,10 @@ namespace SCRUMProjectManagementSystem
                 {
                     comboBox_task3.ItemsSource = _viewModel.CurrTeamMembers;
                 }
-                catch { }
+                catch (InvalidOperationException)
+                {
+                    showCriticalError();
+                }
                 comboBox_task4.ItemsSource = EnumValues.taskType;
                 comboBox_task5.ItemsSource = EnumValues.taskState;
                 comboBox_task5.SelectedIndex = 0;
@@ -131,13 +162,12 @@ namespace SCRUMProjectManagementSystem
                 try
                 {
                     comboBox_team1.ItemsSource = _viewModel.AllManagers;
-                }
-                catch { }
-                try
-                {
                     comboBox_team2.ItemsSource = _viewModel.AllManagers;
                 }
-                catch { }
+                catch (InvalidOperationException)
+                {
+                    showCriticalError();
+                }
                 stackPanel_team.Visibility = Visibility.Visible;
             }
         }
@@ -149,132 +179,76 @@ namespace SCRUMProjectManagementSystem
                 switch (_type)
                 {
                     case MainWindow.selection.Project:
-                        try
+                        if (_viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, (UserView)comboBox_project1.SelectedItem, (TeamView)comboBox_project2.SelectedItem))
                         {
-                            if (_viewModel.CreateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, (UserView)comboBox_project1.SelectedItem, (TeamView)comboBox_project2.SelectedItem))
-                            {
-                                MessageBox.Show("Your changes have been saved.", "Project Saved", MessageBoxButton.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-                            }
+                            saveSuccess();
+                            this.Close();
                         }
-                        catch (InvalidOperationException ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentNullException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                            saveFailure();
                         }
                         break;
                     case MainWindow.selection.Sprint:
-                        try
+                        if (_viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate))
                         {
-                            if (_viewModel.CreateSprint(textBox_sprint1.Text, datePicker_sprint1.SelectedDate, datePicker_sprint2.SelectedDate))
-                            {
-                                //MessageBox.Show("Your changes have been saved.", "Sprint Saved", MessageBoxButton.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-                            }
+                            this.Close();
                         }
-                        catch (InvalidOperationException ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentNullException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                            saveFailure();
                         }
                         break;
                     case MainWindow.selection.Story:
-                        try
+                        if (_viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text))
                         {
-                            if (_viewModel.CreateStory(textBox_story1.Text, textBox_story2.Text))
-                            {
-                                //MessageBox.Show("Your changes have been saved.", "Story Saved", MessageBoxButton.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-                            }
-
+                            this.Close();
                         }
-                        catch (InvalidOperationException ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentNullException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentOutOfRangeException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentOutOfRangeException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentException", MessageBoxButton.OK);
+                            saveFailure();
                         }
                         break;
                     case MainWindow.selection.Task:
-                        try
+                        if (_viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem, datePicker_task1.SelectedDate))
                         {
-                            if (_viewModel.CreateTask(textBox_task1.Text, (int)comboBox_task1.SelectedItem, (int)comboBox_task2.SelectedItem, (UserView)comboBox_task3.SelectedItem, (TaskType)comboBox_task4.SelectedItem, (TaskState)comboBox_task5.SelectedItem, datePicker_task1.SelectedDate))
-                            {
-                                //MessageBox.Show("Your changes have been saved.", "Task Saved", MessageBoxButton.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-                            }
-
+                            this.Close();
                         }
-                        catch (InvalidOperationException ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentNullException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentOutOfRangeException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentOutOfRangeException", MessageBoxButton.OK);
+                            saveFailure();
                         }
                         break;
                     case MainWindow.selection.Team:
-                        try
+                        if (_viewModel.CreateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem))
                         {
-                            if (_viewModel.CreateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem))
-                            {
-                                MessageBox.Show("Your changes have been saved.", "Team Saved", MessageBoxButton.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Your changes were not saved.", "Save Failed", MessageBoxButton.OK);
-                            }
+                            saveSuccess();
+                            this.Close();
                         }
-                        catch (InvalidOperationException ex)
+                        else
                         {
-                            MessageBox.Show(ex.Message, "InvalidOperationException", MessageBoxButton.OK);
-                        }
-                        catch (ArgumentNullException ex)
-                        {
-                            MessageBox.Show(ex.Message, "ArgumentNullException", MessageBoxButton.OK);
+                            saveFailure();
                         }
                         break;
                     default:
                         break;
                 };
-                this.Close();
             }
-            catch (Exception ex)
+            catch (InvalidOperationException)
             {
-                MessageBox.Show(ex.Message);
+                showCriticalError();
+            }
+            catch (ArgumentNullException)
+            {
+                showValueError();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                showValueError();
+            }
+            catch (ArgumentException)
+            {
+                showValueError();
             }
         }
 
@@ -304,14 +278,8 @@ namespace SCRUMProjectManagementSystem
             {
                 comboBox_task3.SelectedIndex = -1;
             }
-            try
-            {
-                button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, datePicker_task1.SelectedDate, (TaskState?)comboBox_task5.SelectedItem);
-            }
-            catch
-            {
-                button1.IsEnabled = false;
-            }
+
+            button1.IsEnabled = _viewModel.ValidateTask(textBox_task1.Text, (UserView)comboBox_task3.SelectedItem, (TaskType?)comboBox_task4.SelectedItem, (int?)comboBox_task1.SelectedItem, (int?)comboBox_task2.SelectedItem, datePicker_task1.SelectedDate, (TaskState?)comboBox_task5.SelectedItem);
         }
 
         private void taskChanged2(object sender, EventArgs e)
