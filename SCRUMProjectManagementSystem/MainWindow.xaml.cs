@@ -54,7 +54,7 @@ namespace SCRUMProjectManagementSystem
             update();
         }
 
-        private void leftList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void leftList_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (leftList.SelectedIndex >= 0)
             {

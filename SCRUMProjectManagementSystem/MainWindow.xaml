@@ -79,7 +79,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <GridSplitter HorizontalAlignment="Center" Name="gridSplitter1" Grid.Column="1" Width="5" ResizeDirection="Columns" VerticalContentAlignment="Stretch" /> 
-            <ListBox Name="leftList" SelectionChanged="leftList_SelectionChanged" AlternationCount="2"></ListBox>
+            <ListBox Name="leftList" AlternationCount="2" MouseLeftButtonUp="leftList_MouseLeftButtonUp"></ListBox>
             <ListBox Name="rightList" Grid.Column="2" SelectionChanged="rightList_SelectionChanged" AlternationCount="2" ></ListBox>
             <Grid Grid.Column="2" Name="grid_projectInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>
