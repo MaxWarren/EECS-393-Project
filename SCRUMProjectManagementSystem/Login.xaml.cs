@@ -43,7 +43,8 @@ namespace SCRUMProjectManagementSystem
 
             if (viewModel.AuthenticateUser(userId, password))
             {
-                new MainWindow(viewModel).Visibility = Visibility.Visible;
+                MainWindow main = new MainWindow(viewModel);
+                main.Show();
                 this.Close();
             }
             else

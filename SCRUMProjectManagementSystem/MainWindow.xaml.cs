@@ -473,7 +473,7 @@ namespace SCRUMProjectManagementSystem
             e.Handled = e.Text.IsNonNumeric();
         }
 
-        private void rightList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void rightList_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (rightList.SelectedIndex >= 0)
             {
