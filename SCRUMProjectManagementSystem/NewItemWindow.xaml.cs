@@ -88,6 +88,7 @@ namespace SCRUMProjectManagementSystem
                 label1.Content = "Sprint Name";
                 label2.Content = "Start Date";
                 label3.Content = "End Date";
+                textBox_sprint1.Text = string.Format("Sprint {0}", _viewModel.SprintsForProject.Count);
                 datePicker_sprint1.BlackoutDates.Clear();
                 CalendarDateRange cdr = new CalendarDateRange();
                 cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
