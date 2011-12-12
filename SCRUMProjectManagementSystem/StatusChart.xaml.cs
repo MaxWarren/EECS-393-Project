@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Shapes;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using ViewModel;
 
 namespace SCRUMProjectManagementSystem
