@@ -309,12 +309,13 @@ namespace ViewModel
             }
 
             IEnumerable<User> users = _dataModel.GetTeamMembers(_dataModel.GetProjectByID(CurrSprint.ProjectID).Team_id);
+            IEnumerable<Task> allTasks = _dataModel.GetAllTasksForSprint(CurrSprint.SprintID);
             
             Dictionary<UserView, int[]> results = new Dictionary<UserView, int[]>();
             
             foreach (User u in users)
             {
-                IEnumerable<TaskView> tasks = _dataModel.GetTasksForUser(u.User_id).Select(t => new TaskView(t));
+                IEnumerable<TaskView> tasks = allTasks.Where(task => task.Owner.HasValue && task.Owner.Value == u.User_id).Select(t => new TaskView(t));
 
                 UserView user = new UserView(u);
                 int[] vals = 

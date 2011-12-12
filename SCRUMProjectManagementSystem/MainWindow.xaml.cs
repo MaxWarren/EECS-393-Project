@@ -586,6 +586,11 @@ namespace SCRUMProjectManagementSystem
             new BurndownWindow(viewModel).Visibility = Visibility.Visible;
         }
 
+        private void Status_Click(object sender, RoutedEventArgs e)
+        {
+            new StatusChart(viewModel).Visibility = Visibility.Visible;
+        }
+
         private void ProjectInfoChanged(object sender, EventArgs e)
         {
             button_saveProject.Content = "Save*";

@@ -1,0 +1,171 @@
+﻿<Window x:Class="SCRUMProjectManagementSystem.StatusChart"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:CHR="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        Title="Team Member Status" Height="700" Width="1300" Loaded="Window_Loaded" Icon="/SCRUMProjectManagementSystem;component/icon.ico">
+    <Grid>
+        <wfi:WindowsFormsHost x:Name="mainFGrid" >
+            <CHR:Chart x:Name="mainChart" BackColor="LightGray">
+                <CHR:Chart.Titles>
+                    <CHR:Title />
+                </CHR:Chart.Titles>
+                <CHR:Chart.Series>
+                    <CHR:Series ChartType="StackedColumn" LegendText="Completed" Color="LimeGreen">
+                        <CHR:Series.EmptyPointStyle>
+                            <CHR:DataPointCustomProperties />
+                        </CHR:Series.EmptyPointStyle>
+                        <CHR:Series.SmartLabelStyle>
+                            <CHR:SmartLabelStyle />
+                        </CHR:Series.SmartLabelStyle>
+                    </CHR:Series>
+                    <CHR:Series ChartType="StackedColumn" LegendText="In Progress" Color="Red">
+                        <CHR:Series.EmptyPointStyle>
+                            <CHR:DataPointCustomProperties />
+                        </CHR:Series.EmptyPointStyle>
+                        <CHR:Series.SmartLabelStyle>
+                            <CHR:SmartLabelStyle />
+                        </CHR:Series.SmartLabelStyle>
+                    </CHR:Series>
+                    <CHR:Series ChartType="StackedColumn" LegendText="Blocked" Color="DarkBlue">
+                        <CHR:Series.EmptyPointStyle>
+                            <CHR:DataPointCustomProperties />
+                        </CHR:Series.EmptyPointStyle>
+                        <CHR:Series.SmartLabelStyle>
+                            <CHR:SmartLabelStyle />
+                        </CHR:Series.SmartLabelStyle>
+                    </CHR:Series>
+                </CHR:Chart.Series>
+                <CHR:Chart.Legends>
+                    <CHR:Legend />
+                </CHR:Chart.Legends>
+                <CHR:Chart.ChartAreas>
+                    <CHR:ChartArea>
+                        <CHR:ChartArea.Area3DStyle>
+                            <CHR:ChartArea3DStyle />
+                        </CHR:ChartArea.Area3DStyle>
+                        <CHR:ChartArea.AxisX>
+                            <CHR:Axis Title="Team Member">
+                                <CHR:Axis.LabelStyle>
+                                    <CHR:LabelStyle />
+                                </CHR:Axis.LabelStyle>
+                                <CHR:Axis.MajorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MajorGrid>
+                                <CHR:Axis.MajorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MajorTickMark>
+                                <CHR:Axis.MinorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MinorGrid>
+                                <CHR:Axis.MinorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MinorTickMark>
+                                <CHR:Axis.ScaleBreakStyle>
+                                    <CHR:AxisScaleBreakStyle />
+                                </CHR:Axis.ScaleBreakStyle>
+                                <CHR:Axis.ScaleView>
+                                    <CHR:AxisScaleView />
+                                </CHR:Axis.ScaleView>
+                                <CHR:Axis.ScrollBar>
+                                    <CHR:AxisScrollBar />
+                                </CHR:Axis.ScrollBar>
+                            </CHR:Axis>
+                        </CHR:ChartArea.AxisX>
+                        <CHR:ChartArea.AxisX2>
+                            <CHR:Axis>
+                                <CHR:Axis.LabelStyle>
+                                    <CHR:LabelStyle />
+                                </CHR:Axis.LabelStyle>
+                                <CHR:Axis.MajorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MajorGrid>
+                                <CHR:Axis.MajorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MajorTickMark>
+                                <CHR:Axis.MinorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MinorGrid>
+                                <CHR:Axis.MinorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MinorTickMark>
+                                <CHR:Axis.ScaleBreakStyle>
+                                    <CHR:AxisScaleBreakStyle />
+                                </CHR:Axis.ScaleBreakStyle>
+                                <CHR:Axis.ScaleView>
+                                    <CHR:AxisScaleView />
+                                </CHR:Axis.ScaleView>
+                                <CHR:Axis.ScrollBar>
+                                    <CHR:AxisScrollBar />
+                                </CHR:Axis.ScrollBar>
+                            </CHR:Axis>
+                        </CHR:ChartArea.AxisX2>
+                        <CHR:ChartArea.AxisY>
+                            <CHR:Axis Title="Tasks">
+                                <CHR:Axis.LabelStyle>
+                                    <CHR:LabelStyle />
+                                </CHR:Axis.LabelStyle>
+                                <CHR:Axis.MajorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MajorGrid>
+                                <CHR:Axis.MajorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MajorTickMark>
+                                <CHR:Axis.MinorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MinorGrid>
+                                <CHR:Axis.MinorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MinorTickMark>
+                                <CHR:Axis.ScaleBreakStyle>
+                                    <CHR:AxisScaleBreakStyle />
+                                </CHR:Axis.ScaleBreakStyle>
+                                <CHR:Axis.ScaleView>
+                                    <CHR:AxisScaleView />
+                                </CHR:Axis.ScaleView>
+                                <CHR:Axis.ScrollBar>
+                                    <CHR:AxisScrollBar />
+                                </CHR:Axis.ScrollBar>
+                            </CHR:Axis>
+                        </CHR:ChartArea.AxisY>
+                        <CHR:ChartArea.AxisY2>
+                            <CHR:Axis>
+                                <CHR:Axis.LabelStyle>
+                                    <CHR:LabelStyle />
+                                </CHR:Axis.LabelStyle>
+                                <CHR:Axis.MajorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MajorGrid>
+                                <CHR:Axis.MajorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MajorTickMark>
+                                <CHR:Axis.MinorGrid>
+                                    <CHR:Grid />
+                                </CHR:Axis.MinorGrid>
+                                <CHR:Axis.MinorTickMark>
+                                    <CHR:TickMark />
+                                </CHR:Axis.MinorTickMark>
+                                <CHR:Axis.ScaleBreakStyle>
+                                    <CHR:AxisScaleBreakStyle />
+                                </CHR:Axis.ScaleBreakStyle>
+                                <CHR:Axis.ScaleView>
+                                    <CHR:AxisScaleView />
+                                </CHR:Axis.ScaleView>
+                                <CHR:Axis.ScrollBar>
+                                    <CHR:AxisScrollBar />
+                                </CHR:Axis.ScrollBar>
+                            </CHR:Axis>
+                        </CHR:ChartArea.AxisY2>
+                        <CHR:ChartArea.CursorX>
+                            <CHR:Cursor />
+                        </CHR:ChartArea.CursorX>
+                        <CHR:ChartArea.CursorY>
+                            <CHR:Cursor />
+                        </CHR:ChartArea.CursorY>
+                    </CHR:ChartArea>
+                </CHR:Chart.ChartAreas>
+            </CHR:Chart>
+        </wfi:WindowsFormsHost>
+    </Grid>
+</Window>
