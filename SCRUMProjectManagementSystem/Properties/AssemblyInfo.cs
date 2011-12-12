@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SCRUMProjectManagementSystem")]
+[assembly: AssemblyTitle("SCRUM Project Management System")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("SCRUMProjectManagementSystem")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCompany("Andrew Johnson and Max Warren")]
+[assembly: AssemblyProduct("SCRUM Project Management System")]
+[assembly: AssemblyCopyright("Copyright © Andrew Johnson and Max Warren 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

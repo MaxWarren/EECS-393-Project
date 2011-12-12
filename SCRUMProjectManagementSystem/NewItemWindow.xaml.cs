@@ -158,7 +158,7 @@ namespace SCRUMProjectManagementSystem
             {
                 label1.Content = "Team Name";
                 label2.Content = "Manager";
-                label2.Content = "Team Lead";
+                label3.Content = "Team Lead";
                 try
                 {
                     comboBox_team1.ItemsSource = _viewModel.AllManagers;
