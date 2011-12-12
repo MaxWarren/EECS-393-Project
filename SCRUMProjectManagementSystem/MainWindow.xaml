@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:SCRUMProjectManagementSystem"
-        Title="SCRUM Project Management System" Height="700" Loaded="Window_Loaded" Width="1300" Name="mainWindow" Icon="file:///C:/Users/ajsquared/Dropbox/EECS393/Project/SCRUMProjectManagementSystem/icon.ico" Background="LightBlue" MinWidth="600" MinHeight="400">
+        Title="SCRUM Project Management System" Height="700" Loaded="Window_Loaded" Width="1300" Name="mainWindow" Icon="/SCRUMProjectManagementSystem;component/icon.ico" Background="LightBlue" MinWidth="600" MinHeight="400">
     <Window.Resources>
         <local:TaskStateConverter x:Key="TaskState"/>
         <local:TaskTypeConverter x:Key="TaskType"/>
@@ -116,6 +116,7 @@
                     <RowDefinition Height="26" />
                     <RowDefinition Height="52" />
                     <RowDefinition Height="26" />
+                    <RowDefinition Height="26" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -131,7 +132,8 @@
                 <Label Content="End Date:" Grid.Row="3" HorizontalContentAlignment="Right" />
                 <DatePicker Grid.Column="1" Grid.Row="3" Name="datePicker_sprint_end" SelectedDate="{Binding Path=EndDate}" SelectedDateChanged="SprintInfoChanged" />
                 <Button Grid.Column="1" Grid.Row="4" Content="Save" Click="save_sprint_Click" Name="button_saveSprint" />
-                <Button Grid.Column="1" Grid.Row="6" Content="Burndown" Click="Burndown_Click" Name="button_burndown" />
+                <Button Grid.Column="1" Grid.Row="6" Content="View Burndown" Click="Burndown_Click" Name="button_burndown" />
+                <Button Grid.Column="1" Grid.Row="7" Content="View Team Member Status" Click="Status_Click" Name="button_status" />
             </Grid>
             <Grid Grid.Column="2" Name="grid_storyInfo" Background="White" Visibility="Hidden">
                 <Grid.RowDefinitions>

@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Drawing;
+using System.Collections.Generic;
+using ViewModel;
 
 namespace SCRUMProjectManagementSystem
 {
@@ -12,22 +14,15 @@ namespace SCRUMProjectManagementSystem
     /// Interaction logic for Window1.xaml
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public partial class BurndownWindow : Window
+    public partial class StatusChart : Window
     {
-        private double[] goal;
-        private int[] actual;
-        private DateTime[] datesGoal;
-        private DateTime[] datesActual;
+        private Dictionary<UserView, int[]> status;
 
-        public BurndownWindow(ViewModel.SPMSViewModel vm)
+        public StatusChart(ViewModel.SPMSViewModel vm)
         {
             try
             {
-                var burndown = vm.GetCurrSprintBurndown();
-                actual = burndown.Item2.Values.ToArray();
-                goal = burndown.Item1.Values.ToArray();
-                datesGoal = burndown.Item1.Keys.ToArray();
-                datesActual = burndown.Item2.Keys.ToArray();
+                status = vm.GetCurrSprintUserStatus();
             }
             catch (InvalidOperationException)
             {
@@ -44,17 +39,17 @@ namespace SCRUMProjectManagementSystem
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < goal.Length; i++)
+            foreach (UserView user in status.Keys)
             {
-                mainChart.Series[0].Points.AddXY(datesGoal[i], goal[i]);
+                mainChart.Series[0].Points.AddXY(user.Name, status[user][0]);
             }
-            for (int i = 0; i < actual.Length; i++)
+            foreach (UserView user in status.Keys)
             {
-                mainChart.Series[1].Points.AddXY(datesActual[i], actual[i]);
-                if (actual[i] > goal[i])
-                {
-                    mainChart.Series[1].Points[i].MarkerColor = Color.Red;
-                }
+                mainChart.Series[1].Points.AddXY(user.Name, status[user][1]);
+            }
+            foreach (UserView user in status.Keys)
+            {
+                mainChart.Series[2].Points.AddXY(user.Name, status[user][2]);
             }
         }
     }
