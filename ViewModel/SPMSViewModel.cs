@@ -844,7 +844,7 @@ namespace ViewModel
                     result &= (endDate.Value > startDate.Value); // Sprint must end after it starts
                     if (CurrProject.EndDate.HasValue)
                     {
-                        result &= (endDate.Value < CurrProject.EndDate.Value); // Sprint must end during the project
+                        result &= (endDate.Value <= CurrProject.EndDate.Value); // Sprint must end during the project
                     }
                 }
             }

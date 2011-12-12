@@ -20,8 +20,12 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:SprintView}">
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Name}"/>
+                <TextBlock Text=": "/>
+                <TextBlock Text="{Binding Path=StartDate, StringFormat=d}"/>
+                <TextBlock Text=" - "/>
+                <TextBlock Text="{Binding Path=EndDate, StringFormat=d}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:StoryView}">

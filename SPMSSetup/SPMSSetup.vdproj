@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2D352AF3A608403294493CD8DFB9F42F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6B5C2DF121604614AED289A03E62CE96"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -46,37 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_847F528D7C857850422BEE3065AB9F97"
-        "OwnerKey" = "8:_D0F50B45CF764A86AE0463DE3F068D89"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_847F528D7C857850422BEE3065AB9F97"
         "OwnerKey" = "8:_00170E0246386FD3272ABDA96E9BF686"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D0F50B45CF764A86AE0463DE3F068D89"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FFE86B3A59694AEFBB9544707D871C37"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2D352AF3A608403294493CD8DFB9F42F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D0F50B45CF764A86AE0463DE3F068D89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -122,6 +92,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -348,7 +331,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SCRUM Project Management System"
         "ProductCode" = "8:{F0D50107-3734-4015-BA5B-3A064B6BA1C0}"
-        "PackageCode" = "8:{C3A220C7-6249-4C0B-858D-BF6D060B0E7A}"
+        "PackageCode" = "8:{5D45B257-8561-4D3F-A423-196BD13C9819}"
         "UpgradeCode" = "8:{D696BDAE-C1C8-4D7F-A0B9-B64470823D84}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -881,34 +864,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2D352AF3A608403294493CD8DFB9F42F"
-            {
-            "SourcePath" = "8:..\\DatabaseLayer\\obj\\Release\\DatabaseLayer.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CCF5362EAAC14A2FBD540FD140C9B411"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{C4BC6A7B-1CCF-4C12-993A-45D8E482300B}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_7FBDD9157DBD404D89134BE9821BA4C8"
             {
             "SourcePath" = "8:..\\SCRUMProjectManagementSystem\\obj\\x86\\Release\\SCRUMProjectManagementSystem.exe"
@@ -932,34 +887,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{FE32E882-1B3A-4B58-84FE-4C6EF2F6BAF8}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D0F50B45CF764A86AE0463DE3F068D89"
-            {
-            "SourcePath" = "8:..\\ViewModel\\obj\\Release\\ViewModel.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CCF5362EAAC14A2FBD540FD140C9B411"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{D7CAB32C-D2A2-409F-AFCB-3E844FB078A9}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
