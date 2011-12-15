@@ -44,35 +44,35 @@
             <Label Height="28" Name="label9" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_project" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox_project1" Width="120" Margin="0,0,0,5" TextChanged="projectChanged" />
-            <DatePicker Height="25" Name="datePicker_project1" Width="115" Margin="0,0,0,5" SelectedDateChanged="projectChanged" />
-            <DatePicker Height="25" Name="datePicker_project2" Width="115" Margin="0,0,0,5" SelectedDateChanged="projectChanged" />
-            <ComboBox Height="23" Name="comboBox_project1" Width="120" Margin="0,0,0,5" ItemsSource="{Binding Path=Name}" SelectionChanged="projectChanged" />
-            <ComboBox Height="23" Name="comboBox_project2" Width="120" Margin="0,0,0,5" SelectionChanged="projectChanged" />
+            <TextBox Height="23" Name="textBox_project1" Width="120" Margin="0,0,0,5" TextChanged="projectChanged" TabIndex="1" />
+            <DatePicker Height="25" Name="datePicker_project1" Width="115" Margin="0,0,0,5" SelectedDateChanged="projectChanged" TabIndex="2" />
+            <DatePicker Height="25" Name="datePicker_project2" Width="115" Margin="0,0,0,5" SelectedDateChanged="projectChanged" TabIndex="3" />
+            <ComboBox Height="23" Name="comboBox_project1" Width="120" Margin="0,0,0,5" ItemsSource="{Binding Path=Name}" SelectionChanged="projectChanged" TabIndex="4" />
+            <ComboBox Height="23" Name="comboBox_project2" Width="120" Margin="0,0,0,5" SelectionChanged="projectChanged" TabIndex="5" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_sprint" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox_sprint1" Width="120" Margin="0,0,0,5" TextChanged="sprintChanged" />
-            <DatePicker Height="25" Name="datePicker_sprint1" Width="115" Margin="0,0,0,5" SelectedDateChanged="sprintChanged" />
-            <DatePicker Height="25" Name="datePicker_sprint2" Width="115" Margin="0,0,0,5" SelectedDateChanged="sprintChanged" />
+            <TextBox Height="23" Name="textBox_sprint1" Width="120" Margin="0,0,0,5" TextChanged="sprintChanged" TabIndex="1" />
+            <DatePicker Height="25" Name="datePicker_sprint1" Width="115" Margin="0,0,0,5" SelectedDateChanged="sprintChanged" TabIndex="2" />
+            <DatePicker Height="25" Name="datePicker_sprint2" Width="115" Margin="0,0,0,5" SelectedDateChanged="sprintChanged" TabIndex="3" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_story" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox_story1" Width="120" Margin="0,0,0,5" PreviewTextInput="textBox_story1_PreviewTextInput" TextChanged="storyChanged" />
-            <TextBox Height="23" Name="textBox_story2" Width="120" Margin="0,0,0,5" TextChanged="storyChanged" />
+            <TextBox Height="23" Name="textBox_story1" Width="120" Margin="0,0,0,5" PreviewTextInput="textBox_story1_PreviewTextInput" TextChanged="storyChanged" TabIndex="1" />
+            <TextBox Height="23" Name="textBox_story2" Width="120" Margin="0,0,0,5" TextChanged="storyChanged" TabIndex="2" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_task" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox_task1" Width="120" Margin="0,0,0,5" TextChanged="taskChanged" />
-            <ComboBox Height="23" Name="comboBox_task1" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" />
-            <ComboBox Height="23" Name="comboBox_task2" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" />
-            <ComboBox Height="23" Name="comboBox_task3" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged2" />
-            <ComboBox Height="23" Name="comboBox_task4" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged"  />
-            <ComboBox Height="23" Name="comboBox_task5" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" />
-            <DatePicker Height="23" Name="datePicker_task1" Width="120" Margin="0,0,0,5" SelectedDateChanged="taskChanged" />
+            <TextBox Height="23" Name="textBox_task1" Width="120" Margin="0,0,0,5" TextChanged="taskChanged" TabIndex="1" />
+            <ComboBox Height="23" Name="comboBox_task1" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" TabIndex="2" />
+            <ComboBox Height="23" Name="comboBox_task2" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" TabIndex="3" />
+            <ComboBox Height="23" Name="comboBox_task3" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged2" TabIndex="4" />
+            <ComboBox Height="23" Name="comboBox_task4" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" TabIndex="5" />
+            <ComboBox Height="23" Name="comboBox_task5" Width="120" Margin="0,0,0,5" SelectionChanged="taskChanged" TabIndex="6" />
+            <DatePicker Height="23" Name="datePicker_task1" Width="120" Margin="0,0,0,5" SelectedDateChanged="taskChanged" TabIndex="7" />
         </StackPanel>
         <StackPanel Grid.Column="1" Name="stackPanel_team" Margin="0,0,0,29" Visibility="Hidden">
-            <TextBox Height="23" Name="textBox_team1" Width="120" Margin="0,0,0,5" TextChanged="teamChanged" />
-            <ComboBox Height="23" Name="comboBox_team1" Width="120" Margin="0,0,0,5" SelectionChanged="teamChanged" />
-            <ComboBox Height="23" Name="comboBox_team2" Width="120" Margin="0,0,0,5" SelectionChanged="teamChanged" />
+            <TextBox Height="23" Name="textBox_team1" Width="120" Margin="0,0,0,5" TextChanged="teamChanged" TabIndex="1" />
+            <ComboBox Height="23" Name="comboBox_team1" Width="120" Margin="0,0,0,5" SelectionChanged="teamChanged" TabIndex="2" />
+            <ComboBox Height="23" Name="comboBox_team2" Width="120" Margin="0,0,0,5" SelectionChanged="teamChanged" TabIndex="3" />
         </StackPanel>
-        <Button Content="Add" Grid.Column="1" Name="button1" Height="23" VerticalAlignment="Bottom" Margin="0,0,1,0" Click="button1_Click" IsEnabled="False" />
+        <Button Content="Add" Grid.Column="1" Name="button1" Height="23" VerticalAlignment="Bottom" Margin="0,0,1,0" Click="button1_Click" IsEnabled="False" TabIndex="10" />
     </Grid>
 </Window>

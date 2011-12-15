@@ -151,6 +151,9 @@ namespace SCRUMProjectManagementSystem
                 button_sprint.FontWeight = FontWeights.Normal;
                 button_story.FontWeight = FontWeights.Normal;
                 button_task.FontWeight = FontWeights.Normal;
+                datePicker_sprint_start.BlackoutDates.Clear();
+                datePicker_sprint_end.BlackoutDates.Clear();
+                datePicker_task_completionDate.BlackoutDates.Clear();
 
                 if (viewModel.IsManager && viewModel.HistoricMode == false)
                 {
@@ -174,6 +177,7 @@ namespace SCRUMProjectManagementSystem
                         comboBox_project_owner.ItemsSource = managerList;
                         comboBox_project_owner.SelectedItem = managerList.Where(user => user.UserID == viewModel.CurrProject.OwnerID).FirstOrDefault();
                         button_saveProject.Content = "Save";
+
                         break;
                     case selection.Sprint:
                         button_sprint.FontWeight = FontWeights.Bold;
@@ -205,7 +209,6 @@ namespace SCRUMProjectManagementSystem
                                 button_saveSprint.Content = "Save*";
                                 showInvalidDateWarning();
                             }
-                            datePicker_sprint_start.BlackoutDates.Clear();
                             CalendarDateRange cdr = new CalendarDateRange();
                             cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
                             datePicker_sprint_start.BlackoutDates.Add(cdr);
@@ -216,7 +219,6 @@ namespace SCRUMProjectManagementSystem
                                 cdr.Start = cdr.Start.AddDays(1);
                                 datePicker_sprint_start.BlackoutDates.Add(cdr);
                             }
-                            datePicker_sprint_end.BlackoutDates.Clear();
                             cdr = new CalendarDateRange();
                             cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
                             datePicker_sprint_end.BlackoutDates.Add(cdr);
@@ -280,7 +282,6 @@ namespace SCRUMProjectManagementSystem
                                 showInvalidDateWarning();
                             }
 
-                            datePicker_task_completionDate.BlackoutDates.Clear();
                             CalendarDateRange cdr = new CalendarDateRange();
                             cdr.End = viewModel.CurrSprint.StartDate.AddDays(-1);
                             datePicker_task_completionDate.BlackoutDates.Add(cdr);
