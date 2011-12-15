@@ -275,7 +275,7 @@ namespace SCRUMProjectManagementSystem
 
         private void taskChanged(object sender, EventArgs e)
         {
-            if (comboBox_task5.SelectedIndex == 0)
+            if (comboBox_task5.SelectedItem.Equals(TaskState.Unassigned))
             {
                 comboBox_task3.SelectedIndex = -1;
             }
@@ -287,14 +287,14 @@ namespace SCRUMProjectManagementSystem
         {
             if (comboBox_task3.SelectedIndex == -1)
             {
-                comboBox_task5.SelectedIndex = 0;
+                comboBox_task5.SelectedItem = TaskState.Unassigned;
                 comboBox_task5.IsEnabled = false;
             }
             else
             {
-                if (comboBox_task5.SelectedIndex == 0)
+                if (comboBox_task5.SelectedItem.Equals(TaskState.Unassigned))
                 {
-                    comboBox_task5.SelectedIndex = 1;
+                    comboBox_task5.SelectedItem = TaskState.In_Progress;
                 }
                 comboBox_task5.IsEnabled = true;
             }

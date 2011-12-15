@@ -15,8 +15,8 @@ namespace SCRUMProjectManagementSystem
     [ExcludeFromCodeCoverage]
     public partial class MainWindow : Window
     {
-        private selection currentSelection;
-        private SPMSViewModel viewModel;
+        private selection _currentSelection;
+        private SPMSViewModel _viewModel;
         private Brush _color;
 
         public enum selection
@@ -37,27 +37,30 @@ namespace SCRUMProjectManagementSystem
 
         public MainWindow(SPMSViewModel vm)
         {
-            viewModel = vm;
+            _viewModel = vm;
             InitializeComponent();
             BackgroundColor = Brushes.LightBlue;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!viewModel.IsManager)
+            if (!_viewModel.IsManager)
             {
                 menu_main.Visibility = Visibility.Hidden;
                 button_New.Visibility = Visibility.Hidden;
             }
-            this.DataContext = viewModel;
-            currentSelection = selection.Home;
+            this.DataContext = _viewModel;
+            _currentSelection = selection.Home;
             update();
         }
 
         private void leftList_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            //Event handler for clicking on the left list.
+            //used MouseLeftButtonUp to fix bug with dragging the mouse
             if (leftList.SelectedIndex >= 0)
             {
+                //hide all bread crumbs except home
                 button_project.Visibility = Visibility.Hidden;
                 button_sprint.Visibility = Visibility.Hidden;
                 button_story.Visibility = Visibility.Hidden;
@@ -65,28 +68,29 @@ namespace SCRUMProjectManagementSystem
 
                 try
                 {
-                    switch (currentSelection)
+                    //set up the next pane to load
+                    switch (_currentSelection)
                     {
                         case selection.Home:
-                            viewModel.CurrProject = (ProjectView)leftList.SelectedItem;
-                            comboBox_project_owner.ItemsSource = viewModel.AllManagers;
-                            grid_projectInfo.DataContext = viewModel.CurrProject;
+                            _viewModel.CurrProject = (ProjectView)leftList.SelectedItem;
+                            comboBox_project_owner.ItemsSource = _viewModel.AllManagers;
+                            grid_projectInfo.DataContext = _viewModel.CurrProject;
                             break;
                         case selection.Project:
-                            viewModel.CurrSprint = (SprintView)leftList.SelectedItem;
-                            grid_sprintInfo.DataContext = viewModel.CurrSprint;
+                            _viewModel.CurrSprint = (SprintView)leftList.SelectedItem;
+                            grid_sprintInfo.DataContext = _viewModel.CurrSprint;
                             break;
                         case selection.Sprint:
-                            viewModel.CurrStory = (StoryView)leftList.SelectedItem;
-                            grid_storyInfo.DataContext = viewModel.CurrStory;
-                            comboBox_story_sprint.DataContext = viewModel;
-                            label_story_project.DataContext = viewModel.CurrProject;
+                            _viewModel.CurrStory = (StoryView)leftList.SelectedItem;
+                            grid_storyInfo.DataContext = _viewModel.CurrStory;
+                            comboBox_story_sprint.DataContext = _viewModel;
+                            label_story_project.DataContext = _viewModel.CurrProject;
                             break;
                         case selection.Story:
-                            viewModel.CurrTask = (TaskView)leftList.SelectedItem;
-                            grid_taskInfo.DataContext = viewModel.CurrTask;
-                            label_task_project.DataContext = viewModel.CurrProject;
-                            comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
+                            _viewModel.CurrTask = (TaskView)leftList.SelectedItem;
+                            grid_taskInfo.DataContext = _viewModel.CurrTask;
+                            label_task_project.DataContext = _viewModel.CurrProject;
+                            comboBox_task_owner.DataContext = _viewModel.GetTeamMembers(_viewModel.CurrTeam);
                             comboBox_task_complexity.ItemsSource = ViewModel.EnumValues.sizeComplexity;
                             comboBox_task_state.ItemsSource = ViewModel.EnumValues.taskState;
                             comboBox_task_value.ItemsSource = ViewModel.EnumValues.businessValue;
@@ -100,38 +104,43 @@ namespace SCRUMProjectManagementSystem
                 {
                     showCriticalError();
                 }
-                currentSelection++;
+                _currentSelection++;
                 update();
             }
         }
 
         private void button_home_Click(object sender, RoutedEventArgs e)
         {
-            currentSelection = selection.Home;
+            //switch to the home tab
+            _currentSelection = selection.Home;
             update();
         }
 
         private void button_project_Click(object sender, RoutedEventArgs e)
         {
-            currentSelection = selection.Project;
+            //switch to the project tab
+            _currentSelection = selection.Project;
             update();
         }
 
         private void button_sprint_Click(object sender, RoutedEventArgs e)
         {
-            currentSelection = selection.Sprint;
+            //switch to the sprint tab
+            _currentSelection = selection.Sprint;
             update();
         }
 
         private void button_story_Click(object sender, RoutedEventArgs e)
         {
-            currentSelection = selection.Story;
+            //switch to the story tab
+            _currentSelection = selection.Story;
             update();
-        }
+        } 
 
         private void button_task_Click(object sender, RoutedEventArgs e)
         {
-            currentSelection = selection.Task;
+            //switch to the task tab
+            _currentSelection = selection.Task;
             update();
         }
 
@@ -139,160 +148,46 @@ namespace SCRUMProjectManagementSystem
         {
             try
             {
-                button_New.Content = "Add " + System.Enum.GetName(currentSelection.GetType(), currentSelection + 1);
-                leftList.SelectedIndex = -1;
+                //resets any attributes and UI elemensts that need to be reset whenever the program state changes
+                button_New.Content = "Add " + System.Enum.GetName(_currentSelection.GetType(), _currentSelection + 1); //changes text of the add button
+                leftList.SelectedIndex = -1; //nothing selected in left list
+                //hide all of the right panes.  one will be made visible later
                 grid_projectInfo.Visibility = Visibility.Hidden;
                 grid_sprintInfo.Visibility = Visibility.Hidden;
                 grid_storyInfo.Visibility = Visibility.Hidden;
                 grid_taskInfo.Visibility = Visibility.Hidden;
                 rightList.Visibility = Visibility.Hidden;
+
                 button_home.FontWeight = FontWeights.Normal;
                 button_project.FontWeight = FontWeights.Normal;
                 button_sprint.FontWeight = FontWeights.Normal;
                 button_story.FontWeight = FontWeights.Normal;
                 button_task.FontWeight = FontWeights.Normal;
+                //reset the blackout dates on date pickers so the code doesn't crash before new dates are set
                 datePicker_sprint_start.BlackoutDates.Clear();
                 datePicker_sprint_end.BlackoutDates.Clear();
                 datePicker_task_completionDate.BlackoutDates.Clear();
 
-                if (viewModel.IsManager && viewModel.HistoricMode == false)
+                if (_viewModel.IsManager && _viewModel.HistoricMode == false)
                 {
                     button_New.Visibility = Visibility.Visible;
                 }
-                switch (currentSelection)
+                switch (_currentSelection)
                 {
                     case selection.Home:
-                        button_home.FontWeight = FontWeights.Bold;
-                        leftList.ItemsSource = viewModel.ProjectsForUser;
-                        rightList.Visibility = Visibility.Visible;
-                        rightList.ItemsSource = viewModel.TasksForUser;
+                        UpdateHome();
                         break;
                     case selection.Project:
-                        button_project.FontWeight = FontWeights.Bold;
-                        button_project.Visibility = Visibility.Visible;
-                        leftList.ItemsSource = viewModel.SprintsForProject;
-                        grid_projectInfo.Visibility = Visibility.Visible;
-
-                        ObservableCollection<UserView> managerList = viewModel.AllManagers;
-                        comboBox_project_owner.ItemsSource = managerList;
-                        comboBox_project_owner.SelectedItem = managerList.Where(user => user.UserID == viewModel.CurrProject.OwnerID).FirstOrDefault();
-                        button_saveProject.Content = "Save";
-
+                        UpdateProject();
                         break;
                     case selection.Sprint:
-                        button_sprint.FontWeight = FontWeights.Bold;
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        leftList.ItemsSource = viewModel.StoriesForSprint;
-                        grid_sprintInfo.Visibility = Visibility.Visible;
-                        button_burndown.IsEnabled = viewModel.CurrSprint.EndDate.HasValue && viewModel.StoriesForSprint.Count > 0;
-                        button_saveSprint.Content = "Save";
-                        if (viewModel.HistoricMode == false)
-                        {
-                            if (viewModel.CurrSprint.StartDate < viewModel.CurrProject.StartDate || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.StartDate > viewModel.CurrProject.EndDate.Value))
-                            {
-                                datePicker_sprint_start.SelectedDate = null;
-                                button_saveSprint.Content = "Save*";
-                                if ((viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value < viewModel.CurrProject.StartDate) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value > viewModel.CurrProject.EndDate.Value))
-                                {
-                                    datePicker_sprint_end.SelectedDate = null;
-                                    showInvalidDateWarning();
-                                }
-                                else
-                                {
-                                    showInvalidDateWarning();
-                                }
-                            }
-                            else if ((viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value < viewModel.CurrProject.StartDate) || (viewModel.CurrProject.EndDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrSprint.EndDate.Value > viewModel.CurrProject.EndDate.Value))
-                            {
-                                datePicker_sprint_end.SelectedDate = null;
-                                button_saveSprint.Content = "Save*";
-                                showInvalidDateWarning();
-                            }
-                            CalendarDateRange cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
-                            datePicker_sprint_start.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrProject.EndDate.HasValue)
-                            {
-                                cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
-                                datePicker_sprint_start.BlackoutDates.Add(cdr);
-                            }
-                            cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrProject.StartDate.AddDays(-1);
-                            datePicker_sprint_end.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrProject.EndDate.HasValue)
-                            {
-                                cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrProject.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
-                                datePicker_sprint_end.BlackoutDates.Add(cdr);
-                            }
-                        }
+                        UpdateSprint();
                         break;
                     case selection.Story:
-                        button_story.FontWeight = FontWeights.Bold;
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        button_story.Visibility = Visibility.Visible;
-                        leftList.ItemsSource = viewModel.TasksForStory;
-                        grid_storyInfo.Visibility = Visibility.Visible;
-
-                        ObservableCollection<SprintView> sv = viewModel.SprintsForProject;
-                        comboBox_story_sprint.ItemsSource = sv;
-                        comboBox_story_sprint.SelectedItem = sv.Where(sprint => sprint.SprintID == viewModel.CurrSprint.SprintID).FirstOrDefault();
-                        button_saveStory.Content = "Save";
+                        UpdateStory();
                         break;
                     case selection.Task:
-                        button_task.FontWeight = FontWeights.Bold;
-                        button_project.Visibility = Visibility.Visible;
-                        button_sprint.Visibility = Visibility.Visible;
-                        button_story.Visibility = Visibility.Visible;
-                        button_task.Visibility = Visibility.Visible;
-                        button_New.Visibility = Visibility.Hidden;
-                        leftList.ItemsSource = new string[] { };
-                        grid_taskInfo.Visibility = Visibility.Visible;
-
-                        ObservableCollection<UserView> userList = viewModel.GetTeamMembers(viewModel.CurrTeam).Item1;
-                        comboBox_task_owner.ItemsSource = userList;
-                        comboBox_task_owner.SelectedItem = userList.Where(user => user.UserID == viewModel.CurrTask.OwnerID).FirstOrDefault();
-
-                        comboBox_task_type.ItemsSource = EnumValues.taskType;
-                        comboBox_task_type.SelectedItem = viewModel.CurrTask.Type;
-
-                        comboBox_task_complexity.ItemsSource = EnumValues.sizeComplexity;
-                        comboBox_task_complexity.SelectedItem = viewModel.CurrTask.SizeComplexity;
-
-                        comboBox_task_value.ItemsSource = EnumValues.businessValue;
-                        comboBox_task_value.SelectedItem = viewModel.CurrTask.BusinessValue;
-
-                        comboBox_task_state.ItemsSource = EnumValues.taskState;
-                        comboBox_task_state.SelectedItem = viewModel.CurrTask.State;
-
-                        datePicker_task_completionDate.SelectedDate = viewModel.CurrTask.CompletionDate;
-                        TaskDateChanged(null, null);
-                        button_saveTask.Content = "Save";
-                        if (viewModel.HistoricMode == false)
-                        {
-                            if ((viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrTask.CompletionDate.Value < viewModel.CurrSprint.StartDate) || (viewModel.CurrTask.CompletionDate.HasValue && viewModel.CurrSprint.EndDate.HasValue && viewModel.CurrTask.CompletionDate.Value > viewModel.CurrSprint.EndDate.Value))
-                            {
-                                datePicker_task_completionDate.SelectedDate = null;
-                                button_saveTask.Content = "Save*";
-                                showInvalidDateWarning();
-                            }
-
-                            CalendarDateRange cdr = new CalendarDateRange();
-                            cdr.End = viewModel.CurrSprint.StartDate.AddDays(-1);
-                            datePicker_task_completionDate.BlackoutDates.Add(cdr);
-                            if (viewModel.CurrSprint.EndDate.HasValue)
-                            {
-                                cdr = new CalendarDateRange();
-                                cdr.Start = (DateTime)viewModel.CurrSprint.EndDate;
-                                cdr.Start = cdr.Start.AddDays(1);
-                                datePicker_task_completionDate.BlackoutDates.Add(cdr);
-                            }
-                        }
+                        UpdateTask();
                         break;
                     default:
                         break;
@@ -304,31 +199,175 @@ namespace SCRUMProjectManagementSystem
             }
         }
 
-        void TaskOwnerChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateHome()
         {
+            button_home.FontWeight = FontWeights.Bold;
+            leftList.ItemsSource = _viewModel.ProjectsForUser;
+            rightList.Visibility = Visibility.Visible;
+            rightList.ItemsSource = _viewModel.TasksForUser;
+        }
+
+        private void UpdateProject()
+        {
+            button_project.FontWeight = FontWeights.Bold;
+            button_project.Visibility = Visibility.Visible;
+            leftList.ItemsSource = _viewModel.SprintsForProject;
+            grid_projectInfo.Visibility = Visibility.Visible;
+
+            ObservableCollection<UserView> managerList = _viewModel.AllManagers;
+            comboBox_project_owner.ItemsSource = managerList;
+            comboBox_project_owner.SelectedItem = managerList.Where(user => user.UserID == _viewModel.CurrProject.OwnerID).FirstOrDefault();
+            button_saveProject.Content = "Save";
+        }
+
+        private void UpdateSprint()
+        {
+            button_sprint.FontWeight = FontWeights.Bold;
+            button_project.Visibility = Visibility.Visible;
+            button_sprint.Visibility = Visibility.Visible;
+            leftList.ItemsSource = _viewModel.StoriesForSprint;
+            grid_sprintInfo.Visibility = Visibility.Visible;
+            button_burndown.IsEnabled = _viewModel.CurrSprint.EndDate.HasValue && _viewModel.StoriesForSprint.Count > 0;
+            button_saveSprint.Content = "Save";
+            if (_viewModel.HistoricMode == false)
+            {
+                if (_viewModel.CurrSprint.StartDate < _viewModel.CurrProject.StartDate || (_viewModel.CurrProject.EndDate.HasValue && _viewModel.CurrSprint.StartDate > _viewModel.CurrProject.EndDate.Value))
+                {
+                    datePicker_sprint_start.SelectedDate = null;
+                    button_saveSprint.Content = "Save*";
+                    if ((_viewModel.CurrSprint.EndDate.HasValue && _viewModel.CurrSprint.EndDate.Value < _viewModel.CurrProject.StartDate) || (_viewModel.CurrProject.EndDate.HasValue && _viewModel.CurrSprint.EndDate.HasValue && _viewModel.CurrSprint.EndDate.Value > _viewModel.CurrProject.EndDate.Value))
+                    {
+                        datePicker_sprint_end.SelectedDate = null;
+                        showInvalidDateWarning();
+                    }
+                    else
+                    {
+                        showInvalidDateWarning();
+                    }
+                }
+                else if ((_viewModel.CurrSprint.EndDate.HasValue && _viewModel.CurrSprint.EndDate.Value < _viewModel.CurrProject.StartDate) || (_viewModel.CurrProject.EndDate.HasValue && _viewModel.CurrSprint.EndDate.HasValue && _viewModel.CurrSprint.EndDate.Value > _viewModel.CurrProject.EndDate.Value))
+                {
+                    datePicker_sprint_end.SelectedDate = null;
+                    button_saveSprint.Content = "Save*";
+                    showInvalidDateWarning();
+                }
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint_start.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint_start.BlackoutDates.Add(cdr);
+                }
+                cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrProject.StartDate.AddDays(-1);
+                datePicker_sprint_end.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrProject.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrProject.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_sprint_end.BlackoutDates.Add(cdr);
+                }
+            }
+        }
+
+        private void UpdateStory()
+        {
+            button_story.FontWeight = FontWeights.Bold;
+            button_project.Visibility = Visibility.Visible;
+            button_sprint.Visibility = Visibility.Visible;
+            button_story.Visibility = Visibility.Visible;
+            leftList.ItemsSource = _viewModel.TasksForStory;
+            grid_storyInfo.Visibility = Visibility.Visible;
+
+            ObservableCollection<SprintView> sv = _viewModel.SprintsForProject;
+            comboBox_story_sprint.ItemsSource = sv;
+            comboBox_story_sprint.SelectedItem = sv.Where(sprint => sprint.SprintID == _viewModel.CurrSprint.SprintID).FirstOrDefault();
+            button_saveStory.Content = "Save";
+        }
+
+        private void UpdateTask()
+        {
+            button_task.FontWeight = FontWeights.Bold;
+            button_project.Visibility = Visibility.Visible;
+            button_sprint.Visibility = Visibility.Visible;
+            button_story.Visibility = Visibility.Visible;
+            button_task.Visibility = Visibility.Visible;
+            button_New.Visibility = Visibility.Hidden;
+            leftList.ItemsSource = new string[] { };
+            grid_taskInfo.Visibility = Visibility.Visible;
+
+            ObservableCollection<UserView> userList = _viewModel.GetTeamMembers(_viewModel.CurrTeam).Item1;
+            comboBox_task_owner.ItemsSource = userList;
+            comboBox_task_owner.SelectedItem = userList.Where(user => user.UserID == _viewModel.CurrTask.OwnerID).FirstOrDefault();
+
+            comboBox_task_type.ItemsSource = EnumValues.taskType;
+            comboBox_task_type.SelectedItem = _viewModel.CurrTask.Type;
+
+            comboBox_task_complexity.ItemsSource = EnumValues.sizeComplexity;
+            comboBox_task_complexity.SelectedItem = _viewModel.CurrTask.SizeComplexity;
+
+            comboBox_task_value.ItemsSource = EnumValues.businessValue;
+            comboBox_task_value.SelectedItem = _viewModel.CurrTask.BusinessValue;
+
+            comboBox_task_state.ItemsSource = EnumValues.taskState;
+            comboBox_task_state.SelectedItem = _viewModel.CurrTask.State;
+
+            datePicker_task_completionDate.SelectedDate = _viewModel.CurrTask.CompletionDate;
+            TaskDateChanged(null, null);
+            button_saveTask.Content = "Save";
+            if (_viewModel.HistoricMode == false)
+            {
+                if ((_viewModel.CurrTask.CompletionDate.HasValue && _viewModel.CurrTask.CompletionDate.Value < _viewModel.CurrSprint.StartDate) || (_viewModel.CurrTask.CompletionDate.HasValue && _viewModel.CurrSprint.EndDate.HasValue && _viewModel.CurrTask.CompletionDate.Value > _viewModel.CurrSprint.EndDate.Value))
+                {
+                    datePicker_task_completionDate.SelectedDate = null;
+                    button_saveTask.Content = "Save*";
+                    showInvalidDateWarning();
+                }
+
+                CalendarDateRange cdr = new CalendarDateRange();
+                cdr.End = _viewModel.CurrSprint.StartDate.AddDays(-1);
+                datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                if (_viewModel.CurrSprint.EndDate.HasValue)
+                {
+                    cdr = new CalendarDateRange();
+                    cdr.Start = (DateTime)_viewModel.CurrSprint.EndDate;
+                    cdr.Start = cdr.Start.AddDays(1);
+                    datePicker_task_completionDate.BlackoutDates.Add(cdr);
+                }
+            }
+        }
+
+        private void TaskOwnerChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //used to maintain the logic on task state
             if (comboBox_task_owner.SelectedIndex == -1)
             {
-                comboBox_task_state.SelectedIndex = 0;
+                comboBox_task_state.SelectedItem = TaskState.Unassigned;
                 comboBox_task_state.IsEnabled = false;
             }
             else
             {
-                if (comboBox_task_state.SelectedIndex == 0)
+                if (comboBox_task_state.SelectedItem != null && comboBox_task_state.SelectedItem.Equals(TaskState.Unassigned))
                 {
-                    comboBox_task_state.SelectedIndex = 1;
+                    comboBox_task_state.SelectedItem = TaskState.In_Progress;
                 }
                 if (datePicker_task_completionDate.SelectedDate.HasValue)
                 {
-                    comboBox_task_state.SelectedIndex = 2;
+                    comboBox_task_state.SelectedItem = TaskState.Completed;
                 }
                 comboBox_task_state.IsEnabled = true;
             }
             TaskInfoChanged(sender, e);
         }
 
-        void TaskStateChanged(object sender, SelectionChangedEventArgs e)
+        private void TaskStateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (comboBox_task_state.SelectedIndex == 0)
+            //used to maintain the logic on task state
+            if (comboBox_task_state.SelectedItem != null && comboBox_task_state.SelectedItem.Equals(TaskState.Unassigned))
             {
                 comboBox_task_owner.SelectedIndex = -1;
                 comboBox_task_state.IsEnabled = false;
@@ -338,33 +377,34 @@ namespace SCRUMProjectManagementSystem
 
         private void TaskDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            //used to maintain the logic on task state
             if (datePicker_task_completionDate.SelectedDate.HasValue && comboBox_task_owner.SelectedIndex > -1)
             {
-                comboBox_task_state.SelectedIndex = 2;
+                comboBox_task_state.SelectedItem = TaskState.Completed;
                 comboBox_task_state.IsEnabled = false;
             }
-            else if (datePicker_task_completionDate.SelectedDate.HasValue && comboBox_task_state.SelectedIndex == 2)
+            else if (datePicker_task_completionDate.SelectedDate.HasValue && comboBox_task_state.SelectedItem.Equals(TaskState.Completed))
             {
                 comboBox_task_state.IsEnabled = false;
             }
             else if (!datePicker_task_completionDate.SelectedDate.HasValue && comboBox_task_owner.SelectedIndex > -1)
             {
-                comboBox_task_state.SelectedIndex = 1;
+                comboBox_task_state.SelectedItem = TaskState.In_Progress;
                 comboBox_task_state.IsEnabled = true;
             }
             else if (!datePicker_task_completionDate.SelectedDate.HasValue)
             {
-                comboBox_task_state.SelectedIndex = 0;
+                comboBox_task_state.SelectedItem = TaskState.Unassigned;
                 comboBox_task_state.IsEnabled = false;
             }
             TaskInfoChanged(sender, e);
         }
 
-        void save_project_Click(object sender, RoutedEventArgs e)
+        private void save_project_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam))
+                if (_viewModel.ChangeCurrProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, _viewModel.CurrTeam))
                 {
                     button_saveProject.Content = "Save";
                 }
@@ -385,11 +425,11 @@ namespace SCRUMProjectManagementSystem
             update();
         }
 
-        void save_sprint_Click(object sender, RoutedEventArgs e)
+        private void save_sprint_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (viewModel.ChangeCurrSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate))
+                if (_viewModel.ChangeCurrSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate))
                 {
                     button_saveSprint.Content = "Save";
                 }
@@ -409,11 +449,11 @@ namespace SCRUMProjectManagementSystem
             update();
         }
 
-        void save_story_Click(object sender, RoutedEventArgs e)
+        private void save_story_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, (SprintView)comboBox_story_sprint.SelectedItem))
+                if (_viewModel.ChangeCurrStory(textBox_story_priority.Text, textBox_story_text.Text, (SprintView)comboBox_story_sprint.SelectedItem))
                 {
                     button_saveStory.Content = "Save";
                 }
@@ -441,11 +481,11 @@ namespace SCRUMProjectManagementSystem
             update();
         }
 
-        void save_task_Click(object sender, RoutedEventArgs e)
+        private void save_task_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate))
+                if (_viewModel.ChangeCurrTask(textBox_task_text.Text, (int)comboBox_task_complexity.SelectedItem, (int)comboBox_task_value.SelectedItem, (UserView)comboBox_task_owner.SelectedItem, (TaskType)comboBox_task_type.SelectedItem, (TaskState)comboBox_task_state.SelectedItem, datePicker_task_completionDate.SelectedDate))
                 {
                     button_saveTask.Content = "Save";
                 }
@@ -469,27 +509,28 @@ namespace SCRUMProjectManagementSystem
             update();
         }
 
-        void textBox_story_priority_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void textBox_story_priority_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             e.Handled = e.Text.IsNonNumeric();
         }
 
         private void rightList_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            //jumping to a task
             if (rightList.SelectedIndex >= 0)
             {
-                viewModel.CurrTask = (TaskView)rightList.SelectedItem;
-                viewModel.JumpToTask(viewModel.CurrTask);
-                currentSelection = selection.Task;
-                grid_projectInfo.DataContext = viewModel.CurrProject;
-                grid_sprintInfo.DataContext = viewModel.CurrSprint;
-                grid_storyInfo.DataContext = viewModel.CurrStory;
-                grid_taskInfo.DataContext = viewModel.CurrTask;
-                comboBox_project_owner.ItemsSource = viewModel.AllManagers;
-                comboBox_story_sprint.DataContext = viewModel;
-                label_story_project.DataContext = viewModel.CurrProject;
-                label_task_project.DataContext = viewModel.CurrProject;
-                comboBox_task_owner.DataContext = viewModel.GetTeamMembers(viewModel.CurrTeam);
+                _viewModel.CurrTask = (TaskView)rightList.SelectedItem;
+                _viewModel.JumpToTask(_viewModel.CurrTask);
+                _currentSelection = selection.Task;
+                grid_projectInfo.DataContext = _viewModel.CurrProject;
+                grid_sprintInfo.DataContext = _viewModel.CurrSprint;
+                grid_storyInfo.DataContext = _viewModel.CurrStory;
+                grid_taskInfo.DataContext = _viewModel.CurrTask;
+                comboBox_project_owner.ItemsSource = _viewModel.AllManagers;
+                comboBox_story_sprint.DataContext = _viewModel;
+                label_story_project.DataContext = _viewModel.CurrProject;
+                label_task_project.DataContext = _viewModel.CurrProject;
+                comboBox_task_owner.DataContext = _viewModel.GetTeamMembers(_viewModel.CurrTeam);
                 comboBox_task_complexity.ItemsSource = ViewModel.EnumValues.sizeComplexity;
                 comboBox_task_state.ItemsSource = ViewModel.EnumValues.taskState;
                 comboBox_task_value.ItemsSource = ViewModel.EnumValues.businessValue;
@@ -501,23 +542,26 @@ namespace SCRUMProjectManagementSystem
 
         private void button_New_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(currentSelection + 1, viewModel);
+            //opens the window for adding a new project, sprint, story, task
+            NewItemWindow niw = new NewItemWindow(_currentSelection + 1, _viewModel);
             niw.ShowDialog();
         }
 
         private void menu_addTeam_Click(object sender, RoutedEventArgs e)
         {
-            NewItemWindow niw = new NewItemWindow(selection.Team, viewModel);
+            //opens the window for creating a new team
+            NewItemWindow niw = new NewItemWindow(selection.Team, _viewModel);
             niw.ShowDialog();
         }
 
         private void menu_main_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            MenuItem[] teams = new MenuItem[viewModel.AllTeams.Count];
+            //populates the list of teams when moving team members
+            MenuItem[] teams = new MenuItem[_viewModel.AllTeams.Count];
             for (int i = 0; i < teams.Length; i++)
             {
                 teams[i] = new MenuItem();
-                teams[i].Header = viewModel.AllTeams[i];
+                teams[i].Header = _viewModel.AllTeams[i];
                 teams[i].Click += new RoutedEventHandler(menu_teamName_Click);
             }
             menu_addToTeam.ItemsSource = teams;
@@ -525,18 +569,20 @@ namespace SCRUMProjectManagementSystem
 
         void menu_teamName_Click(object sender, RoutedEventArgs e)
         {
+            //opens the window to move team members to a team
             MenuItem mi = (MenuItem)sender;
-            TeamWindow tw = new TeamWindow((TeamView)mi.Header, viewModel);
+            TeamWindow tw = new TeamWindow((TeamView)mi.Header, _viewModel);
             tw.ShowDialog();
         }
 
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
-            if (viewModel.HistoricMode == false)
+            //turns on historic mode
+            if (_viewModel.HistoricMode == false)
             {
                 BackgroundColor = Brushes.Lavender;
-                viewModel.ToggleHistoricMode();
-                currentSelection = selection.Home;
+                _viewModel.ToggleHistoricMode();
+                _currentSelection = selection.Home;
                 grid_projectInfo.IsEnabled = false;
                 foreach (UIElement child in grid_sprintInfo.Children)
                 {
@@ -557,11 +603,12 @@ namespace SCRUMProjectManagementSystem
 
         private void MenuItem_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (viewModel.HistoricMode == true)
+            //turns off historic mode
+            if (_viewModel.HistoricMode == true)
             {
                 BackgroundColor = Brushes.LightBlue;
-                viewModel.ToggleHistoricMode();
-                currentSelection = selection.Home;
+                _viewModel.ToggleHistoricMode();
+                _currentSelection = selection.Home;
                 grid_projectInfo.IsEnabled = true;
                 foreach (UIElement child in grid_sprintInfo.Children)
                 {
@@ -573,7 +620,7 @@ namespace SCRUMProjectManagementSystem
                 button_sprint.Visibility = Visibility.Hidden;
                 button_story.Visibility = Visibility.Hidden;
                 button_task.Visibility = Visibility.Hidden;
-                if (viewModel.IsManager)
+                if (_viewModel.IsManager)
                 {
                     menu_main.Visibility = Visibility.Visible;
                     button_New.Visibility = Visibility.Visible;
@@ -584,36 +631,38 @@ namespace SCRUMProjectManagementSystem
 
         private void Burndown_Click(object sender, RoutedEventArgs e)
         {
-            new BurndownWindow(viewModel).Visibility = Visibility.Visible;
+            //displays the burndown
+            new BurndownWindow(_viewModel).Visibility = Visibility.Visible;
         }
 
         private void Status_Click(object sender, RoutedEventArgs e)
         {
-            new StatusChart(viewModel).Visibility = Visibility.Visible;
+            //displays the status chart
+            new StatusChart(_viewModel).Visibility = Visibility.Visible;
         }
 
         private void ProjectInfoChanged(object sender, EventArgs e)
         {
             button_saveProject.Content = "Save*";
-            button_saveProject.IsEnabled = viewModel.ValidateProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, viewModel.CurrTeam);
+            button_saveProject.IsEnabled = _viewModel.ValidateProject(textBox_project_name.Text, datePicker_project_start.SelectedDate, datePicker_project_end.SelectedDate, (UserView)comboBox_project_owner.SelectedItem, _viewModel.CurrTeam);
         }
 
         private void SprintInfoChanged(object sender, EventArgs e)
         {
             button_saveSprint.Content = "Save*";
-            button_saveSprint.IsEnabled = viewModel.ValidateSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
+            button_saveSprint.IsEnabled = _viewModel.ValidateSprint(textBox_sprint_name.Text, datePicker_sprint_start.SelectedDate, datePicker_sprint_end.SelectedDate);
         }
 
         private void StoryInfoChanged(object sender, EventArgs e)
         {
             button_saveStory.Content = "Save*";
-            button_saveStory.IsEnabled = viewModel.ValidateStory(textBox_story_priority.Text, textBox_story_text.Text);
+            button_saveStory.IsEnabled = _viewModel.ValidateStory(textBox_story_priority.Text, textBox_story_text.Text);
         }
 
         private void TaskInfoChanged(object sender, EventArgs e)
         {
             button_saveTask.Content = "Save*";
-            button_saveTask.IsEnabled = viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
+            button_saveTask.IsEnabled = _viewModel.ValidateTask(textBox_task_text.Text, (UserView)comboBox_task_owner.SelectedItem, (TaskType?)comboBox_task_type.SelectedItem, (int?)comboBox_task_complexity.SelectedItem, (int?)comboBox_task_value.SelectedItem, datePicker_task_completionDate.SelectedDate, (TaskState?)comboBox_task_state.SelectedItem);
         }
 
         private void showCriticalError()
