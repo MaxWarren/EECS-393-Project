@@ -53,6 +53,7 @@ namespace SCRUMProjectManagementSystem
                 mainChart.Series[1].Points.AddXY(datesActual[i], actual[i]);
                 if (actual[i] > goal[i])
                 {
+                    //set the color of the actual points to red if they are below the goal
                     mainChart.Series[1].Points[i].MarkerColor = Color.Red;
                 }
             }

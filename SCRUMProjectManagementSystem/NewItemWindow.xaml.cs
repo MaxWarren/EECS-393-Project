@@ -258,6 +258,7 @@ namespace SCRUMProjectManagementSystem
             e.Handled = e.Text.IsNonNumeric();
         }
 
+        #region Data Changed
         private void projectChanged(object sender, EventArgs e)
         {
             button1.IsEnabled = _viewModel.ValidateProject(textBox_project1.Text, datePicker_project1.SelectedDate, datePicker_project2.SelectedDate, (UserView)comboBox_project1.SelectedItem, (TeamView)comboBox_project2.SelectedItem);
@@ -305,5 +306,6 @@ namespace SCRUMProjectManagementSystem
         {
             button1.IsEnabled = _viewModel.ValidateTeam(textBox_team1.Text, (UserView)comboBox_team1.SelectedItem, (UserView)comboBox_team2.SelectedItem);
         }
+        #endregion
     }
 }
